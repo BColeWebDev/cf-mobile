@@ -1,0 +1,11 @@
+{
+    "expo": {
+      "name": "Crown Fitness",
+      "slug": "crown-fitness",
+      "splash": {
+        // "image": "assets/CF-Icon.png",
+        // "backgroundColor": "#292929",
+        // "resizeMode": "contain"
+      }
+    }
+  }
