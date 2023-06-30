@@ -10,6 +10,9 @@ import Login from './screens/Login';
 import SignUp from "./screens/SignUp";
 import { Provider } from 'react-redux';
 import { store } from './redux/app/store';
+import Confirmation from './screens/Confirmation';
+import Error from './screens/Error';
+import Home from './screens/Home';
 
 interface Workout {
 message:string
@@ -41,21 +44,33 @@ return (
 //   </View>
 //   </Provider>
 <Provider store={store}>
-<NavigationContainer >
+<NavigationContainer  >
 <Stack.Navigator >
-<Stack.Screen
+{/* <Stack.Screen
     name="Loading"
     component={Loading}
     options={{headerShown: false}}
-  />
-  <Stack.Screen
+  /> */}
+  {/* <Stack.Screen
     name="Sign Up"
     component={SignUp}
-    options={{title: 'Sign Up'}}
-  />
-  <Stack.Screen 
+    options={{headerShown: false}}
+  /> */}
+  {/* <Stack.Screen 
   name="Login" 
   component={Login}   
+   options={{headerShown: false}}
+   /> */}
+   {/* <Stack.Screen name='Confirmation' 
+   component={Confirmation}
+   options={{headerShown: false}}
+   /> */}
+      {/* <Stack.Screen name='Error' 
+   component={Error}
+   options={{headerShown: false}}
+   /> */}
+   <Stack.Screen name='Home' 
+   component={Home}
    options={{headerShown: false}}
    />
 </Stack.Navigator>

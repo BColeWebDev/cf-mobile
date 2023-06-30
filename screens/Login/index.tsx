@@ -1,6 +1,6 @@
 import { View,  StyleSheet} from 'react-native'
 import React,{useState} from 'react'
-import { Box, Button, Stack,Surface, TextInput,Text,} from '@react-native-material/core';
+import { Box, Button, Stack,Surface, TextInput,Text, ActivityIndicator,} from '@react-native-material/core';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import CfIcon from"../../assets/images/CF-Icon.svg"
 import { useSelector,useDispatch } from 'react-redux';
@@ -10,7 +10,7 @@ export default function Login({navigation}) {
   const dispatch = useDispatch<any>()
    const [login, setlogin] = useState({email:"",password:""});
 const [showPassword, setshowPassword] = useState(false);
-const {isError} = useSelector((state:any) => state.auth);
+const {isError,isLoading} = useSelector((state:any) => state.auth);
 
   const style = StyleSheet.create(
     {
@@ -29,7 +29,7 @@ const {isError} = useSelector((state:any) => state.auth);
       },
       container: {
         flex: 1,
-        height:"80%",
+        padding:20,
         backgroundColor: '#292929',
         alignItems: 'center',
         justifyContent: 'center',
@@ -40,25 +40,36 @@ const {isError} = useSelector((state:any) => state.auth);
     });
 
 const handleLoginUser =() =>{
-  dispatch(LoginUser({email: login.email, password:login.password}));
+  dispatch(LoginUser({email: login.email, password:login.password})).then((val)=> console.log(val));
   
 }
 if(isError){
-<Text>Error</Text>
+return <View style={style.container}>
+  <Text>Error</Text>
+
+  </View>
+}
+
+if(isLoading){
+  return <View style={style.container}>
+        <ActivityIndicator size="large" color="#F9C000" />
+  </View>
 }
 
   return (
        <>
   <View style={style.container}>
-  <Box mb={30} style={{display:"flex",alignItems:"center"}}>
+  <Box  style={{display:"flex",alignItems:"center", marginTop:40}}>
         {/* <CfIcon/> */}
-        <Text style={{fontSize:40, fontWeight:"600", color:"white", height:60,}}>
+        <Text style={{fontSize:35, fontWeight:"600", color:"white"}}>
         Login
        </Text>
         </Box>  
     
 
-        <Surface  style={{width:"90%", marginBottom:100, borderRadius:10,height: 300, backgroundColor:"#121212", alignItems:"center", justifyContent:"space-around"}}>
+        <Surface  style={{width:"95%", marginBottom:100, 
+        marginTop:40,
+        borderRadius:10,height: 200, backgroundColor:"#121212", alignItems:"center", justifyContent:"space-around"}}>
           <TextInput style={style.textInput}
           placeholder='Email'
           placeholderTextColor={"#F9C000"}
@@ -102,7 +113,10 @@ if(isError){
           color='#F9C000'
           disabled={login.email === "" || login.password === "" ? true : false}
           style={{width:140, height:40, justifyContent:"center"}}
-          onPress={handleLoginUser}
+          onPress={()=>{
+            // handleLoginUser();
+            navigation.navigate("Loading")
+          }}
         />
 
         <Button 
