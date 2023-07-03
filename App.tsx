@@ -37,38 +37,32 @@ const [data, setdata] = useState<Workout>();
 // );
 
 return (
-//    <Provider store={store}>
-// <View style={styles.container}>
-//    {/* <Login/> */}
-//    <SignUp/>
-//   </View>
-//   </Provider>
 <Provider store={store}>
 <NavigationContainer  >
-<Stack.Navigator >
-{/* <Stack.Screen
+<Stack.Navigator initialRouteName='Login' >
+<Stack.Screen
     name="Loading"
     component={Loading}
     options={{headerShown: false}}
-  /> */}
-  {/* <Stack.Screen
+  />
+  <Stack.Screen
     name="Sign Up"
     component={SignUp}
     options={{headerShown: false}}
-  /> */}
-  {/* <Stack.Screen 
+  />
+  <Stack.Screen 
   name="Login" 
   component={Login}   
    options={{headerShown: false}}
-   /> */}
-   {/* <Stack.Screen name='Confirmation' 
+   />
+   <Stack.Screen name='Confirmation' 
    component={Confirmation}
    options={{headerShown: false}}
-   /> */}
-      {/* <Stack.Screen name='Error' 
+   />
+      <Stack.Screen name='Error' 
    component={Error}
    options={{headerShown: false}}
-   /> */}
+   />
    <Stack.Screen name='Home' 
    component={Home}
    options={{headerShown: false}}
