@@ -1,14 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authServices";
 import { IAuth, IRegister } from "./interfaces/IAuth";
-// let token;
-// let user;
-// // user from local storage
-// if (typeof window !== 'undefined') {
-//     // Perform localStorage action
-//     token = JSON.parse(localStorage.getItem("token"))
-//     user = JSON.parse(localStorage.getItem("user"))
-// }
+import SyncStorage from "sync-storage";
+import {Platform} from 'react-native';
+
+let currentUser;
+let isLoggedIn;
+
+// user from local storage
+if (Platform.OS === "ios" || Platform.OS === "android" || Platform.OS === 'web') {
+    // Perform localStorage action
+    currentUser = JSON.parse(SyncStorage.get("currentUser"))
+    isLoggedIn = JSON.parse(SyncStorage.get("isLoggedIn"))
+}
+
 
 
 const initialState = {
@@ -17,7 +22,9 @@ const initialState = {
     isError: false,
     isLoading: false,
     isSuccess: false,
-    message: ''
+    message: '',
+    isLoggedIn: isLoggedIn  ? true : false,
+    currentUser: currentUser && isLoggedIn ? currentUser : {},
 }
 
 
@@ -45,7 +52,24 @@ export const RegisterUser = createAsyncThunk(`auth/RegisterUser`,async(obj:IRegi
 export const authSlice = createSlice({
     name:'auth',
     initialState,
-    reducers:{},
+    reducers:{
+  // Set Current User thats logged in
+  setCurrentUser:(state, action) => {
+    if(!state.isLoggedIn){
+        state.currentUser = action.payload;
+        state.isLoggedIn = true
+        SyncStorage.setItem("currentUser",JSON.stringify(state.currentUser))
+        SyncStorage.setItem("isLoggedIn",JSON.stringify(state.isLoggedIn))
+    }else{
+        state.currentUser = {}
+        state.isLoggedIn = false
+        SyncStorage.setItem("currentUser",JSON.stringify(state.currentUser))
+        SyncStorage.setItem("isLoggedIn",JSON.stringify(state.isLoggedIn))
+    }
+},
+
+
+    },
     extraReducers:(builder) =>{
         builder
           // LoginUser Case
