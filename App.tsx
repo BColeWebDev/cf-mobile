@@ -14,27 +14,16 @@ import Confirmation from './screens/Confirmation';
 import Error from './screens/Error';
 import Home from './screens/Home';
 
-interface Workout {
-message:string
-}
 
 
 const Stack = createNativeStackNavigator();
 
 
 export default function App() {
-const [data, setdata] = useState<Workout>();
+
 
   
-// return (
-//   <Provider store={store}>
-// <View style={styles.container}>
-//    {/* <Login/> */}
-//    <SignUp/>
-//   </View>
-//   </Provider>
-  
-// );
+
 
 return (
 <Provider store={store}>
@@ -75,14 +64,3 @@ return (
 )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    height:"80%",
-    backgroundColor: '#292929',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color:"white"
-    
-  },
-});

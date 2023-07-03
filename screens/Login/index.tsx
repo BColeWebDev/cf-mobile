@@ -4,7 +4,7 @@ import { Box, Button, Stack,Surface, TextInput,Text, ActivityIndicator,} from '@
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import CfIcon from"../../assets/images/CF-Icon.svg"
 import { useSelector,useDispatch } from 'react-redux';
-import { LoginUser } from '../../redux/features/auth/authSlice';
+import { LoginUser, setCurrentUser } from '../../redux/features/auth/authSlice';
 
 export default function Login({navigation}) {
   const dispatch = useDispatch<any>()
@@ -44,6 +44,7 @@ const handleLoginUser =() =>{
     console.log(val)
     if(val.meta.requestStatus === "fulfilled"){
       navigation.navigate("Home")
+      dispatch(setCurrentUser(val.payload.data))
     }
     if(val.meta.requestStatus === "rejected"){
       navigation.navigate("Login");

@@ -90,5 +90,9 @@ export const authSlice = createSlice({
     }
 })
 
+export const{
+    setCurrentUser,
+} = authSlice.actions
+
 
 export default authSlice.reducer
