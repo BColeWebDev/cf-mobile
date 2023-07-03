@@ -40,21 +40,19 @@ const {isError,isLoading} = useSelector((state:any) => state.auth);
     });
 
 const handleLoginUser =() =>{
-  dispatch(LoginUser({email: login.email, password:login.password})).then((val)=> console.log(val));
+  dispatch(LoginUser({email: login.email, password:login.password})).then((val)=> {
+    console.log(val)
+    if(val.meta.requestStatus === "fulfilled"){
+      navigation.navigate("Home")
+    }
+    if(val.meta.requestStatus === "rejected"){
+      navigation.navigate("Login");
+      alert(val.payload.response.data.message)
+    }
+  });
   
 }
-if(isError){
-return <View style={style.container}>
-  <Text>Error</Text>
 
-  </View>
-}
-
-if(isLoading){
-  return <View style={style.container}>
-        <ActivityIndicator size="large" color="#F9C000" />
-  </View>
-}
 
   return (
        <>
@@ -114,7 +112,7 @@ if(isLoading){
           disabled={login.email === "" || login.password === "" ? true : false}
           style={{width:140, height:40, justifyContent:"center"}}
           onPress={()=>{
-            // handleLoginUser();
+            handleLoginUser();
             navigation.navigate("Loading")
           }}
         />
