@@ -12,6 +12,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import { useSelector } from 'react-redux';
+import ProfileScreen from './tabs/Profile';
+import RegimentScreen from './tabs/Regiments';
+import WorkoutsScreen from './tabs/Workouts';
+import NutritionScreen from './tabs/Nutritions';
 
 export default function Home({navigation}) {
   const {isError,isLoading,isLoggedIn, currentUser} = useSelector((state:any) => state.auth)
@@ -27,51 +31,10 @@ export default function Home({navigation}) {
           },
     })
     const Tab = createBottomTabNavigator();
-    console.log(currentUser.existingUser.age)
-    const ProfileScreen =() =>
-    <View style={style.container}>
-          <Box style={{display:"flex", flexDirection:"column", alignItems:"center", width:"100%", justifyContent:"space-between", marginTop:50}}>
-            <Box style={{display:"flex", justifyContent:"flex-end", flexDirection:"row", width:"100%"}}>
 
-          <Feather name="settings" size={24} color="black" style={{alignItems:"flex-end", marginRight:10}} onPress={()=> navigation.navigate("Settings") } />
-          <FontAwesome5 name="crown" size={24} color="#FAC000" onPress={()=> alert("Crown Member") } />
-            </Box>
-            <Box style={{display:"flex",flexDirection:"row", margin:20,  justifyContent:"space-between",  width:"100%"}}>
-              <Flex direction="row" style={{alignItems:"center"}}>
-            <Ionicons name="person-circle-sharp" size={30} color="black" />
-              <Text style={{fontSize:30, color:"white"}}>Profile</Text>
-              </Flex>
-              <Box 
-        p={4} 
-        border={1}
-        borderColor={"#03dac5b3"}
-        radius={8}  
-        style={{alignItems:"center", display:"flex", justifyContent:"center"}}
-        >
-       <Text color='#03dac5b3' style={{textAlign:"center",textTransform:"capitalize"}}>{currentUser.existingUser?.experience}</Text>
-              </Box>
-            </Box>
-            <Box style={{flexDirection:"column", justifyContent:"flex-start", width:"100%"}}>
-            <Text color='white' style={{marginBottom:20}}>{currentUser.existingUser?.first_name}</Text>
-            <Text color='white' style={{marginBottom:20}}>{currentUser.existingUser?.last_name}</Text>
-            <Text color='white'>{currentUser.existingUser?.email}</Text>
-            <Text color='white'>{currentUser.existingUser?.age}</Text>
-            </Box>
-            <Box style={{display:"flex", justifyContent:"center", height:"30%", alignItems:"center"}}>
-              <Text color='white'>{currentUser.existingUser?.bio}</Text>
-            </Box>
-        
-      
-      
-          </Box>   
+  
 
-        </View>
-
-    const RegimentsScreen =() =><View style={style.container}><Text>Regiments</Text></View>
-
-    const WorkoutsScreen =() =><View style={style.container}><Text>Workouts</Text></View>
-
-    const NutritionsScreen =() =><View style={style.container}><Text>Nutritions</Text></View>
+ 
 
 
   return (
@@ -93,7 +56,7 @@ export default function Home({navigation}) {
     <Tab.Screen name="Profile" component={ProfileScreen}  options={{headerShown: false, tabBarIcon:({color,size}) =>(
     <CFIcon width={size} fill={color} />
     )}}/>
-    <Tab.Screen name="My Regiments" component={RegimentsScreen} options={{headerShown: false, 
+    <Tab.Screen name="My Regiments" component={RegimentScreen} options={{headerShown: false, 
 tabBarIcon:({color,size}) =>(<MuscleIcon width={size} fill={color}/>)
 }}
     />
@@ -102,7 +65,7 @@ tabBarIcon:({color,size}) =>(<MuscleIcon width={size} fill={color}/>)
     
 }
 } />
-    <Tab.Screen name="Nutritions" component={NutritionsScreen} options={{headerShown: false
+    <Tab.Screen name="Nutritions" component={NutritionScreen} options={{headerShown: false
     ,tabBarIcon:({color,size}) =>(<PlatIcon width={size} fill={color}/>)
     }} />
     
