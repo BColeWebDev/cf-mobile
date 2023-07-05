@@ -1,8 +1,9 @@
-import { Text, Surface} from '@react-native-material/core';
+import { Text, Surface, Button} from '@react-native-material/core';
 import React from 'react';
 import { View, StyleSheet} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-const Confirmation = () => {
+const Confirmation = ({navigation}) => {
+    
     const style = StyleSheet.create({
         container: {
             flex: 1,
@@ -25,6 +26,11 @@ const Confirmation = () => {
         </Text>
         <Text color='white' style={{fontSize:12, margin:0}}>Email confirmation has been sent!</Text>
         <AntDesign name="checkcircleo" size={50} style={{margin:0}} color="green" />
+        <Button title="Go Back" 
+         color='#F9C000'
+        onPress={() =>{
+            navigation.navigate("Home")
+        }}/>
         </Surface>
      
     </View>;

@@ -13,6 +13,8 @@ import { store } from './redux/app/store';
 import Confirmation from './screens/Confirmation';
 import Error from './screens/Error';
 import Home from './screens/Home';
+import { useSelector } from 'react-redux';
+import AllScreens from './screens';
 
 
 
@@ -21,43 +23,12 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-
   
 
 
 return (
 <Provider store={store}>
-<NavigationContainer  >
-<Stack.Navigator initialRouteName='Login' >
-<Stack.Screen
-    name="Loading"
-    component={Loading}
-    options={{headerShown: false}}
-  />
-  <Stack.Screen
-    name="Sign Up"
-    component={SignUp}
-    options={{headerShown: false}}
-  />
-  <Stack.Screen 
-  name="Login" 
-  component={Login}   
-   options={{headerShown: false}}
-   />
-   <Stack.Screen name='Confirmation' 
-   component={Confirmation}
-   options={{headerShown: false}}
-   />
-      <Stack.Screen name='Error' 
-   component={Error}
-   options={{headerShown: false}}
-   />
-   <Stack.Screen name='Home' 
-   component={Home}
-   options={{headerShown: false}}
-   />
-</Stack.Navigator>
-</NavigationContainer>
+<AllScreens/>
 
 </Provider>
 

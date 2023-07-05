@@ -10,8 +10,8 @@ export default function Login({navigation}) {
   const dispatch = useDispatch<any>()
    const [login, setlogin] = useState({email:"",password:""});
 const [showPassword, setshowPassword] = useState(false);
-const {isError,isLoading} = useSelector((state:any) => state.auth);
-
+const {isError,isLoading,isLoggedIn, currentUser} = useSelector((state:any) => state.auth);
+  console.log(currentUser.existingUser, isLoggedIn);
   const style = StyleSheet.create(
     {
       textInput:{
@@ -44,6 +44,7 @@ const handleLoginUser =() =>{
     console.log(val)
     if(val.meta.requestStatus === "fulfilled"){
       navigation.navigate("Home")
+      // console.log(val.payload.data)
       dispatch(setCurrentUser(val.payload.data))
     }
     if(val.meta.requestStatus === "rejected"){
