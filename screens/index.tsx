@@ -15,6 +15,7 @@ import Error from './Error';
 import Home from './Home';
 import { useSelector } from 'react-redux';
 import Settings from './Settings';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 export default function AllScreens() {

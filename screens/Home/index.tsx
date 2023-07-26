@@ -56,7 +56,7 @@ export default function Home({navigation}) {
     <Tab.Screen name="Profile" component={ProfileScreen}  options={{headerShown: false, tabBarIcon:({color,size}) =>(
     <CFIcon width={size} fill={color} />
     )}}/>
-    <Tab.Screen name="My Regiments" component={RegimentScreen} options={{headerShown: false, 
+    <Tab.Screen name="My Regiments" component={RegimentScreen}  options={{headerShown: false, 
 tabBarIcon:({color,size}) =>(<MuscleIcon width={size} fill={color}/>)
 }}
     />
