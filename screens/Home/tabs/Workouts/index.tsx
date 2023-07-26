@@ -30,7 +30,7 @@ if(isLoading){
   return <Loading/>
 }
 
-console.log("workouts",workouts)
+
   return (
     <SafeAreaView style={style.container}>
       <Box style={{width:"100%"}}>
