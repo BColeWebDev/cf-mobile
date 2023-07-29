@@ -8,14 +8,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from './Login';
 import SignUp from "./SignUp";
-import { Provider } from 'react-redux';
-import { store } from '../redux/app/store';
 import Confirmation from './Confirmation';
 import Error from './Error';
 import Home from './Home';
 import { useSelector } from 'react-redux';
 import Settings from './Settings';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const Stack = createNativeStackNavigator();
 export default function AllScreens() {
