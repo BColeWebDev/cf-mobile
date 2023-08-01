@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { Button, Text } from "@react-native-material/core";
+import { Box, Button, Text } from "@react-native-material/core";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Main from './Main';
@@ -52,6 +52,12 @@ export default function AllScreens() {
       <Stack.Screen name='Settings' 
    component={Settings}
    />
+   <Stack.Group screenOptions={{ presentation: 'modal' }}>
+   <Stack.Screen name='MyModal' 
+   component={()=><Box><Text>Modal</Text></Box>}
+   />
+   </Stack.Group>
+     
 </Stack.Navigator>
 </NavigationContainer>
 

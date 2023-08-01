@@ -1,13 +1,13 @@
 import { View, Text,StyleSheet, ScrollView, Image} from 'react-native'
 import React,{useEffect,useState}from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Box, TextInput, Badge, Flex } from '@react-native-material/core'
+import { Box, TextInput, Badge, Flex, Button } from '@react-native-material/core'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { getAllBodyTargets, getAllEquipment, getAllWorkouts } from '../../../../redux/features/workouts/workoutSlice'
 import Loading from '../../../Loading'
 import { AntDesign, FontAwesome  } from '@expo/vector-icons'; 
-const WorkoutsScreen = () => {
+const WorkoutsScreen = ({navigation}) => {
   const [input, setinput] = useState("");
   const dispatch = useDispatch<any>()
   const {workouts, isLoading,equipments, bodyTargets,muscles} = useSelector((state:any) =>state.workouts)
@@ -37,15 +37,16 @@ if(isLoading){
 console.log("equipment",equipments,bodyTargets,muscles)
   return (
     <SafeAreaView style={style.container}>
-        <Box style={{display:"flex",flexDirection:"row", width:"100%",justifyContent:"flex-end", marginRight:20,marginTop:10}}>
+        <Box style={{display:"flex",flexDirection:"column", width:"100%",justifyContent:"flex-end", marginRight:20,marginTop:10}}>
+          {equipments?.map((val,idx)=><Text key={idx}>{val}</Text>)}
+      
 
 
-
-  </Box>
+      </Box>
       <Box style={{width:"100%"}}>
       <Box style={{display:"flex",width:"100%", flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
       <Text style={{fontSize:28, color:"white",   marginLeft:10, marginTop:30,}}>Workouts</Text>
-        <FontAwesome name="filter" size={24} style={{marginRight:20}} color="white" onPress={()=> {}}/>
+        <FontAwesome name="filter" size={24} style={{marginRight:20}} color="white"    onPress={() => navigation.navigate('MyModal')}/>
       </Box>
        
         <TextInput  style={{margin:10, borderRadius:40, marginHorizontal:20}} 

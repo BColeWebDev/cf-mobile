@@ -1,21 +1,17 @@
 import { View, StyleSheet, Platform} from 'react-native';
-import { Text, Surface, Box, Flex} from '@react-native-material/core';
+import { Text,Button} from '@react-native-material/core';
 import React,{useEffect} from 'react'
-import { AntDesign } from '@expo/vector-icons';
-import { Stack, FAB } from "@react-native-material/core";
 import CFIcon from "../../assets/images/CF-Icon-Black.svg"
 import ChadIcon from "../../assets/images/Chad.svg"
 import MuscleIcon from "../../assets/images/Muscle-Icon.svg"
 import PlatIcon from "../../assets/images/Plate.svg"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons'; 
 import { useSelector } from 'react-redux';
 import ProfileScreen from './tabs/Profile';
 import RegimentScreen from './tabs/Regiments';
 import WorkoutsScreen from './tabs/Workouts';
 import NutritionScreen from './tabs/Nutritions';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function Home({navigation}) {
   const {isError,isLoading,isLoggedIn, currentUser} = useSelector((state:any) => state.auth)
@@ -31,9 +27,20 @@ export default function Home({navigation}) {
           },
     })
     const Tab = createBottomTabNavigator();
-
+    const Stack = createNativeStackNavigator();
+    
   
-
+    const ModalScreen = ({ navigation }) => {
+      return (
+        
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+          <Button onPress={() => navigation.goBack()} title="Dismiss" />
+        </View>
+      );
+    }
+    
+    
  
 
 
@@ -60,15 +67,13 @@ export default function Home({navigation}) {
 tabBarIcon:({color,size}) =>(<MuscleIcon width={size} fill={color}/>)
 }}
     />
-    <Tab.Screen name="Workouts" component={WorkoutsScreen} options={{headerShown: false
-    ,tabBarIcon:({color,size}) =>(<ChadIcon width={size} fill={color}/>)
-    
-}
-} />
+    <Tab.Group>
+    <Tab.Screen name="Workouts" component={WorkoutsScreen} options={{headerShown: false,tabBarIcon:({color,size}) =>(<ChadIcon width={size} fill={color}/>)}} />
+    </Tab.Group>
+
     <Tab.Screen name="Nutritions" component={NutritionScreen} options={{headerShown: false
     ,tabBarIcon:({color,size}) =>(<PlatIcon width={size} fill={color}/>)
     }} />
-    
   </Tab.Navigator>
   )
 }
