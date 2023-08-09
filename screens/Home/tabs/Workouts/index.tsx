@@ -37,12 +37,10 @@ if(isLoading){
 console.log("equipment",equipments,bodyTargets,muscles)
   return (
     <SafeAreaView style={style.container}>
-        <Box style={{display:"flex",flexDirection:"column", width:"100%",justifyContent:"flex-end", marginRight:20,marginTop:10}}>
-          {equipments?.map((val,idx)=><Text key={idx}>{val}</Text>)}
-      
-
-
-      </Box>
+        {/* <Box style={{display:"flex",flexDirection:"column", width:"100%",justifyContent:"flex-end", marginRight:20,marginTop:10}}>
+          {equipments?.map((val,idx)=><Text key={idx}>{val}
+          </Text>)}
+      </Box> */}
       <Box style={{width:"100%"}}>
       <Box style={{display:"flex",width:"100%", flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
       <Text style={{fontSize:28, color:"white",   marginLeft:10, marginTop:30,}}>Workouts</Text>

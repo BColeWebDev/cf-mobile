@@ -30,15 +30,15 @@ export default function Home({navigation}) {
     const Stack = createNativeStackNavigator();
     
   
-    const ModalScreen = ({ navigation }) => {
-      return (
+    // const ModalScreen = ({ navigation }) => {
+    //   return (
         
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ fontSize: 30 }}>This is a modal!</Text>
-          <Button onPress={() => navigation.goBack()} title="Dismiss" />
-        </View>
-      );
-    }
+    //     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    //       <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+    //       <Button onPress={() => navigation.goBack()} title="Dismiss" />
+    //     </View>
+    //   );
+    // }
     
     
  

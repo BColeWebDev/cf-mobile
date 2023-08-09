@@ -13,6 +13,7 @@ import Error from './Error';
 import Home from './Home';
 import { useSelector } from 'react-redux';
 import Settings from './Settings';
+import WorkoutsModal from './Modals/WorkoutsModal';
 
 
 const Stack = createNativeStackNavigator();
@@ -52,9 +53,11 @@ export default function AllScreens() {
       <Stack.Screen name='Settings' 
    component={Settings}
    />
-   <Stack.Group screenOptions={{ presentation: 'modal' }}>
+   <Stack.Group screenOptions={{ presentation: "modal" }}
+   >
    <Stack.Screen name='MyModal' 
-   component={()=><Box><Text>Modal</Text></Box>}
+    options={{headerShown: false, }}
+   component={WorkoutsModal}
    />
    </Stack.Group>
      
