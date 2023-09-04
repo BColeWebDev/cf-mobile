@@ -69,7 +69,15 @@ export const RegisterUser = createAsyncThunk(`auth/RegisterUser`,async(obj:IRegi
     }
     }
 )
+export const UserSettings = createAsyncThunk(`auth/UserSettings`,async(obj:Object,thunkAPI)=>{
+    try {
+        const response = await authService.Settings(obj);
+        return response
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
 
+    }
+})
 export const authSlice = createSlice({
     name:'auth',
     initialState,

@@ -17,15 +17,19 @@ const Register = async (userData:IRegister) => {
 }
 
 export const Logout = async ()=>{
-    const response = await axios.get(`${APP_URL}/api/auth/logout`,{})
+    const response = await axios.get(`${APP_URL}/api/auth/logout`)
     return response.data
 }
-
-
+const Settings = async (obj)=>{
+    console.log(`${APP_URL}api/auth/settings`,obj)
+const response = await axios.post(`${APP_URL}api/auth/settings`,obj)
+return response.data
+}
 const authService ={
     Login,
     Register,
-    Logout
+    Logout,
+    Settings
 }
 
 export default authService
