@@ -54,7 +54,7 @@ export default function ProfileScreen({ navigation }) {
             style={{ alignItems: "flex-end", marginRight: 10 }}
             onPress={() => navigation.navigate("Settings")}
           />
-          {!currentUser.crown_member ? (
+          {!currentUser?.crown_member ? (
             <FontAwesome5
               name="crown"
               size={24}

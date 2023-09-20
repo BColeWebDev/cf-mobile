@@ -5,7 +5,7 @@ import { APP_URL } from "@env";
 // Login User
 const Login  = async(data:IAuth) =>{
 const response = await axios.post(`${APP_URL}api/auth/login`, data);
-return response;
+return response.data;
 
 }
 

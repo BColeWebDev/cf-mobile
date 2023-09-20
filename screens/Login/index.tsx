@@ -7,6 +7,10 @@ import {
   Surface,
   TextInput,
   Text,
+  Dialog,
+  DialogHeader,
+  DialogContent,
+  DialogActions,
   ActivityIndicator,
 } from "@react-native-material/core";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
@@ -18,16 +22,15 @@ export default function Login({ navigation }) {
   const dispatch = useDispatch<any>();
   const [login, setlogin] = useState({ email: "", password: "" });
   const [showPassword, setshowPassword] = useState(false);
+  const [visible, setVisible] = useState(false);
   const { isError, isLoading, isLoggedIn, currentUser } = useSelector(
     (state: any) => state.auth
   );
-  console.log(currentUser.existingUser, isLoggedIn);
+  console.log(currentUser?.existingUser, isLoggedIn);
   const style = StyleSheet.create({
     textInput: {
-      width: "85%",
-      marginLeft: "auto",
-      marginRight: "auto",
-      marginBottom: 20,
+      width: "100%",
+      marginBottom: 100,
       backgroundColor: "",
       paddingLeft: 10,
       marginVertical: 20,
@@ -39,7 +42,7 @@ export default function Login({ navigation }) {
     container: {
       flex: 1,
       padding: 20,
-      backgroundColor: "#292929",
+      backgroundColor: "#121212",
       alignItems: "center",
       justifyContent: "center",
       color: "white",
@@ -52,13 +55,15 @@ export default function Login({ navigation }) {
         console.log(val);
         if (val.meta.requestStatus === "fulfilled") {
           navigation.navigate("Home");
-          // console.log(val.payload.data)
 
-          dispatch(setCurrentUser(val.payload.data));
+          // console.log(val.payload.data)
+          setlogin({ email: "", password: "" });
+          console.log(val.payload);
+          dispatch(setCurrentUser(val.payload));
         }
         if (val.meta.requestStatus === "rejected") {
           navigation.navigate("Login");
-          alert(val.payload.response.data.message);
+          alert("Invalid Credentials email or password is incorrect");
         }
       }
     );
@@ -67,9 +72,23 @@ export default function Login({ navigation }) {
   return (
     <>
       <View style={style.container}>
-        <Box style={{ display: "flex", alignItems: "center", marginTop: 40 }}>
+        <Box
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: 40,
+            marginBottom: 50,
+          }}
+        >
           {/* <CfIcon/> */}
-          <Text style={{ fontSize: 35, fontWeight: "600", color: "white" }}>
+          <Text
+            style={{
+              fontSize: 35,
+              fontWeight: "300",
+              color: "white",
+              marginRight: "65%",
+            }}
+          >
             Login
           </Text>
         </Box>
@@ -77,7 +96,7 @@ export default function Login({ navigation }) {
         <Surface
           style={{
             width: "95%",
-            marginBottom: 100,
+            marginBottom: 10,
             marginTop: 40,
             borderRadius: 10,
             height: 200,
@@ -97,6 +116,7 @@ export default function Login({ navigation }) {
             }
             keyboardType={"email-address"}
             inputStyle={style.inputStyles}
+            defaultValue={login.email}
           />
 
           <TextInput
@@ -106,6 +126,7 @@ export default function Login({ navigation }) {
             variant={"standard"}
             selectionColor={"white"}
             cursorColor={"#F9C000"}
+            defaultValue={login.password}
             onChangeText={(text) =>
               setlogin((prevState) => ({ ...prevState, password: text }))
             }
@@ -132,7 +153,7 @@ export default function Login({ navigation }) {
           />
         </Surface>
 
-        <Stack direction={"row"} justify={"around"} spacing={10} w={"100%"}>
+        <Stack direction={"column"} justify={"around"} spacing={50} w={"100%"}>
           <Button
             title="Login"
             tintColor="black"
@@ -140,7 +161,12 @@ export default function Login({ navigation }) {
             disabled={
               login.email === "" || login.password === "" ? true : false
             }
-            style={{ width: 140, height: 40, justifyContent: "center" }}
+            style={{
+              width: "100%",
+              marginBottom: 20,
+              height: 40,
+              justifyContent: "center",
+            }}
             onPress={() => {
               handleLoginUser();
               navigation.navigate("Loading");
@@ -149,7 +175,7 @@ export default function Login({ navigation }) {
 
           <Button
             title="Sign Up"
-            style={{ width: 140, height: 40, justifyContent: "center" }}
+            style={{ width: "100%", height: 40, justifyContent: "center" }}
             onPress={() => navigation.navigate("Sign Up")}
             variant={"outlined"}
             color="#FAC000"
