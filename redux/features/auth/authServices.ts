@@ -21,7 +21,6 @@ export const Logout = async ()=>{
     return response.data
 }
 const Settings = async (obj)=>{
-    console.log(`${APP_URL}api/auth/settings`,obj)
 const response = await axios.post(`${APP_URL}api/auth/settings`,obj)
 return response.data
 }

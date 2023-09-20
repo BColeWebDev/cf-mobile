@@ -78,6 +78,8 @@ export const UserSettings = createAsyncThunk(`auth/UserSettings`,async(obj:Objec
 
     }
 })
+
+
 export const authSlice = createSlice({
     name:'auth',
     initialState,
@@ -103,8 +105,20 @@ export const authSlice = createSlice({
         setData('currentUser',state.currentUser);
     }
 },
-
-
+updateCurrentUser:(state,action) =>{
+    console.log(action.payload)
+    if(state.isLoggedIn){
+        state.currentUser = action.payload
+        if (Platform.OS === "ios" || Platform.OS === "android"){
+            setData('isLoggedIn', state.isLoggedIn);
+            setData('currentUser',state.currentUser);
+        }
+        if(Platform.OS === "web"){
+            localStorage.setItem("currentUser",JSON.stringify(state.currentUser));
+            localStorage.setItem("isLoggedIn",JSON.stringify(state.isLoggedIn))
+        }
+    }
+}
     },
     extraReducers:(builder) =>{
         builder
@@ -128,6 +142,7 @@ export const authSlice = createSlice({
 
 export const{
     setCurrentUser,
+    updateCurrentUser
 } = authSlice.actions
 
 

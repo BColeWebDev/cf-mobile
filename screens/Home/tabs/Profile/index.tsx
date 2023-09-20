@@ -54,12 +54,14 @@ export default function ProfileScreen({ navigation }) {
             style={{ alignItems: "flex-end", marginRight: 10 }}
             onPress={() => navigation.navigate("Settings")}
           />
-          <FontAwesome5
-            name="crown"
-            size={24}
-            color="#FAC000"
-            onPress={() => alert("Crown Member")}
-          />
+          {!currentUser.crown_member ? (
+            <FontAwesome5
+              name="crown"
+              size={24}
+              color="#FAC000"
+              onPress={() => alert("Crown Member")}
+            />
+          ) : null}
         </Box>
         <Box
           style={{
@@ -72,7 +74,9 @@ export default function ProfileScreen({ navigation }) {
         >
           <Flex direction="row" style={{ alignItems: "center" }}>
             <Ionicons name="person-circle-sharp" size={30} color="black" />
-            <Text style={{ fontSize: 30, color: "white" }}>Profile</Text>
+            <Text style={{ marginLeft: 15, fontSize: 30, color: "white" }}>
+              Profile
+            </Text>
           </Flex>
           <Box
             p={4}
@@ -96,42 +100,28 @@ export default function ProfileScreen({ navigation }) {
         <Box
           style={{
             flexDirection: "column",
-            justifyContent: "flex-start",
-            width: "100%",
-          }}
-        >
-          <Text color="white" style={{ marginBottom: 20 }}>
-            {currentUser.existingUser?.first_name}
-          </Text>
-          <Text color="white" style={{ marginBottom: 20 }}>
-            {currentUser.existingUser?.last_name}
-          </Text>
-          <Text color="white">{currentUser.existingUser?.email}</Text>
-          <Text color="white">{currentUser.existingUser?.age}</Text>
-        </Box>
-        <Box
-          style={{
-            display: "flex",
             justifyContent: "center",
-            height: "30%",
             width: "100%",
-            alignItems: "center",
+            marginTop: 50,
           }}
         >
-          <Text
-            style={{
-              textAlign: "left",
-              width: "100%",
-              fontSize: 20,
-              color: "white",
-            }}
-          >
-            Bio
+          <Box style={{ flexDirection: "row" }}>
+            <Text
+              color="white"
+              style={{ marginBottom: 20, marginRight: 10, fontSize: 22 }}
+            >
+              {currentUser.existingUser?.first_name}
+            </Text>
+            <Text color="white" style={{ marginBottom: 20, fontSize: 22 }}>
+              {currentUser.existingUser?.last_name}
+            </Text>
+          </Box>
+
+          <Text color="white" style={{ marginBottom: 20, fontSize: 22 }}>
+            {currentUser.existingUser?.email}
           </Text>
-          <Text color="white">
-            {currentUser.existingUser?.bio
-              ? currentUser.existingUser?.bio
-              : "N/A"}
+          <Text color="white" style={{ marginBottom: 20, fontSize: 22 }}>
+            Age:{currentUser.existingUser?.age}
           </Text>
         </Box>
       </Box>

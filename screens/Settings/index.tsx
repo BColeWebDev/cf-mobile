@@ -1,8 +1,12 @@
 import { View, Text } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Stack, Switch } from "@react-native-material/core";
 import { useSelector } from "react-redux";
-import { UserSettings } from "../../redux/features/auth/authSlice";
+import {
+  UserSettings,
+  setCurrentUser,
+  updateCurrentUser,
+} from "../../redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 const Settings = ({ navigation }) => {
   const dispatch = useDispatch<any>();
@@ -11,7 +15,7 @@ const Settings = ({ navigation }) => {
   const [inches, setInchesChecked] = useState(false);
   const [distance, setDistanceChecked] = useState(false);
   const { currentUser } = useSelector((state: any) => state.auth);
-  console.log("user", currentUser);
+
   const handleSubmit = () => {
     dispatch(
       UserSettings({
@@ -24,15 +28,54 @@ const Settings = ({ navigation }) => {
         },
       })
     ).then((val) => {
-      console.log("val", val);
       if (val.meta.requestStatus === "fulfilled") {
+        dispatch(
+          updateCurrentUser({
+            existingUser: {
+              first_name: val.payload.first_name,
+              last_name: val.payload.last_name,
+              email: val.payload.email,
+              bio: val.payload.bio,
+              _id: val.payload._id,
+              age: val.payload.age,
+              sex: val.payload.sex,
+              crown_member: val.payload.crown_member,
+              experience: val.payload.experience,
+              isVerified: val.payload.isVerified,
+              settings: {
+                theme: val.payload.settings.theme,
+                weight: val.payload.settings.weight,
+                distance: val.payload.settings.distance,
+                size: val.payload.settings.size,
+              },
+            },
+            userToken: currentUser.userToken,
+          })
+        );
         navigation.navigate("Home");
       }
       if (val.meta.requestStatus === "rejected") {
-        console.log(val);
       }
     });
   };
+
+  useEffect(() => {
+    if (currentUser !== undefined || currentUser !== null) {
+      setMetricChecked(
+        currentUser.existingUser.settings?.weight === "kg" ? true : false
+      );
+      setThemeChecked(
+        currentUser.existingUser.settings?.theme === "light" ? true : false
+      );
+      setInchesChecked(
+        currentUser.existingUser.settings?.size === "inches" ? true : false
+      );
+      setDistanceChecked(
+        currentUser.existingUser.settings?.distance === "km" ? true : false
+      );
+    }
+  }, [currentUser]);
+
   return (
     <View style={{ flex: 1 }}>
       <Box style={{ padding: 20 }}>
@@ -112,6 +155,21 @@ const Settings = ({ navigation }) => {
         title="Submit"
         style={{ width: 200, marginLeft: "auto", marginRight: "auto" }}
         onPress={() => handleSubmit()}
+      />
+      <Button
+        title="Logout"
+        color="red"
+        tintColor="white"
+        style={{
+          width: 200,
+          marginLeft: "auto",
+          marginTop: 20,
+          marginRight: "auto",
+        }}
+        onPress={() => {
+          dispatch(setCurrentUser({}));
+          navigation.navigate("Login");
+        }}
       />
     </View>
   );
