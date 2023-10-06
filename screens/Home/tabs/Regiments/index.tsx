@@ -44,6 +44,7 @@ const RegimentScreen = ({ navigation }) => {
         {data?.map((val)=>
         <Box>
           <Text>{val.name}</Text>
+          <Text>{val.description}</Text>
         </Box>
         
         )}

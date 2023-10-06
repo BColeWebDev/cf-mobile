@@ -1,17 +1,21 @@
 {
-    "expo": {
-      "name": "Crown Fitness",
-      "slug": "crown-fitness",
-      "orientation":"portrait",
-      "splash": {
-        "image": "assets/icon.png",
-        "backgroundColor": "#292929",
-        "resizeMode": "contain"
-      },
-      "android":{
-        "adaptiveIcon":{
-
-        }
+  "expo": {
+    "name": "Crown Fitness",
+    "slug": "crown-fitness",
+    "orientation": "portrait",
+    "splash": {
+      "image": "assets/icon.png",
+      "backgroundColor": "#292929",
+      "resizeMode": "contain"
+    },
+    "android": {
+      "adaptiveIcon": {},
+      "package": "com.bcolewebdev.crownfitness"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "11eb80bc-2df9-48a0-87ca-0e10113b60b5"
       }
     }
   }
+}
