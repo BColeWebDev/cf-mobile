@@ -1,19 +1,36 @@
 import { View } from "react-native";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import {
-  Box,
   Button,
-  Stack,
-  Surface,
   TextInput,
   Text,
-  Dialog,
-  DialogHeader,
-  DialogContent,
-  DialogActions,
-  ActivityIndicator,
 } from "@react-native-material/core";
+import { useDispatch } from "react-redux";
+import {createRegiment} from "../../../../../../redux/features/regiments/regimentsSlice"
+import { AppDispatch } from "../../../../../../redux/app/store";
+import { useSelector } from "react-redux";
+
 export default function CreateRegiment({ navigation }) {
+  const dispatch = useDispatch<AppDispatch>()
+  const {currentUser} = useSelector((state:any)=>state.user)
+  const initialState = {name:"", description:"", userid:""}
+  const [formData, setformData] = useState(initialState);
+
+
+
+  const handleCreateLead = ()=>{
+    formData.userid =  currentUser.existingUser.id
+    dispatch(createRegiment(formData)).then((val)=>{
+      if(val.meta.requestStatus === "fulfilled"){
+        navigation.navigate("Home")
+      }
+      if(val.meta.requestStatus === "rejected"){
+      
+      }
+    })
+    
+  }
+
   return (
     <View
       style={{
@@ -42,6 +59,9 @@ export default function CreateRegiment({ navigation }) {
         placeholderTextColor={"#F9C000"}
         variant={"standard"}
         selectionColor={"white"}
+        onChangeText={(text) =>
+          setformData((prevState) => ({ ...prevState, name: text }))
+        }
       />
       <TextInput
         style={{ width: "100%", marginBottom: 200 }}
@@ -49,12 +69,15 @@ export default function CreateRegiment({ navigation }) {
         placeholderTextColor={"#F9C000"}
         variant={"standard"}
         selectionColor={"white"}
+        onChangeText={(text) =>
+          setformData((prevState) => ({ ...prevState, description: text }))
+        }
       />
 
       <Button
         title="CREATE REGIMENT"
         style={{ width: "100%", height: 40, justifyContent: "center" }}
-        onPress={() => navigation.navigate("Home")}
+        onPress={() =>handleCreateLead()}
         variant={"contained"}
       />
     </View>

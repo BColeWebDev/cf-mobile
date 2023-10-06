@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import regimentsService from "./regimentsService";
+import { IRegiments } from "../auth/interfaces/IRegiments";
 
 const initialState ={
     data:{},
@@ -15,7 +16,7 @@ export const getRegiments = createAsyncThunk(`regiments`,async(id,thunkAPI)=>{
         return thunkAPI.rejectWithValue(error)
     }
 })
-export const CreateRegiment = createAsyncThunk(`create-regiment`,async(obj,thunkAPI)=>{
+export const createRegiment = createAsyncThunk(`create-regiment`,async(obj:IRegiments,thunkAPI)=>{
     try {
         const response = await regimentsService.CreateRegiment(obj)
         return response;
@@ -47,3 +48,5 @@ export const regimentsSlice = createSlice({
 
     }
 })
+
+export default regimentsSlice.reducer
