@@ -11,7 +11,12 @@ const GetSinglelRegiment = async (id) =>{
     const response = await axios.get(`${APP_URL}/api/workouts/singleRegiment/${id}`);
     return response.data
 }
+const CreateRegiment = async (obj) =>{
+    const response = await axios.post(`${APP_URL}/api/workouts/createRegiment`,obj);
+    return response.data
+}
 export default{
     GetAllRegiments,
-    GetSinglelRegiment
+    GetSinglelRegiment,
+    CreateRegiment
 }

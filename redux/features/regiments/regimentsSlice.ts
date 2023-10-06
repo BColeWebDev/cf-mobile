@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import regimentsService from "./regimentsService";
 
 const initialState ={
-    data:[],
+    data:{},
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -15,10 +15,35 @@ export const getRegiments = createAsyncThunk(`regiments`,async(id,thunkAPI)=>{
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const CreateRegiment = createAsyncThunk(`create-regiment`,async(obj,thunkAPI)=>{
+    try {
+        const response = await regimentsService.CreateRegiment(obj)
+        return response;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+})
 
 export const regimentsSlice = createSlice({
     name:"regiments",
     initialState,
     reducers:{},
-    extraReducers:{}
+    extraReducers:(builder) =>{
+        builder
+        .addCase(getRegiments.pending, (state) => {
+            state.isLoading = true
+        })
+        // when data hase been received 
+        .addCase(getRegiments.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.data = action.payload
+          
+        })
+        .addCase(getRegiments.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+        })
+
+    }
 })
