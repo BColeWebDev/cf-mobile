@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import Settings from "./Settings";
 import WorkoutsModal from "./Modals/WorkoutsModal";
 import CreateRegiment from "./Home/tabs/Regiments/screens/Create Regiment";
+import RegimentDetails from "./Home/tabs/Regiments/screens/RegimentDetails";
 
 const Stack = createNativeStackNavigator();
 export default function AllScreens() {
@@ -55,6 +56,11 @@ export default function AllScreens() {
         <Stack.Screen
           name="Create Regiment"
           component={CreateRegiment}
+          options={{ headerTitle: "" }}
+        />
+        <Stack.Screen
+          name="Regiment Details"
+          component={RegimentDetails}
           options={{ headerTitle: "" }}
         />
         <Stack.Group screenOptions={{ presentation: "modal" }}>

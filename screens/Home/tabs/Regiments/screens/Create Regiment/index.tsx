@@ -1,35 +1,33 @@
 import { View } from "react-native";
-import React,{useState,useEffect} from "react";
-import {
-  Button,
-  TextInput,
-  Text,
-} from "@react-native-material/core";
+import React, { useState, useEffect } from "react";
+import { Button, TextInput, Text } from "@react-native-material/core";
 import { useDispatch } from "react-redux";
-import {createRegiment} from "../../../../../../redux/features/regiments/regimentsSlice"
+import {
+  createRegiment,
+  getRegiments,
+} from "../../../../../../redux/features/regiments/regimentsSlice";
 import { AppDispatch } from "../../../../../../redux/app/store";
 import { useSelector } from "react-redux";
 
 export default function CreateRegiment({ navigation }) {
-  const dispatch = useDispatch<AppDispatch>()
-  const {currentUser} = useSelector((state:any)=>state.user)
-  const initialState = {name:"", description:"", userid:""}
+  const dispatch = useDispatch<AppDispatch>();
+  const { currentUser } = useSelector((state: any) => state.auth);
+  const initialState = { name: "", description: "", userid: "" };
   const [formData, setformData] = useState(initialState);
 
-
-
-  const handleCreateLead = ()=>{
-    formData.userid =  currentUser.existingUser.id
-    dispatch(createRegiment(formData)).then((val)=>{
-      if(val.meta.requestStatus === "fulfilled"){
-        navigation.navigate("Home")
+  const handleCreateLead = () => {
+    formData.userid = currentUser?.existingUser?._id;
+    console.log("userid", currentUser?.existingUser?._id);
+    dispatch(createRegiment(formData)).then((val) => {
+      if (val.meta.requestStatus === "fulfilled") {
+        navigation.navigate("Home");
+        dispatch(getRegiments(formData.userid));
       }
-      if(val.meta.requestStatus === "rejected"){
-      
+      if (val.meta.requestStatus === "rejected") {
+        console.log(val);
       }
-    })
-    
-  }
+    });
+  };
 
   return (
     <View
@@ -77,7 +75,7 @@ export default function CreateRegiment({ navigation }) {
       <Button
         title="CREATE REGIMENT"
         style={{ width: "100%", height: 40, justifyContent: "center" }}
-        onPress={() =>handleCreateLead()}
+        onPress={() => handleCreateLead()}
         variant={"contained"}
       />
     </View>
