@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableHighlight,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -11,20 +18,24 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
+  createNewWorkout,
   getAllBodyTargets,
   getAllEquipment,
   getAllWorkouts,
 } from "../../../../redux/features/workouts/workoutSlice";
 import Loading from "../../../Loading";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
-const WorkoutsScreen = ({ navigation }) => {
+import { IWorkouts } from "../../../../redux/features/auth/interfaces/IWorkouts";
+const WorkoutsScreen = ({ route, navigation }) => {
   const [input, setinput] = useState("");
+  const [selectedWorkouts, setselectedWorkouts] = useState<IWorkouts>();
   const dispatch = useDispatch<any>();
   const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
     (state: any) => state.workouts
   );
   const { currentUser } = useSelector((state: any) => state.auth);
   console.log("currentUser-Workouts", currentUser);
+  console.log("current", selectedWorkouts);
   const style = StyleSheet.create({
     container: {
       flex: 1,
@@ -44,7 +55,15 @@ const WorkoutsScreen = ({ navigation }) => {
   if (isLoading) {
     return <Loading />;
   }
-
+  console.log("routes", route);
+  const handleCreateWorkout = (val) => {
+    setselectedWorkouts(val);
+    dispatch(
+      createNewWorkout({ regimentId: route.reqimentId, ...selectedWorkouts })
+    ).then((val) => {
+      console.log("val", val);
+    });
+  };
   return (
     <SafeAreaView style={style.container}>
       {/* <Box style={{display:"flex",flexDirection:"column", width:"100%",justifyContent:"flex-end", marginRight:20,marginTop:10}}>
@@ -57,7 +76,8 @@ const WorkoutsScreen = ({ navigation }) => {
             display: "flex",
             width: "100%",
             flexDirection: "row",
-            alignItems: "center",
+            alignItems: "flex-end",
+            marginBottom: 20,
             justifyContent: "space-between",
           }}
         >
@@ -81,7 +101,7 @@ const WorkoutsScreen = ({ navigation }) => {
         </Box>
 
         <TextInput
-          style={{ margin: 10, borderRadius: 40, marginHorizontal: 20 }}
+          style={{ margin: 10, borderRadius: 90, marginHorizontal: 20 }}
           leading={<AntDesign name="search1" size={24} color="black" />}
           onChangeText={(text) => setinput(text)}
         ></TextInput>
@@ -95,7 +115,7 @@ const WorkoutsScreen = ({ navigation }) => {
               return val.name.toLowerCase().includes(input.toLowerCase());
             })
             .map((val, idx) => (
-              <Box
+              <TouchableHighlight
                 key={idx}
                 style={{
                   display: "flex",
@@ -108,36 +128,67 @@ const WorkoutsScreen = ({ navigation }) => {
                   alignItems: "center",
                   marginHorizontal: 20,
                 }}
+                onPress={() => handleCreateWorkout(val)}
               >
-                <Image
-                  source={{ uri: val.gifUrl }}
-                  style={{ width: 60, height: 60, borderRadius: 50 }}
-                />
-                <Box style={{ flex: 1 }}>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      flex: 1,
-                      color: "white",
-                      marginTop: 10,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {val.name}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 10,
-                      flex: 1,
-                      color: "white",
-                      marginTop: 10,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {val.name}
-                  </Text>
+                <Box
+                  style={{
+                    display: "flex",
+                    flexDirection: "row-reverse",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <Image
+                    source={{ uri: val.gifUrl }}
+                    style={{ width: 60, height: 60, borderRadius: 50 }}
+                  />
+                  <Box style={{ flex: 1 }}>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        flex: 1,
+                        color: "white",
+                        marginTop: 10,
+                        marginBottom: 10,
+                      }}
+                    >
+                      {val.name}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        flex: 1,
+                        color: "white",
+                        marginTop: 10,
+                        marginBottom: 10,
+                      }}
+                    >
+                      {val.target}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        flex: 1,
+                        color: "white",
+                        marginTop: 10,
+                        marginBottom: 10,
+                      }}
+                    >
+                      {val.bodyPart}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        flex: 1,
+                        color: "white",
+                        marginTop: 10,
+                        marginBottom: 10,
+                      }}
+                    >
+                      {val.equipment}
+                    </Text>
+                  </Box>
                 </Box>
-              </Box>
+              </TouchableHighlight>
             ))}
         </ScrollView>
       </Box>

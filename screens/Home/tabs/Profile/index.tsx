@@ -50,7 +50,7 @@ export default function ProfileScreen({ navigation }) {
           <Feather
             name="settings"
             size={24}
-            color="black"
+            color="white"
             style={{ alignItems: "flex-end", marginRight: 10 }}
             onPress={() => navigation.navigate("Settings")}
           />
@@ -101,6 +101,7 @@ export default function ProfileScreen({ navigation }) {
           style={{
             flexDirection: "column",
             justifyContent: "center",
+
             width: "100%",
             marginTop: 50,
           }}

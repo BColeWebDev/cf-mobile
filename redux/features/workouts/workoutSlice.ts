@@ -57,7 +57,14 @@ export const getAllEquipment = createAsyncThunk(`workouts/Equipments`,async(obj:
     }
 })
 
-
+export const createNewWorkout = createAsyncThunk(`workouts/createNew`,async(obj:any,thunkAPI)=>{
+    try {
+        const response = await workoutServices.createWorkout(obj)
+        return response;
+    } catch (error) {
+        
+    }
+})
 export const workoutSlice = createSlice({
     name:'workouts',
     initialState,
@@ -124,6 +131,19 @@ export const workoutSlice = createSlice({
           
         })
         .addCase(getAllMuscleTargets.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+        })
+
+        .addCase(createNewWorkout.pending, (state) => {
+            state.isLoading = true
+        })
+        // when data hase been received 
+        .addCase(createNewWorkout.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+        })
+        .addCase(createNewWorkout.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
         })

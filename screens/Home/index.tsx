@@ -50,18 +50,6 @@ export default function Home({ navigation }) {
           ),
         }}
       />
-      <Tab.Group>
-        <Tab.Screen
-          name="Workouts"
-          component={WorkoutsScreen}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => (
-              <ChadIcon width={size} fill={color} />
-            ),
-          }}
-        />
-      </Tab.Group>
 
       <Tab.Screen
         name="Nutritions"
