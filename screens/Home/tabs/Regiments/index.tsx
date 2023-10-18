@@ -52,9 +52,10 @@ const RegimentScreen = ({ navigation }) => {
           title=" New Regiment"
         ></Button>
         <Box mb={30} style={{ height: 500 }}>
-          {data?.map((val, idx) => (
+          {data?.map((val, idx) => <Box   key={idx}>
             <TouchableHighlight
-              key={idx}
+            
+              style={{width:"100%"}}
               onPress={() => {
                 navigation.navigate("Regiment Details", { detailInfo: val });
               }}
@@ -107,7 +108,7 @@ const RegimentScreen = ({ navigation }) => {
                 </Box>
               </Surface>
             </TouchableHighlight>
-          ))}
+          </Box>)}
         </Box>
       </Box>
     </SafeAreaView>
