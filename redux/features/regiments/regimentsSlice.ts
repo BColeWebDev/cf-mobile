@@ -29,6 +29,16 @@ export const createRegiment = createAsyncThunk(`create-regiment`,async(obj:IRegi
     }
 })
 
+export const deleteRegiment = createAsyncThunk(`delete-regiment`,async(id:string,thunkAPI)=>{
+    try {
+        const {auth}:any = thunkAPI.getState()
+        const response = await regimentsService.DeleteRegiment(id,auth.currentUser.userToken);
+        return response
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
 export const regimentsSlice = createSlice({
     name:"regiments",
     initialState,

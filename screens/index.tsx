@@ -11,6 +11,7 @@ import Settings from "./Settings";
 import WorkoutsModal from "./Modals/WorkoutsModal";
 import CreateRegiment from "./Home/tabs/Regiments/screens/Create Regiment";
 import RegimentDetails from "./Home/tabs/Regiments/screens/RegimentDetails";
+import WorkoutsScreen from "./Home/tabs/Workouts";
 
 const Stack = createNativeStackNavigator();
 export default function AllScreens() {
@@ -68,6 +69,11 @@ export default function AllScreens() {
             name="MyModal"
             options={{ headerShown: false }}
             component={WorkoutsModal}
+          />
+          <Stack.Screen
+            name="Workouts"
+            component={WorkoutsScreen}
+            options={{ headerTitle: "All Workouts" }}
           />
         </Stack.Group>
       </Stack.Navigator>

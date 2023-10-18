@@ -16,8 +16,13 @@ const CreateRegiment = async (obj:IRegiments,token:string) =>{
     const response = await axios.post(`${APP_URL}api/workouts/createRegiment`,obj,tokenBearer(token));
     return response.data
 }
+const DeleteRegiment = async (id:string,token:string) =>{
+    const response = await axios.delete(`${APP_URL}api/workouts/singleRegiment/${id}`,tokenBearer(token))
+    return response.data
+}
 export default{
     GetAllRegiments,
     GetSinglelRegiment,
-    CreateRegiment
+    CreateRegiment,
+    DeleteRegiment
 }

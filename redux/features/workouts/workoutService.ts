@@ -19,12 +19,16 @@ const getAllEquipments = async (token) =>{
     const response = await axios.get(`${APP_URL}api/workouts/exercises/equipments`,tokenBearer(token))
     return response.data;
 }
+const createWorkout = async (obj) =>{
+    const response = await axios.post(`${APP_URL}api/workouts/routines/${obj.regimentId}`,obj);
+    return response.data
+}
 const workoutServices ={
     getAlWorkouts,
     getAllBodyTargets,
     getAllEquipments,
-    getAllMuscleTargets
-
+    getAllMuscleTargets,
+    createWorkout
 }
 
 export default workoutServices;
