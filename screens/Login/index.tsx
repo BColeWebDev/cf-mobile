@@ -176,7 +176,7 @@ export default function Login({ navigation }) {
           <Button
             title="Sign Up"
             style={{ width: "100%", height: 40, justifyContent: "center" }}
-            onPress={() => navigation.navigate("Sign Up")}
+            onPress={() => navigation.navigate("SignUpNamesScreens")}
             variant={"outlined"}
             color="#FAC000"
           />

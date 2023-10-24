@@ -39,7 +39,18 @@ if(Platform.OS === "web"){
 
 const initialState = {
     // token: token ? token : null,
-  
+    register:{first_name:"",
+    last_name:"",
+    email:"",
+    password:"",
+    reEnterPassword:"",
+    bio:"",
+    experience:"",
+    crown_member:false,
+    age:"",
+    sex:"",
+    device:Platform.OS
+  },
     isError: false,
     isLoading: false,
     isSuccess: false,
@@ -105,6 +116,10 @@ export const authSlice = createSlice({
         setData('currentUser',state.currentUser);
     }
 },
+setRegister:(state,action) =>{
+    console.log("action",action)
+    state.register 
+},
 updateCurrentUser:(state,action) =>{
     console.log(action.payload)
     if(state.isLoggedIn){
@@ -137,12 +152,30 @@ updateCurrentUser:(state,action) =>{
             state.isLoading = false
             state.isError = true
         })
-    }
+        builder
+        // LoginUser Case
+        .addCase(RegisterUser.pending, (state) => {
+          state.isLoading = true
+      })
+      // when data hase been received 
+      .addCase(RegisterUser.fulfilled, (state, action) => {
+          state.isLoading = false
+          state.isSuccess = true
+      
+        
+      })
+      .addCase(RegisterUser.rejected, (state, action) => {
+          state.isLoading = false
+          state.isError = true
+      })
+  }
+    
 })
 
 export const{
     setCurrentUser,
-    updateCurrentUser
+    updateCurrentUser,
+    setRegister,
 } = authSlice.actions
 
 

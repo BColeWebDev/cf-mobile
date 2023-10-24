@@ -1,16 +1,29 @@
-import { View,StyleSheet, ScrollView, SafeAreaView} from 'react-native'
+import { View,StyleSheet, ScrollView, SafeAreaView, Platform} from 'react-native'
 import React,{useState} from 'react'
 import { Box, Button, Stack,Surface, TextInput,Text,} from '@react-native-material/core';
 import { RegisterUser } from '../../redux/features/auth/authSlice';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import {IRegister } from "../../redux/features/auth/interfaces/IAuth"
-import { AppDispatch } from '../../redux/app/store';
+import { AppDispatch, RootState } from '../../redux/app/store';
+import { useSelector } from 'react-redux';
+import { ActivityIndicator } from '@react-native-material/core'
 const SignUp = ({navigation}) => {
   const dispatch = useDispatch<AppDispatch>();
+  const {isLoading}= useSelector((state:RootState)=> state.auth)
+
     const createUser = () =>{
+      console.log("called")
       delete register.reEnterPassword
-      dispatch(RegisterUser(register))
+      dispatch(RegisterUser(register)).then((val)=>{
+        console.log("val",val)
+        if(val.meta.requestStatus === "fulfilled"){
+          navigation.navigate("Confirmation",{message:val.payload.message})
+        }
+        if(val.meta.requestStatus === "rejected"){
+          navigation.navigate("Error",{message:val.payload.message})
+        }
+      })
     }
     const style = StyleSheet.create(
       {
@@ -29,7 +42,7 @@ const SignUp = ({navigation}) => {
         },
         container: {
           flex: 1,
-          height:"80%",
+          height:"100%",
           backgroundColor: '#292929',
           alignItems: 'center',
           justifyContent: 'center',
@@ -49,7 +62,8 @@ const SignUp = ({navigation}) => {
           experience:"",
           crown_member:false,
           age:"",
-          sex:""
+          sex:"",
+          device:Platform.OS
         }
           );
        const [showPassword, setshowPassword] = useState(false);
@@ -61,23 +75,15 @@ const SignUp = ({navigation}) => {
         backgroundColor:"#292929"
         }}>
         
- <ScrollView style={{ width:"100%", marginLeft:"auto", marginRight:"auto"}}>
-  <Box style={{width:"80%", marginLeft:"auto",marginRight:"auto"}}>
+   <ScrollView style={{ width:"100%", marginLeft:"auto", marginRight:"auto"}}>
+  <Box style={{width:"100%", marginLeft:"auto",marginRight:"auto"}}>
   <Box  style={{display:"flex",alignItems:"center", marginTop:40}}>
         {/* <CfIcon/> */}
         <Text style={{fontSize:35, fontWeight:"600", color:"white"}}>
         Sign Up
        </Text>
-        </Box> 
-  <TextInput 
-      label='First Name' 
-      style={style.textInput}
-      onChangeText={text =>setregister(prevState => ({...prevState,first_name:text}))}
-      />
-      <TextInput label='Last Name' 
-      style={style.textInput}
-      onChangeText={text =>setregister(prevState => ({...prevState,last_name:text}))}
-      />
+   </Box> 
+     
       <TextInput label='Email' 
       style={style.textInput}
       onChangeText={text =>setregister(prevState => ({...prevState,email:text}))}
@@ -144,7 +150,12 @@ const SignUp = ({navigation}) => {
 
   </Box>
   <Stack mb={80} direction={"row"} justify={"around"} spacing={1} w={"100%"}>
-        <Button style={{width:150, }} color='#FAC000' title={"Submit"} onPress={createUser}></Button>
+        <Button style={{width:150, }} color='#FAC000' title={isLoading ? <ActivityIndicator/> : "Submit"} onPress={()=>{
+          if(isLoading){
+            return;
+          }
+          createUser()
+        }}></Button>
         <Button  style={{width:150}}   color='#FAC000' variant={"outlined"} title={"Login"} onPress={()=>navigation.navigate("Login")}></Button>
     </Stack>
 
