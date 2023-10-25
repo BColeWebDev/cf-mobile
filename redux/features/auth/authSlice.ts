@@ -117,8 +117,10 @@ export const authSlice = createSlice({
     }
 },
 setRegister:(state,action) =>{
-    console.log("action",action)
-    state.register 
+    console.log("action",action.payload)
+    state.register = {...state.register,
+    [action.payload.name]:action.payload.value
+    }
 },
 updateCurrentUser:(state,action) =>{
     console.log(action.payload)
