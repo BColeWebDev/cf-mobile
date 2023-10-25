@@ -1,3 +1,3 @@
 declare module '@env' {
-    export const APP_URL: string;
+    export const EXPO_PUBLIC_APP_URL: string;
 }

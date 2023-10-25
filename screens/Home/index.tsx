@@ -21,9 +21,8 @@ export default function Home({ navigation }) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        headerShown: false,
+        headerShown: true,
         tabBarStyle: {
-          height: Platform.OS === "ios" ? 90 : 50,
           paddingHorizontal: 5,
           paddingTop: 0,
           backgroundColor: "rgba(34,36,40,1)",
