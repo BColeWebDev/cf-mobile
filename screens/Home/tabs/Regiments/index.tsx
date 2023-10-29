@@ -7,14 +7,7 @@ import {
   RefreshControl,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Badge,
-  Surface,
-  FAB,
-  Banner,
-} from "@react-native-material/core";
+import { Button, Badge, Surface, FAB, Banner } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../../redux/app/store";
@@ -26,6 +19,7 @@ const RegimentScreen = ({ navigation }) => {
   const { data } = useSelector((state: any) => state.regiments);
   const { currentUser } = useSelector((state: RootState) => state.auth);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [visible, setVisible] = React.useState(true);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -44,9 +38,9 @@ const RegimentScreen = ({ navigation }) => {
   const style = StyleSheet.create({
     container: {
       flex: 1,
-      padding: 20,
+      padding: 3,
       justifyContent: "flex-start",
-      backgroundColor: "#292929",
+      backgroundColor: "#f9f6fd",
       alignItems: "center",
       display: "flex",
     },
@@ -76,48 +70,52 @@ const RegimentScreen = ({ navigation }) => {
         <Text
           style={{
             fontSize: 28,
-            color: "white",
+            color: "black",
             marginTop: 30,
-
+            fontWeight: "500",
             marginVertical: 20,
           }}
         >
           Regiments
         </Text>
         <Button
-          title={"Create Regiment"}
+          mode="outlined"
+          textColor="white"
           onPress={() => navigation.navigate("Create Regiment")}
           style={{
             marginVertical: 25,
-            width: 200,
+            width: 180,
             padding: 5,
+            backgroundColor: "#4f1d9e",
+            borderColor: "#6023c0",
             marginLeft: "auto",
           }}
-          trailing={<Text style={{ color: "white" }}>+</Text>}
-        />
-        <Box style={{ width: "100%" }}>
+          icon={"plus"}
+        >
+          Create Regiment
+        </Button>
+        <View style={{ width: "100%" }}>
           <ScrollView style={{ height: "100%" }}>
             {data?.map((val, idx) => (
               <TouchableHighlight
-                style={{ marginBottom: 50 }}
+                style={{ marginBottom: 20, marginHorizontal: 30 }}
                 key={idx}
-                onLongPress={() => (
-                  <Banner text="Banner" buttons={<Button title="testing" />} />
-                )}
+                onLongPress={() => alert("press")}
                 onPress={() => {
                   navigation.navigate("Regiment Details", { detailInfo: val });
                 }}
               >
                 <Surface
+                  elevation={5}
                   style={{
-                    backgroundColor: "#FAC000",
-                    borderColor: "yellow",
+                    backgroundColor: "#e5daf8",
+                    borderColor: "#a379e7",
                     borderWidth: 2,
                     borderRadius: 10,
-                    paddingVertical: 20,
+                    padding: 10,
                   }}
                 >
-                  <Box
+                  <View
                     style={{
                       display: "flex",
                       flexDirection: "row",
@@ -126,18 +124,30 @@ const RegimentScreen = ({ navigation }) => {
                     }}
                   >
                     <Text
-                      style={{ fontSize: 22, marginBottom: 10, marginLeft: 5 }}
+                      style={{
+                        fontSize: 22,
+                        fontWeight: "500",
+                        color: "#3b1676",
+                        marginBottom: 10,
+                        marginLeft: 5,
+                      }}
                     >
                       {val.name}
                     </Text>
                     <Badge
-                      color="yellow"
-                      label={val.isCompleted ? "Completed" : "Incompleted"}
-                      style={{ marginRight: 5 }}
-                    />
-                  </Box>
-                  <Text style={{ textAlign: "center" }}>{val.description}</Text>
-                  <Box
+                      style={{
+                        marginRight: 5,
+                        marginBottom: 15,
+                        backgroundColor: val.isCompleted
+                          ? "#b795ec"
+                          : "#3b1676",
+                      }}
+                    ></Badge>
+                  </View>
+                  <Text style={{ textAlign: "center", color: "#3b1676" }}>
+                    {val.description}
+                  </Text>
+                  <View
                     style={{
                       display: "flex",
                       flexDirection: "row",
@@ -145,19 +155,33 @@ const RegimentScreen = ({ navigation }) => {
                       marginTop: 10,
                     }}
                   >
-                    <Text style={{ marginHorizontal: 3 }}>Sun</Text>
-                    <Text style={{ marginHorizontal: 3 }}>Mon</Text>
-                    <Text style={{ marginHorizontal: 3 }}>Tues</Text>
-                    <Text style={{ marginHorizontal: 3 }}>Wed</Text>
-                    <Text style={{ marginHorizontal: 3 }}>Thurs</Text>
-                    <Text style={{ marginHorizontal: 3 }}>Fri</Text>
-                    <Text style={{ marginHorizontal: 3 }}>Sat</Text>
-                  </Box>
+                    <Text style={{ marginHorizontal: 3, color: "#3b1676" }}>
+                      Sun
+                    </Text>
+                    <Text style={{ marginHorizontal: 3, color: "#3b1676" }}>
+                      Mon
+                    </Text>
+                    <Text style={{ marginHorizontal: 3, color: "#3b1676" }}>
+                      Tues
+                    </Text>
+                    <Text style={{ marginHorizontal: 3, color: "#3b1676" }}>
+                      Wed
+                    </Text>
+                    <Text style={{ marginHorizontal: 3, color: "#3b1676" }}>
+                      Thurs
+                    </Text>
+                    <Text style={{ marginHorizontal: 3, color: "#3b1676" }}>
+                      Fri
+                    </Text>
+                    <Text style={{ marginHorizontal: 3, color: "#3b1676" }}>
+                      Sat
+                    </Text>
+                  </View>
                 </Surface>
               </TouchableHighlight>
             ))}
           </ScrollView>
-        </Box>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

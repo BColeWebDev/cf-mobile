@@ -45,7 +45,7 @@ const SignUpEmail = () => {
   });
   return (
     <View>
-      <Text>SignUpEmail</Text>
+      <Text>SignUp Email</Text>
     </View>
   );
 };

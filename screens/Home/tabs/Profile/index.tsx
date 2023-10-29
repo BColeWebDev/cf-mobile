@@ -1,22 +1,13 @@
 import { View, StyleSheet, Platform } from "react-native";
-import { Text, Surface, Box, Flex } from "@react-native-material/core";
+import { Text, Surface } from "react-native-paper";
 import React, { useEffect } from "react";
-import { AntDesign } from "@expo/vector-icons";
-import { Stack, FAB } from "@react-native-material/core";
-import CFIcon from "../../assets/images/CF-Icon-Black.svg";
-import ChadIcon from "../../assets/images/Chad.svg";
-import MuscleIcon from "../../assets/images/Muscle-Icon.svg";
-import PlatIcon from "../../assets/images/Plate.svg";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 
 export default function ProfileScreen({ navigation }) {
-  const { isError, isLoading, isLoggedIn, currentUser } = useSelector(
-    (state: any) => state.auth
-  );
+  const { currentUser } = useSelector((state: any) => state.auth);
   const style = StyleSheet.create({
     container: {
       flex: 1,
@@ -29,7 +20,7 @@ export default function ProfileScreen({ navigation }) {
   console.log("users", currentUser);
   return (
     <View style={style.container}>
-      <Box
+      <View
         style={{
           display: "flex",
           flexDirection: "column",
@@ -39,7 +30,7 @@ export default function ProfileScreen({ navigation }) {
           marginTop: 50,
         }}
       >
-        <Box
+        <View
           style={{
             display: "flex",
             justifyContent: "flex-end",
@@ -62,8 +53,8 @@ export default function ProfileScreen({ navigation }) {
               onPress={() => alert("Crown Member")}
             />
           ) : null}
-        </Box>
-        <Box
+        </View>
+        <View
           style={{
             display: "flex",
             flexDirection: "row",
@@ -72,60 +63,90 @@ export default function ProfileScreen({ navigation }) {
             width: "100%",
           }}
         >
-          <Flex direction="row" style={{ alignItems: "center" }}>
+          <View
+            style={{
+              display: "flex",
+              direction: "ltr",
+              alignItems: "center",
+              flexDirection: "row-reverse",
+            }}
+          >
             <Ionicons name="person-circle-sharp" size={30} color="black" />
-            <Text style={{ marginLeft: 15, fontSize: 30, color: "white" }}>
+            <Text
+              style={{ marginHorizontal: 15, fontSize: 30, color: "white" }}
+            >
               Profile
             </Text>
-          </Flex>
-          <Box
-            p={4}
-            border={1}
-            borderColor={"#03dac5b3"}
-            radius={8}
+          </View>
+          <View
             style={{
+              padding: 4,
+              borderWidth: 1,
+              borderColor: "#03dac5b3",
+              borderRadius: 8,
               alignItems: "center",
               display: "flex",
               justifyContent: "center",
+              minWidth: 100,
             }}
           >
             <Text
-              color="#03dac5b3"
-              style={{ textAlign: "center", textTransform: "capitalize" }}
+              style={{
+                color: "#03dac5b3",
+                textAlign: "center",
+                textTransform: "capitalize",
+              }}
             >
               {currentUser.existingUser?.experience}
             </Text>
-          </Box>
-        </Box>
-        <Box
+          </View>
+        </View>
+        <View
           style={{
             flexDirection: "column",
             justifyContent: "center",
-
             width: "100%",
             marginTop: 50,
           }}
         >
-          <Box style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <Text
-              color="white"
-              style={{ marginBottom: 20, marginRight: 10, fontSize: 22 }}
+              style={{
+                color: "white",
+                marginBottom: 20,
+                marginRight: 10,
+                fontSize: 22,
+              }}
             >
               {currentUser.existingUser?.first_name}
             </Text>
-            <Text color="white" style={{ marginBottom: 20, fontSize: 22 }}>
+            <Text style={{ color: "white", marginBottom: 20, fontSize: 22 }}>
               {currentUser.existingUser?.last_name}
             </Text>
-          </Box>
+          </View>
 
-          <Text color="white" style={{ marginBottom: 20, fontSize: 22 }}>
+          <Text
+            style={{
+              color: "white",
+              marginBottom: 20,
+              textAlign: "center",
+              fontSize: 22,
+            }}
+          >
             {currentUser.existingUser?.email}
           </Text>
-          <Text color="white" style={{ marginBottom: 20, fontSize: 22 }}>
+          <Text
+            style={{
+              color: "white",
+              marginBottom: 20,
+              textAlign: "center",
+              fontSize: 22,
+            }}
+          >
             Age:{currentUser.existingUser?.age}
           </Text>
-        </Box>
-      </Box>
+        </View>
+      </View>
     </View>
   );
 }

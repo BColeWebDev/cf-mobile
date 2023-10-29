@@ -4,6 +4,7 @@ import { store } from "./redux/app/store";
 import AllScreens from "./screens";
 import { Animated } from "react-native";
 import { useEffect } from "react";
+import { PaperProvider } from "react-native-paper";
 
 export default function App() {
   let animatedValue = new Animated.Value(0);
@@ -15,7 +16,9 @@ export default function App() {
   useEffect(() => {}, []);
   return (
     <Provider store={store}>
-      <AllScreens />
+      <PaperProvider>
+        <AllScreens />
+      </PaperProvider>
     </Provider>
   );
 }
