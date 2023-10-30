@@ -13,7 +13,7 @@ export default function ProfileScreen({ navigation }) {
       flex: 1,
       padding: 20,
       justifyContent: "flex-start",
-      backgroundColor: "#292929",
+      backgroundColor: "white",
       alignItems: "center",
     },
   });
@@ -41,7 +41,7 @@ export default function ProfileScreen({ navigation }) {
           <Feather
             name="settings"
             size={24}
-            color="white"
+            color="#3b1676"
             style={{ alignItems: "flex-end", marginRight: 10 }}
             onPress={() => navigation.navigate("Settings")}
           />
@@ -71,9 +71,9 @@ export default function ProfileScreen({ navigation }) {
               flexDirection: "row-reverse",
             }}
           >
-            <Ionicons name="person-circle-sharp" size={30} color="black" />
+            <Ionicons name="person-circle-sharp" size={30} color="#4f1d9e" />
             <Text
-              style={{ marginHorizontal: 15, fontSize: 30, color: "white" }}
+              style={{ marginHorizontal: 0, fontSize: 30, color: "#3b1676" }}
             >
               Profile
             </Text>
@@ -82,7 +82,7 @@ export default function ProfileScreen({ navigation }) {
             style={{
               padding: 4,
               borderWidth: 1,
-              borderColor: "#03dac5b3",
+              borderColor: "#3b1676",
               borderRadius: 8,
               alignItems: "center",
               display: "flex",
@@ -92,7 +92,7 @@ export default function ProfileScreen({ navigation }) {
           >
             <Text
               style={{
-                color: "#03dac5b3",
+                color: "#3b1676",
                 textAlign: "center",
                 textTransform: "capitalize",
               }}
@@ -112,22 +112,22 @@ export default function ProfileScreen({ navigation }) {
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <Text
               style={{
-                color: "white",
-                marginBottom: 20,
+                color: "#3b1676",
+                marginBottom: 5,
                 marginRight: 10,
                 fontSize: 22,
               }}
             >
               {currentUser.existingUser?.first_name}
             </Text>
-            <Text style={{ color: "white", marginBottom: 20, fontSize: 22 }}>
+            <Text style={{ color: "#3b1676", marginBottom: 5, fontSize: 22 }}>
               {currentUser.existingUser?.last_name}
             </Text>
           </View>
 
           <Text
             style={{
-              color: "white",
+              color: "#3b1676",
               marginBottom: 20,
               textAlign: "center",
               fontSize: 22,
@@ -137,7 +137,7 @@ export default function ProfileScreen({ navigation }) {
           </Text>
           <Text
             style={{
-              color: "white",
+              color: "#3b1676",
               marginBottom: 20,
               textAlign: "center",
               fontSize: 22,
