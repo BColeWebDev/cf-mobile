@@ -124,7 +124,7 @@ const RegimentScreen = ({ navigation }) => {
                 }}
               >
                 <Surface
-                  elevation={5}
+                  elevation={1}
                   style={{
                     backgroundColor: "#e5daf8",
                     borderColor: "#a379e7",

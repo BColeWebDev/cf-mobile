@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import React, { useState, useEffect } from "react";
-import { Button, TextInput, Text } from "@react-native-material/core";
+import { Button, TextInput, Text } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import {
   createRegiment,
@@ -34,50 +34,69 @@ export default function CreateRegiment({ navigation }) {
       style={{
         flex: 1,
         padding: 20,
-        justifyContent: "flex-start",
-        backgroundColor: "#292929",
+        justifyContent: "space-between",
+        backgroundColor: "white",
         alignItems: "center",
         display: "flex",
       }}
     >
+      <View  style={{display:"flex",flex:0,}}>
       <Text
-        style={{
-          textAlign: "center",
-          marginVertical: 20,
-          color: "white",
-          fontSize: 24,
-          marginBottom: 150,
-        }}
+       style={{
+        fontSize: 28,
+        color: "black",
+        
+        marginTop: 30,
+        fontWeight: "500",
+        textAlign: "center",
+        marginVertical: 20,
+      }}
       >
         Create Regiment
       </Text>
+      </View>
+      <View style={{width:"100%", display:"flex", alignItems:"center", justifyContent:"center", flex:1}}>
+
       <TextInput
-        style={{ width: "100%", marginBottom: 50 }}
+        style={{
+          width: "100%",
+          backgroundColor: "",
+          paddingLeft: 10,
+          marginVertical: 20,
+          borderRadius: 1000,
+        }}
         placeholder="Name"
-        placeholderTextColor={"#F9C000"}
-        variant={"standard"}
-        selectionColor={"white"}
+        placeholderTextColor={"#3b1676"}
+        mode={"outlined"}
+        selectionColor={"#3b1676"}
         onChangeText={(text) =>
           setformData((prevState) => ({ ...prevState, name: text }))
         }
       />
       <TextInput
-        style={{ width: "100%", marginBottom: 200 }}
+        style={{
+          width: "100%",
+          backgroundColor: "",
+          paddingLeft: 10,
+          marginVertical: 20,
+          borderRadius: 1000,
+        }}
         placeholder="Description"
-        placeholderTextColor={"#F9C000"}
-        variant={"standard"}
-        selectionColor={"white"}
+        placeholderTextColor={"#3b1676"}
+        mode={"outlined"}
+        selectionColor={"#3b1676"}
         onChangeText={(text) =>
           setformData((prevState) => ({ ...prevState, description: text }))
         }
       />
 
       <Button
-        title="CREATE REGIMENT"
+  
         style={{ width: "100%", height: 40, justifyContent: "center" }}
         onPress={() => handleCreateLead()}
-        variant={"contained"}
-      />
+        mode={"contained"}
+      > CREATE REGIMENT</Button>
+      </View>
     </View>
   );
 }
