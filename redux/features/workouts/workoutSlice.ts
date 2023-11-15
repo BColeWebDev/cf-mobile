@@ -16,7 +16,7 @@ const initialState = {
 export const getAllWorkouts = createAsyncThunk(`workouts/AllWorkouts`,async(obj:any,thunkAPI) =>{
     try {
         const {token} = obj
-
+        
         const response = await workoutServices.getAlWorkouts(token);
         return response;
     

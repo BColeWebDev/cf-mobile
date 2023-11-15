@@ -33,9 +33,8 @@ const WorkoutsScreen = ({ route, navigation }) => {
   const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
     (state: any) => state.workouts
   );
+  console.log("workouts", workouts);
   const { currentUser } = useSelector((state: any) => state.auth);
-  console.log("currentUser-Workouts", currentUser);
-  console.log("current", selectedWorkouts);
   const style = StyleSheet.create({
     container: {
       flex: 1,
@@ -47,7 +46,9 @@ const WorkoutsScreen = ({ route, navigation }) => {
     },
   });
   useEffect(() => {
-    dispatch(getAllWorkouts({ token: currentUser.userToken }));
+    dispatch(getAllWorkouts({ token: currentUser.userToken })).then((val) =>
+      console.log(val)
+    );
     dispatch(getAllEquipment({ token: currentUser.userToken }));
     dispatch(getAllBodyTargets({ token: currentUser.userToken }));
   }, []);
@@ -58,18 +59,26 @@ const WorkoutsScreen = ({ route, navigation }) => {
   console.log("routes", route);
   const handleCreateWorkout = (val) => {
     setselectedWorkouts(val);
+
     dispatch(
-      createNewWorkout({ regimentId: route.reqimentId, ...selectedWorkouts })
+      createNewWorkout({
+        routineId: route.params.routineId,
+        regimentId: route.params.regimentId,
+        ...selectedWorkouts,
+        muscle_target: "y",
+      })
     ).then((val) => {
-      console.log("val", val);
+      if (val.meta.requestStatus === "fulfilled") {
+        console.log("ROUTE", val);
+        navigation.navigate("Regiments");
+      }
+      if (val.meta.requestStatus === "rejected") {
+        alert(val);
+      }
     });
   };
   return (
     <SafeAreaView style={style.container}>
-      {/* <Box style={{display:"flex",flexDirection:"column", width:"100%",justifyContent:"flex-end", marginRight:20,marginTop:10}}>
-          {equipments?.map((val,idx)=><Text key={idx}>{val}
-          </Text>)}
-      </Box> */}
       <Box style={{ width: "100%" }}>
         <Box
           style={{

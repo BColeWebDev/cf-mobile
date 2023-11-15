@@ -1,10 +1,21 @@
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
-import React from "react";
-import { Box, Button, Surface, Chip } from "@react-native-material/core";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  RefreshControl,
+} from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { Button, Surface, Chip } from "react-native-paper";
+import { getSingleRegiment } from "../../../../../../redux/features/regiments/regimentsSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../../../../../redux/app/store";
+import { useSelector } from "react-redux";
 
 export default function RegimentDetails({ route, navigation }) {
   /* 2. Get the param */
-  const { detailInfo } = route.params;
+
   const style = StyleSheet.create({
     container: {
       flex: 1,
@@ -14,7 +25,32 @@ export default function RegimentDetails({ route, navigation }) {
       display: "flex",
     },
   });
-  console.log("detailInfo", detailInfo);
+  const { detailInfo } = useSelector((state: RootState) => state.regiments);
+  console.log("detailInfo", route.params._id);
+  console.log("****", detailInfo);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  useEffect(() => {
+    dispatch(getSingleRegiment(route.params._id));
+  }, [route]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      dispatch(getSingleRegiment(route.params._id)).then((val) => {
+        console.log("VAL", val);
+        if (val.meta.requestStatus === "fulfilled") {
+          setRefreshing(false);
+        }
+        if (val.meta.requestStatus === "rejected") {
+          setRefreshing(false);
+          alert(val);
+        }
+      });
+    }, 2000);
+  }, [refreshing]);
 
   return (
     <View style={style.container}>
@@ -26,13 +62,18 @@ export default function RegimentDetails({ route, navigation }) {
           color: "white",
         }}
       >
-        {detailInfo.name}
+        {route.params.name}
       </Text>
 
       <Text style={{ color: "white", marginVertical: 20 }}>Routines</Text>
-      <ScrollView style={{ width: "100%" }}>
-        {detailInfo.routines.map((val, idx) => (
-          <Box
+      <ScrollView
+        style={{ width: "100%" }}
+        refreshControl={
+          <RefreshControl refreshing={true} onRefresh={onRefresh} />
+        }
+      >
+        {route.params.routines.map((val, idx) => (
+          <View
             key={idx}
             style={{
               marginBottom: 20,
@@ -44,10 +85,17 @@ export default function RegimentDetails({ route, navigation }) {
               backgroundColor: "white",
             }}
           >
-            <Box style={{ width: 85, marginLeft: "auto" }}>
-              <Chip label={val.day} variant={"filled"} color="purple" />
-            </Box>
-            {/* <Text style={{textTransform:"capitalize",color:"black", textAlign:"right"}}>{val.day}</Text> */}
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+              }}
+            >
+              <Chip mode={"flat"} selectedColor="purple">
+                {val.day}
+              </Chip>
+            </View>
             <Text
               style={{
                 textTransform: "capitalize",
@@ -72,7 +120,7 @@ export default function RegimentDetails({ route, navigation }) {
             </Text>
             <Text style={{ marginVertical: 20, fontSize: 20 }}>Workouts</Text>
             {val.workouts.map((value, idx) => (
-              <Box key={idx}>
+              <View key={idx}>
                 <Text> {value.bodyPart}</Text>
                 <Text>{value.name}</Text>
                 <Text>{value.equipment}</Text>
@@ -81,19 +129,19 @@ export default function RegimentDetails({ route, navigation }) {
                   source={{ uri: value.gifUrl }}
                   style={{ width: 60, height: 60, borderRadius: 50 }}
                 />
-              </Box>
+              </View>
             ))}
             <Button
-              title="Create Workout"
               onPress={() => {
                 navigation.navigate("Workouts", {
-                  regimentId: detailInfo?._id,
                   day: val.day,
-                  routineId: detailInfo._id,
+                  routineId: route.params._id,
                 });
               }}
-            />
-          </Box>
+            >
+              Add Workout
+            </Button>
+          </View>
         ))}
       </ScrollView>
     </View>

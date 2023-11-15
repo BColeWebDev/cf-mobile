@@ -38,8 +38,6 @@ export default function Login({ navigation }) {
         console.log(val);
         if (val.meta.requestStatus === "fulfilled") {
           navigation.navigate("Home");
-
-          // console.log(val.payload.data)
           setlogin({ email: "", password: "" });
           console.log(val.payload);
           dispatch(setCurrentUser(val.payload));

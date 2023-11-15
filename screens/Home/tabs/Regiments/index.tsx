@@ -24,7 +24,6 @@ import {
   getRegiments,
 } from "../../../../redux/features/regiments/regimentsSlice";
 import { useSelector } from "react-redux";
-import { IRegiments } from "../../../../redux/features/auth/interfaces/IRegiments";
 
 const RegimentScreen = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,7 +32,6 @@ const RegimentScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const [selected, setselected] = useState<any>();
-  console.log("*VIS*", data[0]?.days);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -120,7 +118,7 @@ const RegimentScreen = ({ navigation }) => {
                   setVisible(!visible);
                 }}
                 onPress={() => {
-                  navigation.navigate("Regiment Details", { detailInfo: val });
+                  navigation.navigate("Regiment Details", val);
                 }}
               >
                 <Surface
