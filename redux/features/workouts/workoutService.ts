@@ -2,8 +2,8 @@ import axios from "axios"
 import { EXPO_PUBLIC_APP_URL } from "@env"; 
 import tokenBearer from "../helpers/tokenHeader";
 
-const getAlWorkouts = async (token) =>{
-    const response = await axios.get(`${EXPO_PUBLIC_APP_URL}api/workouts/exercises?page=1&limit=100`,tokenBearer(token))
+const getAlWorkouts = async (token,page:string, limit:string) =>{
+    const response = await axios.get(`${EXPO_PUBLIC_APP_URL}api/workouts/exercises?page=${page}&limit=${limit}`,tokenBearer(token))
     return response.data
 }
 const getAllBodyTargets = async (token) =>{

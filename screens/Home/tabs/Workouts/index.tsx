@@ -26,6 +26,8 @@ import {
 import Loading from "../../../Loading";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { IWorkouts } from "../../../../redux/features/auth/interfaces/IWorkouts";
+
+// TODO: Infinite Scrolling
 const WorkoutsScreen = ({ route, navigation }) => {
   const [input, setinput] = useState("");
   const [selectedWorkouts, setselectedWorkouts] = useState<IWorkouts>();
