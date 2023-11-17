@@ -4,6 +4,7 @@ import tokenBearer from "../helpers/tokenHeader";
 
 const getAlWorkouts = async (token,page:string, limit:string) =>{
     const response = await axios.get(`${EXPO_PUBLIC_APP_URL}api/workouts/exercises?page=${page}&limit=${limit}`,tokenBearer(token))
+    console.log(response)
     return response.data
 }
 const getAllBodyTargets = async (token) =>{
@@ -19,10 +20,15 @@ const getAllEquipments = async (token) =>{
     const response = await axios.get(`${EXPO_PUBLIC_APP_URL}api/workouts/exercises/equipments`,tokenBearer(token))
     return response.data;
 }
-const createWorkout = async (obj) =>{
-    const response = await axios.post(`${EXPO_PUBLIC_APP_URL}api/workouts/routines/${obj.regimentId}`,obj);
+const createWorkout = async (obj, token) =>{
+    
+    const response = await axios.post(`${EXPO_PUBLIC_APP_URL}api/workouts/routines/${obj.regimentId}`,obj,
+    tokenBearer(token)
+    );
     return response.data
 }
+
+ 
 const workoutServices ={
     getAlWorkouts,
     getAllBodyTargets,

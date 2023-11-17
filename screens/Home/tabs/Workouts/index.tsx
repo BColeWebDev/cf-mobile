@@ -28,6 +28,7 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { IWorkouts } from "../../../../redux/features/auth/interfaces/IWorkouts";
 
 // TODO: Infinite Scrolling
+// Rename workouts to exercises for less confusion 
 const WorkoutsScreen = ({ route, navigation }) => {
   const [input, setinput] = useState("");
   const [selectedWorkouts, setselectedWorkouts] = useState<IWorkouts>();
@@ -35,7 +36,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
   const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
     (state: any) => state.workouts
   );
-  console.log("workouts", workouts);
+  // console.log("workouts", workouts,equipments,bodyTargets,muscles);
   const { currentUser } = useSelector((state: any) => state.auth);
   const style = StyleSheet.create({
     container: {
@@ -48,36 +49,49 @@ const WorkoutsScreen = ({ route, navigation }) => {
     },
   });
   useEffect(() => {
-    dispatch(getAllWorkouts({ token: currentUser.userToken })).then((val) =>
+    dispatch(getAllWorkouts({ token: currentUser.userToken, page:1,limit:10 })).then((val) =>
       console.log(val)
     );
-    dispatch(getAllEquipment({ token: currentUser.userToken }));
-    dispatch(getAllBodyTargets({ token: currentUser.userToken }));
+    dispatch(getAllEquipment({ token: currentUser.userToken })).then((val) =>
+    console.log(val)
+  );
+    dispatch(getAllBodyTargets({ token: currentUser.userToken })).then((val) =>
+    console.log(val)
+  );
   }, []);
+  useEffect(() => {
+    if(selectedWorkouts !== undefined){
+      console.log(selectedWorkouts)
+      dispatch(
+        createNewWorkout({
+          routineId: route.params.routineId,
+          regimentId: route.params.regimentId,
+          ...selectedWorkouts,
+          muscle_target: "y",
+        })
+      ).then((val) => {
+        if (val.meta.requestStatus === "fulfilled") {
+          console.log("ROUTE", val);
+          navigation.navigate("Regiment Details", {route});
+          setselectedWorkouts(undefined)
+        }
+        if (val.meta.requestStatus === "rejected") {
+          console.log(val);
+          setselectedWorkouts(undefined)
+        }
+      });
+    }
+  }, [selectedWorkouts]);
 
   if (isLoading) {
     return <Loading />;
   }
-  console.log("routes", route);
+
+
+
+ 
   const handleCreateWorkout = (val) => {
     setselectedWorkouts(val);
-
-    dispatch(
-      createNewWorkout({
-        routineId: route.params.routineId,
-        regimentId: route.params.regimentId,
-        ...selectedWorkouts,
-        muscle_target: "y",
-      })
-    ).then((val) => {
-      if (val.meta.requestStatus === "fulfilled") {
-        console.log("ROUTE", val);
-        navigation.navigate("Regiments");
-      }
-      if (val.meta.requestStatus === "rejected") {
-        alert(val);
-      }
-    });
   };
   return (
     <SafeAreaView style={style.container}>
@@ -107,7 +121,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
             size={24}
             style={{ marginRight: 20 }}
             color="white"
-            onPress={() => navigation.navigate("MyModal")}
+            onPress={() => navigation.navigate("WorkoutsFilters")}
           />
         </Box>
 
@@ -122,8 +136,8 @@ const WorkoutsScreen = ({ route, navigation }) => {
               if (input === "") {
                 return val;
               }
-              // FIXME:->Search
-              return val.name.toLowerCase().includes(input.toLowerCase());
+          
+              // return val.name.toLowerCase().includes(input.toLowerCase());
             })
             .map((val, idx) => (
               <TouchableHighlight
@@ -150,7 +164,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
                 >
                   <Image
                     source={{ uri: val.gifUrl }}
-                    style={{ width: 60, height: 60, borderRadius: 50 }}
+                    style={{ width: 60, height: 60, borderRadius: .5 }}
                   />
                   <Box style={{ flex: 1 }}>
                     <Text

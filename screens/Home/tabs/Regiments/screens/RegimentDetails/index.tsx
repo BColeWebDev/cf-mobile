@@ -13,6 +13,13 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../../redux/app/store";
 import { useSelector } from "react-redux";
 
+
+/* TODO:
+Delete Regiment
+Delete Workouts
+Update Regiment (Name & Description)
+Update Workout (Replace)
+*/
 export default function RegimentDetails({ route, navigation }) {
   /* 2. Get the param */
 
@@ -26,13 +33,15 @@ export default function RegimentDetails({ route, navigation }) {
     },
   });
   const { detailInfo } = useSelector((state: RootState) => state.regiments);
-  console.log("detailInfo", route.params._id);
-  console.log("****", detailInfo);
+  const { currentUser } = useSelector((state: RootState) => state.auth);
+  console.log("detailInfo", route.params._id, currentUser);
+
   const dispatch = useDispatch<AppDispatch>();
 
   const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
+    if(route.params._id !== undefined)
     dispatch(getSingleRegiment(route.params._id));
   }, [route]);
 
@@ -69,7 +78,7 @@ export default function RegimentDetails({ route, navigation }) {
       <ScrollView
         style={{ width: "100%" }}
         refreshControl={
-          <RefreshControl refreshing={true} onRefresh={onRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
         {route.params.routines.map((val, idx) => (
@@ -119,8 +128,10 @@ export default function RegimentDetails({ route, navigation }) {
               {val.description}
             </Text>
             <Text style={{ marginVertical: 20, fontSize: 20 }}>Workouts</Text>
+            
             {val.workouts.map((value, idx) => (
               <View key={idx}>
+              
                 <Text> {value.bodyPart}</Text>
                 <Text>{value.name}</Text>
                 <Text>{value.equipment}</Text>
@@ -134,8 +145,10 @@ export default function RegimentDetails({ route, navigation }) {
             <Button
               onPress={() => {
                 navigation.navigate("Workouts", {
+                  ...route,
                   day: val.day,
-                  routineId: route.params._id,
+                  routineId: val._id,
+                  regimentId:route.params._id
                 });
               }}
             >

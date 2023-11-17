@@ -11,9 +11,10 @@ const GetAllRegiments = async (id: string, token: string) => {
   return response.data;
 };
 
-const GetSinglelRegiment = async (id: string) => {
+const GetSinglelRegiment = async (id: string, token:string) => {
   const response = await axios.get(
-    `${EXPO_PUBLIC_APP_URL}api/workouts/singleRegiment/${id}`
+    `${EXPO_PUBLIC_APP_URL}api/workouts/singleRegiment/${id}`,
+    tokenBearer(token)
   );
   return response.data;
 };

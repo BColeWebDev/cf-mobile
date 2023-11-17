@@ -1,6 +1,7 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import workoutServices from "./workoutService";
+import { RootState } from "../../app/store";
 
 const initialState = {
     workouts: {},
@@ -57,12 +58,14 @@ export const getAllEquipment = createAsyncThunk(`workouts/Equipments`,async(obj:
     }
 })
 
-export const createNewWorkout = createAsyncThunk(`workouts/createNew`,async(obj:any,thunkAPI)=>{
+
+export const createNewWorkout = createAsyncThunk<any,any,{state:RootState}>(`workouts/createNew`,async(obj:any,thunkAPI)=>{
     try {
-        const response = await workoutServices.createWorkout(obj)
+        const {currentUser} = thunkAPI.getState().auth
+        const response = await workoutServices.createWorkout(obj,currentUser.userToken)
         return response;
     } catch (error) {
-        
+        return thunkAPI.rejectWithValue(error)
     }
 })
 export const workoutSlice = createSlice({

@@ -72,7 +72,7 @@ export default function AllScreens() {
         />
         <Stack.Group screenOptions={{ presentation: "modal" }}>
           <Stack.Screen
-            name="MyModal"
+            name="WorkoutsFilters"
             options={{ headerShown: false }}
             component={WorkoutsModal}
           />
