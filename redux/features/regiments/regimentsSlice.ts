@@ -1,7 +1,7 @@
 import { RootState } from "./../../app/store";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import regimentsService from "./regimentsService";
-import { IRegiments } from "../auth/interfaces/IRegiments";
+import { IRegiments } from "../interfaces/IRegiments";
 
 const initialState = {
   data: [],
@@ -58,18 +58,19 @@ export const deleteRegiment = createAsyncThunk(
   }
 );
 
-export const getSingleRegiment = createAsyncThunk<any,any,{state:RootState}>(
-  `getRegiment`,
-  async (id: string, thunkAPI) => {
-    try {
-      const {currentUser} = thunkAPI.getState().auth
-      console.log("currentUSer",)
-      return await regimentsService.GetSinglelRegiment(id,currentUser.userToken);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
+export const getSingleRegiment = createAsyncThunk<
+  any,
+  any,
+  { state: RootState }
+>(`getRegiment`, async (id: string, thunkAPI) => {
+  try {
+    const { currentUser } = thunkAPI.getState().auth;
+    console.log("currentUSer");
+    return await regimentsService.GetSinglelRegiment(id, currentUser.userToken);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
   }
-);
+});
 
 export const regimentsSlice = createSlice({
   name: "regiments",

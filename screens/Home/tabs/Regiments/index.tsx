@@ -109,202 +109,219 @@ const RegimentScreen = ({ navigation }) => {
         </Button>
         <View style={{ width: "100%" }}>
           <ScrollView style={{ height: "100%" }}>
-            {data?.map((val, idx) => (
-              <TouchableHighlight
-                style={{ marginBottom: 20, marginHorizontal: 30 }}
-                key={idx}
-                onLongPress={() => {
-                  setselected(val);
-                  setVisible(!visible);
-                }}
-                onPress={() => {
-                  navigation.navigate("Regiment Details", val);
-                }}
-              >
-                <Surface
-                  elevation={1}
+            {data?.length === 0 ? (
+              <View style={{ height: 200 }}>
+                <Text
                   style={{
-                    backgroundColor: "#e5daf8",
-                    borderColor: "#a379e7",
-                    borderWidth: 2,
-                    borderRadius: 10,
-                    padding: 10,
+                    flex: 1,
+                    marginTop: 100,
+                    fontWeight: "700",
+                    textAlign: "center",
+                    fontSize: 35,
                   }}
                 >
-                  <View
+                  No Data
+                </Text>
+              </View>
+            ) : (
+              data?.map((val, idx) => (
+                <TouchableHighlight
+                  style={{ marginBottom: 20, marginHorizontal: 30 }}
+                  key={idx}
+                  onLongPress={() => {
+                    setselected(val);
+                    setVisible(!visible);
+                  }}
+                  onPress={() => {
+                    navigation.navigate("Regiment Details", val);
+                  }}
+                >
+                  <Surface
+                    elevation={1}
                     style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
+                      backgroundColor: "#e5daf8",
+                      borderColor: "#a379e7",
+                      borderWidth: 2,
+                      borderRadius: 10,
+                      padding: 10,
                     }}
                   >
-                    <Text
+                    <View
                       style={{
-                        fontSize: 22,
-                        fontWeight: "500",
-                        color: "#3b1676",
-                        marginBottom: 10,
-                        marginLeft: 5,
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
                       }}
                     >
-                      {val.name}
+                      <Text
+                        style={{
+                          fontSize: 22,
+                          fontWeight: "500",
+                          color: "#3b1676",
+                          marginBottom: 10,
+                          marginLeft: 5,
+                        }}
+                      >
+                        {val.name}
+                      </Text>
+                      <Badge
+                        style={{
+                          marginRight: 5,
+                          marginBottom: 15,
+                          backgroundColor: val.isCompleted
+                            ? "#b795ec"
+                            : "#3b1676",
+                        }}
+                      ></Badge>
+                    </View>
+                    <Text style={{ textAlign: "center", color: "#3b1676" }}>
+                      {val.description}
                     </Text>
-                    <Badge
+                    <View
                       style={{
-                        marginRight: 5,
-                        marginBottom: 15,
-                        backgroundColor: val.isCompleted
-                          ? "#b795ec"
-                          : "#3b1676",
-                      }}
-                    ></Badge>
-                  </View>
-                  <Text style={{ textAlign: "center", color: "#3b1676" }}>
-                    {val.description}
-                  </Text>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      marginTop: 10,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        marginHorizontal: 3,
-                        color:
-                          val?.days?.filter((val) => val === "Sunday")
-                            .length === 1
-                            ? "white"
-                            : "#1d2025",
-                        padding: 4,
-                        backgroundColor:
-                          val?.days?.filter((val) => val === "Sunday")
-                            .length === 1
-                            ? "#4f1d9e"
-                            : "#e5daf8",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        marginTop: 10,
                       }}
                     >
-                      Sun
-                    </Text>
-                    <Text
-                      style={{
-                        marginHorizontal: 3,
-                        color:
-                          val?.days?.filter((val) => val === "Monday")
-                            .length === 1
-                            ? "white"
-                            : "#1d2025",
-                        padding: 4,
-                        backgroundColor:
-                          val?.days?.filter((val) => val === "Monday")
-                            .length === 1
-                            ? "#4f1d9e"
-                            : "#e5daf8",
-                      }}
-                    >
-                      Mon
-                    </Text>
-                    <Text
-                      style={{
-                        marginHorizontal: 3,
-                        color:
-                          val?.days?.filter((val) => val === "Tuesday")
-                            .length === 1
-                            ? "white"
-                            : "#1d2025",
-                        padding: 4,
+                      <Text
+                        style={{
+                          marginHorizontal: 3,
+                          color:
+                            val?.days?.filter((val) => val === "Sunday")
+                              .length === 1
+                              ? "white"
+                              : "#1d2025",
+                          padding: 4,
+                          backgroundColor:
+                            val?.days?.filter((val) => val === "Sunday")
+                              .length === 1
+                              ? "#4f1d9e"
+                              : "#e5daf8",
+                        }}
+                      >
+                        Sun
+                      </Text>
+                      <Text
+                        style={{
+                          marginHorizontal: 3,
+                          color:
+                            val?.days?.filter((val) => val === "Monday")
+                              .length === 1
+                              ? "white"
+                              : "#1d2025",
+                          padding: 4,
+                          backgroundColor:
+                            val?.days?.filter((val) => val === "Monday")
+                              .length === 1
+                              ? "#4f1d9e"
+                              : "#e5daf8",
+                        }}
+                      >
+                        Mon
+                      </Text>
+                      <Text
+                        style={{
+                          marginHorizontal: 3,
+                          color:
+                            val?.days?.filter((val) => val === "Tuesday")
+                              .length === 1
+                              ? "white"
+                              : "#1d2025",
+                          padding: 4,
 
-                        backgroundColor:
-                          val?.days?.filter((val) => val === "Tuesday")
-                            .length === 1
-                            ? "#4f1d9e"
-                            : "#e5daf8",
-                      }}
-                    >
-                      Tues
-                    </Text>
-                    <Text
-                      style={{
-                        marginHorizontal: 3,
-                        color:
-                          val?.days?.filter((val) => val === "Wednesday")
-                            .length === 1
-                            ? "white"
-                            : "#1d2025",
-                        padding: 4,
-                        backgroundColor:
-                          val?.days?.filter((val) => val === "Wednesday")
-                            .length === 1
-                            ? "#4f1d9e"
-                            : "#e5daf8",
-                      }}
-                    >
-                      Wed
-                    </Text>
-                    <Text
-                      style={{
-                        marginHorizontal: 3,
-                        color:
-                          val?.days?.filter((val) => val === "Thursday")
-                            .length === 1
-                            ? "white"
-                            : "#1d2025",
-                        padding: 4,
-                        backgroundColor:
-                          val?.days?.filter((val) => val === "Thursday")
-                            .length === 1
-                            ? "#4f1d9e"
-                            : "#e5daf8",
-                      }}
-                    >
-                      Thurs
-                    </Text>
-                    <Text
-                      style={{
-                        marginHorizontal: 3,
-                        color:
-                          val?.days?.filter((val) => val === "Friday")
-                            .length === 1
-                            ? "white"
-                            : "#1d2025",
-                        padding: 4,
-                        backgroundColor:
-                          val?.days?.filter((val) => val === "Friday")
-                            .length === 1
-                            ? "#4f1d9e"
-                            : "#e5daf8",
-                      }}
-                    >
-                      Fri
-                    </Text>
-                    <Text
-                      style={{
-                        marginHorizontal: 3,
-                        color:
-                          val?.days?.filter((val) => val === "Saturday")
-                            .length === 1
-                            ? "white"
-                            : "#1d2025",
-                        padding: 4,
-                        backgroundColor:
-                          val?.days?.filter((val) => val === "Saturday")
-                            .length === 1
-                            ? "#4f1d9e"
-                            : "#e5daf8",
-                      }}
-                    >
-                      Sat
-                    </Text>
-                  </View>
-                </Surface>
-              </TouchableHighlight>
-            ))}
+                          backgroundColor:
+                            val?.days?.filter((val) => val === "Tuesday")
+                              .length === 1
+                              ? "#4f1d9e"
+                              : "#e5daf8",
+                        }}
+                      >
+                        Tues
+                      </Text>
+                      <Text
+                        style={{
+                          marginHorizontal: 3,
+                          color:
+                            val?.days?.filter((val) => val === "Wednesday")
+                              .length === 1
+                              ? "white"
+                              : "#1d2025",
+                          padding: 4,
+                          backgroundColor:
+                            val?.days?.filter((val) => val === "Wednesday")
+                              .length === 1
+                              ? "#4f1d9e"
+                              : "#e5daf8",
+                        }}
+                      >
+                        Wed
+                      </Text>
+                      <Text
+                        style={{
+                          marginHorizontal: 3,
+                          color:
+                            val?.days?.filter((val) => val === "Thursday")
+                              .length === 1
+                              ? "white"
+                              : "#1d2025",
+                          padding: 4,
+                          backgroundColor:
+                            val?.days?.filter((val) => val === "Thursday")
+                              .length === 1
+                              ? "#4f1d9e"
+                              : "#e5daf8",
+                        }}
+                      >
+                        Thurs
+                      </Text>
+                      <Text
+                        style={{
+                          marginHorizontal: 3,
+                          color:
+                            val?.days?.filter((val) => val === "Friday")
+                              .length === 1
+                              ? "white"
+                              : "#1d2025",
+                          padding: 4,
+                          backgroundColor:
+                            val?.days?.filter((val) => val === "Friday")
+                              .length === 1
+                              ? "#4f1d9e"
+                              : "#e5daf8",
+                        }}
+                      >
+                        Fri
+                      </Text>
+                      <Text
+                        style={{
+                          marginHorizontal: 3,
+                          color:
+                            val?.days?.filter((val) => val === "Saturday")
+                              .length === 1
+                              ? "white"
+                              : "#1d2025",
+                          padding: 4,
+                          backgroundColor:
+                            val?.days?.filter((val) => val === "Saturday")
+                              .length === 1
+                              ? "#4f1d9e"
+                              : "#e5daf8",
+                        }}
+                      >
+                        Sat
+                      </Text>
+                    </View>
+                  </Surface>
+                </TouchableHighlight>
+              ))
+            )}
           </ScrollView>
         </View>
       </ScrollView>
+      {/*  */}
       <Portal>
         <Modal
           visible={visible}

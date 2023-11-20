@@ -13,6 +13,7 @@ import CreateRegiment from "./Home/tabs/Regiments/screens/Create Regiment";
 import RegimentDetails from "./Home/tabs/Regiments/screens/RegimentDetails";
 import WorkoutsScreen from "./Home/tabs/Workouts";
 import SignUpNamesScreens from "./SignUp/screens/SignUpNames";
+import CreateWorkout from "./Home/tabs/Regiments/screens/Create Workout";
 
 const Stack = createNativeStackNavigator();
 export default function AllScreens() {
@@ -31,9 +32,9 @@ export default function AllScreens() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-        name="SignUpNamesScreens"
-        component={SignUpNamesScreens}
-        options={{headerShown:false}}
+          name="SignUpNamesScreens"
+          component={SignUpNamesScreens}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Login"
@@ -63,6 +64,11 @@ export default function AllScreens() {
         <Stack.Screen
           name="Create Regiment"
           component={CreateRegiment}
+          options={{ headerTitle: "" }}
+        />
+        <Stack.Screen
+          name="Create Workout"
+          component={CreateWorkout}
           options={{ headerTitle: "" }}
         />
         <Stack.Screen

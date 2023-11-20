@@ -1,7 +1,7 @@
 import axios from "axios";
 import { EXPO_PUBLIC_APP_URL } from "@env";
 import tokenBearer from "../helpers/tokenHeader";
-import { IRegiments } from "../auth/interfaces/IRegiments";
+import { IRegiments } from "../interfaces/IRegiments";
 
 const GetAllRegiments = async (id: string, token: string) => {
   const response = await axios.get(
@@ -11,7 +11,7 @@ const GetAllRegiments = async (id: string, token: string) => {
   return response.data;
 };
 
-const GetSinglelRegiment = async (id: string, token:string) => {
+const GetSinglelRegiment = async (id: string, token: string) => {
   const response = await axios.get(
     `${EXPO_PUBLIC_APP_URL}api/workouts/singleRegiment/${id}`,
     tokenBearer(token)

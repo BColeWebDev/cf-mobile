@@ -25,10 +25,10 @@ import {
 } from "../../../../redux/features/workouts/workoutSlice";
 import Loading from "../../../Loading";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
-import { IWorkouts } from "../../../../redux/features/auth/interfaces/IWorkouts";
+import { IWorkouts } from "../../../../redux/features/interfaces/IWorkouts";
 
 // TODO: Infinite Scrolling
-// Rename workouts to exercises for less confusion 
+// Rename workouts to exercises for less confusion
 const WorkoutsScreen = ({ route, navigation }) => {
   const [input, setinput] = useState("");
   const [selectedWorkouts, setselectedWorkouts] = useState<IWorkouts>();
@@ -49,19 +49,19 @@ const WorkoutsScreen = ({ route, navigation }) => {
     },
   });
   useEffect(() => {
-    dispatch(getAllWorkouts({ token: currentUser.userToken, page:1,limit:10 })).then((val) =>
+    dispatch(
+      getAllWorkouts({ token: currentUser.userToken, page: 1, limit: 10 })
+    ).then((val) => console.log(val));
+    dispatch(getAllEquipment({ token: currentUser.userToken })).then((val) =>
       console.log(val)
     );
-    dispatch(getAllEquipment({ token: currentUser.userToken })).then((val) =>
-    console.log(val)
-  );
     dispatch(getAllBodyTargets({ token: currentUser.userToken })).then((val) =>
-    console.log(val)
-  );
+      console.log(val)
+    );
   }, []);
   useEffect(() => {
-    if(selectedWorkouts !== undefined){
-      console.log(selectedWorkouts)
+    if (selectedWorkouts !== undefined) {
+      console.log(selectedWorkouts);
       dispatch(
         createNewWorkout({
           routineId: route.params.routineId,
@@ -72,12 +72,12 @@ const WorkoutsScreen = ({ route, navigation }) => {
       ).then((val) => {
         if (val.meta.requestStatus === "fulfilled") {
           console.log("ROUTE", val);
-          navigation.navigate("Regiment Details", {route});
-          setselectedWorkouts(undefined)
+          navigation.navigate("Regiment Details", { route });
+          setselectedWorkouts(undefined);
         }
         if (val.meta.requestStatus === "rejected") {
           console.log(val);
-          setselectedWorkouts(undefined)
+          setselectedWorkouts(undefined);
         }
       });
     }
@@ -87,9 +87,6 @@ const WorkoutsScreen = ({ route, navigation }) => {
     return <Loading />;
   }
 
-
-
- 
   const handleCreateWorkout = (val) => {
     setselectedWorkouts(val);
   };
@@ -136,7 +133,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
               if (input === "") {
                 return val;
               }
-          
+
               // return val.name.toLowerCase().includes(input.toLowerCase());
             })
             .map((val, idx) => (
@@ -164,7 +161,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
                 >
                   <Image
                     source={{ uri: val.gifUrl }}
-                    style={{ width: 60, height: 60, borderRadius: .5 }}
+                    style={{ width: 60, height: 60, borderRadius: 0.5 }}
                   />
                   <Box style={{ flex: 1 }}>
                     <Text
