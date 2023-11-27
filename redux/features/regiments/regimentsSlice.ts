@@ -65,8 +65,7 @@ export const getSingleRegiment = createAsyncThunk<
 >(`getRegiment`, async (id: string, thunkAPI) => {
   try {
     const { currentUser } = thunkAPI.getState().auth;
-    console.log("currentUSer");
-    return await regimentsService.GetSinglelRegiment(id, currentUser.userToken);
+    return await regimentsService.GetSingleRegiment(id, currentUser.userToken);
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
   }

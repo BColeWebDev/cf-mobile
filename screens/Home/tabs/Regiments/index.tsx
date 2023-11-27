@@ -190,14 +190,16 @@ const RegimentScreen = ({ navigation }) => {
                         style={{
                           marginHorizontal: 3,
                           color:
-                            val?.days?.filter((val) => val === "Sunday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Sunday"
+                            ).length === 1
                               ? "white"
                               : "#1d2025",
                           padding: 4,
                           backgroundColor:
-                            val?.days?.filter((val) => val === "Sunday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Sunday"
+                            ).length === 1
                               ? "#4f1d9e"
                               : "#e5daf8",
                         }}
@@ -208,14 +210,16 @@ const RegimentScreen = ({ navigation }) => {
                         style={{
                           marginHorizontal: 3,
                           color:
-                            val?.days?.filter((val) => val === "Monday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Monday"
+                            ).length === 1
                               ? "white"
                               : "#1d2025",
                           padding: 4,
                           backgroundColor:
-                            val?.days?.filter((val) => val === "Monday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Monday"
+                            ).length === 1
                               ? "#4f1d9e"
                               : "#e5daf8",
                         }}
@@ -226,15 +230,17 @@ const RegimentScreen = ({ navigation }) => {
                         style={{
                           marginHorizontal: 3,
                           color:
-                            val?.days?.filter((val) => val === "Tuesday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Tuesday"
+                            ).length === 1
                               ? "white"
                               : "#1d2025",
                           padding: 4,
 
                           backgroundColor:
-                            val?.days?.filter((val) => val === "Tuesday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Tuesday"
+                            ).length === 1
                               ? "#4f1d9e"
                               : "#e5daf8",
                         }}
@@ -245,14 +251,16 @@ const RegimentScreen = ({ navigation }) => {
                         style={{
                           marginHorizontal: 3,
                           color:
-                            val?.days?.filter((val) => val === "Wednesday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Wednesday"
+                            ).length === 1
                               ? "white"
                               : "#1d2025",
                           padding: 4,
                           backgroundColor:
-                            val?.days?.filter((val) => val === "Wednesday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Wednesday"
+                            ).length === 1
                               ? "#4f1d9e"
                               : "#e5daf8",
                         }}
@@ -263,14 +271,16 @@ const RegimentScreen = ({ navigation }) => {
                         style={{
                           marginHorizontal: 3,
                           color:
-                            val?.days?.filter((val) => val === "Thursday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Thursday"
+                            ).length === 1
                               ? "white"
                               : "#1d2025",
                           padding: 4,
                           backgroundColor:
-                            val?.days?.filter((val) => val === "Thursday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Thursday"
+                            ).length === 1
                               ? "#4f1d9e"
                               : "#e5daf8",
                         }}
@@ -281,14 +291,16 @@ const RegimentScreen = ({ navigation }) => {
                         style={{
                           marginHorizontal: 3,
                           color:
-                            val?.days?.filter((val) => val === "Friday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Friday"
+                            ).length === 1
                               ? "white"
                               : "#1d2025",
                           padding: 4,
                           backgroundColor:
-                            val?.days?.filter((val) => val === "Friday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Friday"
+                            ).length === 1
                               ? "#4f1d9e"
                               : "#e5daf8",
                         }}
@@ -299,14 +311,16 @@ const RegimentScreen = ({ navigation }) => {
                         style={{
                           marginHorizontal: 3,
                           color:
-                            val?.days?.filter((val) => val === "Saturday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Saturday"
+                            ).length === 1
                               ? "white"
                               : "#1d2025",
                           padding: 4,
                           backgroundColor:
-                            val?.days?.filter((val) => val === "Saturday")
-                              .length === 1
+                            val?.days?.filter(
+                              (val) => val.toUpperCase() === "Saturday"
+                            ).length === 1
                               ? "#4f1d9e"
                               : "#e5daf8",
                         }}

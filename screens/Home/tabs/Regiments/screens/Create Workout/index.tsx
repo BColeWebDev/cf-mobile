@@ -9,8 +9,14 @@ import {
   updateTrainingDays,
 } from "../../../../../../redux/features/trainingDays/trainingDaysSlice";
 import { AppDispatch } from "../../../../../../redux/app/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../../../redux/app/store";
 const CreateWorkout = ({ route, navigation }) => {
   console.log("route", route);
+  const { data: trainingDays } = useSelector(
+    (state: RootState) => state.trainingDays
+  );
+
   const dispatch = useDispatch<AppDispatch>();
   const initialState = {
     name: "",
@@ -61,9 +67,11 @@ const CreateWorkout = ({ route, navigation }) => {
 
   const handleCreateWorkout = () => {
     dispatch(
-      createTrainingDays({ ...formData, regimentId: route.params.regimentId })
+      createTrainingDays({ ...formData, regimentId: route.params })
     ).then((val) => {
+      console.log("val", val);
       if (val.meta.requestStatus === "fulfilled") {
+        dispatch(getAllTrainingDays(route.params));
         navigation.navigate("Regiment Details", route);
       }
       if (val.meta.requestStatus === "rejected") {
@@ -92,12 +100,22 @@ const CreateWorkout = ({ route, navigation }) => {
 
   return (
     <View>
-      <Text
-        style={{ marginVertical: 25, textAlign: "center", fontWeight: "600" }}
-        variant="headlineMedium"
-      >
-        Create a New Workout
-      </Text>
+      {route?.params?.val?.name === undefined ? (
+        <Text
+          style={{ marginVertical: 25, textAlign: "center", fontWeight: "600" }}
+          variant="headlineMedium"
+        >
+          Create a New Workout
+        </Text>
+      ) : (
+        <Text
+          style={{ marginVertical: 25, textAlign: "center", fontWeight: "600" }}
+          variant="headlineMedium"
+        >
+          Update Workout
+        </Text>
+      )}
+
       <TextInput
         style={style.textInput}
         textColor="black"
