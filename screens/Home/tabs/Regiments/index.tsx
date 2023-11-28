@@ -27,7 +27,7 @@ import { useSelector } from "react-redux";
 
 const RegimentScreen = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data } = useSelector((state: any) => state.regiments);
+  const { data } = useSelector((state: RootState) => state.regiments);
   const { currentUser } = useSelector((state: RootState) => state.auth);
   const [refreshing, setRefreshing] = React.useState(false);
   const [visible, setVisible] = React.useState(false);

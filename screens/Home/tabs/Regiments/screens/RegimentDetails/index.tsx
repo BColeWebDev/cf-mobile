@@ -41,17 +41,22 @@ export default function RegimentDetails({ route, navigation }) {
   const { currentUser } = useSelector((state: RootState) => state.auth);
   const { detailInfo } = useSelector((state: any) => state.regiments);
 
-  console.log("currentUser", currentUser);
-  console.log("DATa", detailInfo);
+  console.log("detailInfo", detailInfo,route);
   const dispatch = useDispatch<AppDispatch>();
 
   const [refreshing, setRefreshing] = React.useState(false);
 
   // ON LOAD
   useEffect(() => {
-    if (route.params._id !== undefined) console.log(route.params._id);
+    if (route.params._id !== undefined){    
     dispatch(getSingleRegiment(route.params._id));
     dispatch(getAllTrainingDays(route.params._id));
+    }
+    if (route.params.regimentId !== undefined){    
+      dispatch(getSingleRegiment(route.params.regimentId));
+      dispatch(getAllTrainingDays(route.params.regimentId));
+      }
+
   }, [route]);
 
   const onRefresh = useCallback(() => {

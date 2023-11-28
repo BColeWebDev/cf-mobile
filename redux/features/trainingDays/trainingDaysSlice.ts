@@ -7,6 +7,7 @@ const initialState = {
   data: {
     routines: [],
   },
+  days:[],
   detailInfo: {},
   isError: false,
   isSuccess: false,
@@ -38,6 +39,7 @@ export const getAllTrainingDays = createAsyncThunk<
 >(`training_days/all`, async (regimentId: string, thunkAPI) => {
   const { currentUser } = thunkAPI.getState().auth;
   try {
+   
     const response = await trainingDaysServices.getAllTrainingDays(
       regimentId,
       currentUser.userToken
@@ -55,7 +57,7 @@ export const updateTrainingDays = createAsyncThunk<
 >(`training_days/update`, async (obj: ITrainingDays, thunkAPI) => {
   try {
     const { currentUser } = thunkAPI.getState().auth;
-
+    console.log("obj",obj)
     const response = await trainingDaysServices.updateTrainingDays(
       obj,
       currentUser.userToken
@@ -110,6 +112,7 @@ export const trainingDaysSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.data = action.payload;
+        state.days = action.payload.days;
       })
       .addCase(getAllTrainingDays.rejected, (state, action) => {
         state.isLoading = false;
