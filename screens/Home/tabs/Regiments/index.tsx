@@ -133,7 +133,8 @@ const RegimentScreen = ({ navigation }) => {
                     setVisible(!visible);
                   }}
                   onPress={() => {
-                    navigation.navigate("Regiment Details", val);
+                   
+                    navigation.navigate("Regiment Details", val._id);
                   }}
                 >
                   <Surface

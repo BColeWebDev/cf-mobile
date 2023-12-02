@@ -108,7 +108,8 @@ const CreateWorkout = ({ route, navigation }) => {
         style={{ marginVertical: 25, textAlign: "center", fontWeight: "600" }}
         variant="headlineMedium"
       >
-        Create a New Workout
+        {route?.params?.val?.name !== undefined ? 'Update Workout':"Create a New Workout"}
+        
       </Text>
       <TextInput
         style={style.textInput}
@@ -145,7 +146,7 @@ const CreateWorkout = ({ route, navigation }) => {
         if(days.includes(val)){
           return;
         }
-        return   <TouchableHighlight
+        return<TouchableHighlight
         style={{
           marginLeft: 20,
           marginRight: 20,

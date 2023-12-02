@@ -48,9 +48,9 @@ export default function RegimentDetails({ route, navigation }) {
 
   // ON LOAD
   useEffect(() => {
-    if (route.params._id !== undefined){    
-    dispatch(getSingleRegiment(route.params._id));
-    dispatch(getAllTrainingDays(route.params._id));
+    if (route.params !== undefined){    
+    dispatch(getSingleRegiment(route.params));
+    dispatch(getAllTrainingDays(route.params));
     }
     if (route.params.regimentId !== undefined){    
       dispatch(getSingleRegiment(route.params.regimentId));
