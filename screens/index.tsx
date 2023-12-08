@@ -16,6 +16,7 @@ import SignUpNamesScreens from "./SignUp/screens/SignUpNames";
 import CreateWorkout from "./Home/tabs/Regiments/screens/Create Workout";
 
 const Stack = createNativeStackNavigator();
+
 export default function AllScreens() {
   const { currentUser, isLoggedIn } = useSelector((state: any) => state.auth);
   return (

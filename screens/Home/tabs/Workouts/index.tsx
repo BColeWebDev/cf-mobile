@@ -26,6 +26,7 @@ import {
 import Loading from "../../../Loading";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { IWorkouts } from "../../../../redux/features/interfaces/IWorkouts";
+import { getAllTrainingDays } from "../../../../redux/features/trainingDays/trainingDaysSlice";
 
 // TODO: Infinite Scrolling
 // Rename workouts to exercises for less confusion
@@ -72,6 +73,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
       ).then((val) => {
         if (val.meta.requestStatus === "fulfilled") {
           console.log("ROUTE", val);
+          dispatch(getAllTrainingDays(route.params.regimentId));
           navigation.navigate("Regiment Details", { route });
           setselectedWorkouts(undefined);
         }

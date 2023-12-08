@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 
 export default function ProfileScreen({ navigation }) {
@@ -60,22 +61,28 @@ export default function ProfileScreen({ navigation }) {
             flexDirection: "row",
             margin: 20,
             justifyContent: "space-between",
+            alignItems: "center",
             width: "100%",
           }}
         >
           <View
             style={{
               display: "flex",
-              direction: "ltr",
+              direction: "rtl",
               alignItems: "center",
               flexDirection: "row-reverse",
             }}
           >
-            <Ionicons name="person-circle-sharp" size={30} color="#4f1d9e" />
+            <Ionicons name="person-circle-sharp" size={50} color="#4f1d9e" />
             <Text
-              style={{ marginHorizontal: 0, fontSize: 30, color: "#3b1676" }}
+              style={{
+                color: "#3b1676",
+
+                marginRight: 10,
+                fontSize: 16,
+              }}
             >
-              Profile
+              {currentUser.existingUser?.first_name}
             </Text>
           </View>
           <View
@@ -83,16 +90,19 @@ export default function ProfileScreen({ navigation }) {
               padding: 4,
               borderWidth: 1,
               borderColor: "#3b1676",
+              backgroundColor: "#3b1676",
+
               borderRadius: 8,
               alignItems: "center",
               display: "flex",
               justifyContent: "center",
               minWidth: 100,
+              height: 30,
             }}
           >
             <Text
               style={{
-                color: "#3b1676",
+                color: "#f9f6fd",
                 textAlign: "center",
                 textTransform: "capitalize",
               }}
@@ -109,42 +119,123 @@ export default function ProfileScreen({ navigation }) {
             marginTop: 50,
           }}
         >
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Text
+          <Text
+            style={{
+              color: "#3b1676",
+              marginBottom: 20,
+              marginRight: 20,
+              textAlign: "left",
+              fontSize: 25,
+            }}
+          >
+            Dashboard:
+          </Text>
+          {/* Completed Workouts */}
+          <View
+            style={{
+              backgroundColor: "white",
+              borderColor: "#7434db",
+              borderWidth: 2,
+              display: "flex",
+              paddingRight: 15,
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-between",
+              borderRadius: 10,
+            }}
+          >
+            <View
               style={{
-                color: "#3b1676",
-                marginBottom: 5,
-                marginRight: 10,
-                fontSize: 22,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "100%",
+                alignItems: "center",
               }}
             >
-              {currentUser.existingUser?.first_name}
-            </Text>
-            <Text style={{ color: "#3b1676", marginBottom: 5, fontSize: 22 }}>
-              {currentUser.existingUser?.last_name}
-            </Text>
-          </View>
+              <Text
+                style={{
+                  padding: 20,
+                  fontWeight: "800",
+                }}
+              >
+                Completed Workouts ✅
+              </Text>
+              <Octicons
+                name="kebab-horizontal"
+                size={24}
+                color="black"
+                onPress={() => alert("")}
+              />
+            </View>
 
+            <View style={{ width: "100%", padding: 20 }}>
+              <Text style={{ textAlign: "left" }}>Testing</Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: "column",
+            justifyContent: "center",
+            width: "100%",
+            marginTop: 50,
+          }}
+        >
           <Text
             style={{
               color: "#3b1676",
               marginBottom: 20,
-              textAlign: "center",
-              fontSize: 22,
+              marginRight: 20,
+              textAlign: "left",
+              fontSize: 25,
             }}
           >
-            {currentUser.existingUser?.email}
+            Dashboard:
           </Text>
-          <Text
+          {/* Completed Workouts */}
+          <View
             style={{
-              color: "#3b1676",
-              marginBottom: 20,
-              textAlign: "center",
-              fontSize: 22,
+              backgroundColor: "white",
+              borderColor: "#7434db",
+              borderWidth: 2,
+              display: "flex",
+              paddingRight: 15,
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-between",
+              borderRadius: 10,
             }}
           >
-            Age:{currentUser.existingUser?.age}
-          </Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "100%",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  padding: 20,
+                  fontWeight: "800",
+                }}
+              >
+                Completed Workouts ✅
+              </Text>
+              <Octicons
+                name="kebab-horizontal"
+                size={24}
+                color="black"
+                onPress={() => alert("")}
+              />
+            </View>
+
+            <View style={{ width: "100%", padding: 20 }}>
+              <Text style={{ textAlign: "left" }}>Testing</Text>
+            </View>
+          </View>
         </View>
       </View>
     </View>
