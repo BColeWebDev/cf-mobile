@@ -162,7 +162,7 @@ export default function RegimentDetails({ route, navigation }) {
                         </Text>
                       </View>
                     </TouchableHighlight>
-                    <View style={{ marginLeft: 20 }}>
+                    <View style={{ marginHorizontal: 20 }}>
                       <Text
                         style={{
                           textTransform: "capitalize",
@@ -175,29 +175,89 @@ export default function RegimentDetails({ route, navigation }) {
                         Workouts
                       </Text>
                       {val.workouts.map((value, idx) => (
-                        <View
+                        <TouchableHighlight
                           key={idx}
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-
-                            justifyContent: "flex-start",
-                          }}
+                          onPress={() =>
+                            navigation.navigate("WorkoutsDetails", {
+                              workoutId: value.id,
+                            })
+                          }
+                          onLongPress={() => alert("long press")}
                         >
-                          <Text> {value.bodyPart}</Text>
-                          <Text>{value.name}</Text>
-                          <Text>{value.equipment}</Text>
-                          <Text>{value.muscle_target}</Text>
-                          <Image
-                            source={{ uri: value.gifUrl }}
+                          <View
                             style={{
-                              width: 60,
-                              height: 60,
-                              borderRadius: 50,
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              marginHorizontal: 10,
+                              padding: 0,
+
+                              backgroundColor: "#4f1d9e",
+                              borderRadius: 15,
+                              marginBottom: 10,
                             }}
-                          />
-                        </View>
+                          >
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                marginLeft: 10,
+                                padding: 10,
+                              }}
+                            >
+                              <View>
+                                <Text
+                                  style={{
+                                    fontSize: 20,
+                                    color: "white",
+                                    fontWeight: "600",
+                                  }}
+                                >
+                                  {value.name}
+                                </Text>
+                                <Text
+                                  style={{
+                                    fontSize: 20,
+                                    color: "white",
+                                  }}
+                                >
+                                  {" "}
+                                  {value.bodyPart}
+                                </Text>
+                              </View>
+
+                              <View>
+                                <Text
+                                  style={{
+                                    color: "white",
+                                  }}
+                                >
+                                  {value.equipment}
+                                </Text>
+                                <Text
+                                  style={{
+                                    color: "white",
+                                  }}
+                                >
+                                  {value.muscle_target}
+                                </Text>
+                              </View>
+                            </View>
+                            {/* TODO: Displaying Image */}
+                            {/* <Image
+                              source={{
+                                uri: "https://v2.exercisedb.io/image/cdSJF9p7r4ICMU",
+                              }}
+                              style={{
+                                width: 80,
+                                height: 80,
+                                backgroundColor: "red",
+                                borderRadius: 50,
+                              }}
+                            /> */}
+                          </View>
+                        </TouchableHighlight>
                       ))}
                     </View>
                     <Button

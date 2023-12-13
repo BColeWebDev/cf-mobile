@@ -27,13 +27,14 @@ import Loading from "../../../Loading";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { IWorkouts } from "../../../../redux/features/interfaces/IWorkouts";
 import { getAllTrainingDays } from "../../../../redux/features/trainingDays/trainingDaysSlice";
+import { AppDispatch } from "../../../../redux/app/store";
 
 // TODO: Infinite Scrolling
 // Rename workouts to exercises for less confusion
 const WorkoutsScreen = ({ route, navigation }) => {
   const [input, setinput] = useState("");
   const [selectedWorkouts, setselectedWorkouts] = useState<IWorkouts>();
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch<AppDispatch>();
   const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
     (state: any) => state.workouts
   );

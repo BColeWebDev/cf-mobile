@@ -95,6 +95,23 @@ export const createNewWorkout = createAsyncThunk<
     return thunkAPI.rejectWithValue(error);
   }
 });
+
+export const updateWorkout = createAsyncThunk<any, any, { state: RootState }>(
+  `workouts/updateWorkout`,
+  async (obj: any, thunkAPI) => {
+    try {
+      const { currentUser } = thunkAPI.getState().auth;
+      const response = await workoutServices.createWorkout(
+        obj,
+        currentUser.userToken
+      );
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const workoutSlice = createSlice({
   name: "workouts",
   initialState,
