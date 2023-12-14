@@ -20,6 +20,7 @@ import {
 import { getSingleRegiment } from "../../../../../../redux/features/regiments/regimentsSlice";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import TrainingDayScreens from "./screens/TrainingDayScreens";
+import { deleteWorkout } from "../../../../../../redux/features/workouts/workoutSlice";
 
 /* TODO:
 Delete Regiment
@@ -182,7 +183,10 @@ export default function RegimentDetails({ route, navigation }) {
                               workoutId: value.id,
                             })
                           }
-                          onLongPress={() => alert("long press")}
+                          onLongPress={() => dispatch(deleteWorkout({
+                            regimentId:detailInfo._id,
+                            id:value.id
+                          })).then((val)=>{console.log("val",val)})}
                         >
                           <View
                             style={{
@@ -356,7 +360,7 @@ export default function RegimentDetails({ route, navigation }) {
       <Tab.Navigator>
         <Tab.Group>
           {days?.map((val, idx) => (
-            <Tab.Screen key={idx} name={val}>
+            <Tab.Screen key={idx}  name={val}>
               {(prop) => <ProfileScreen name={val} />}
             </Tab.Screen>
           ))}

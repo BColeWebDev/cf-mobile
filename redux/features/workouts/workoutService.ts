@@ -28,13 +28,24 @@ const createWorkout = async (obj, token) =>{
     return response.data
 }
 
+const updateWorkout = async (obj,token)=>{
+    const response = await axios.put(`${EXPO_PUBLIC_APP_URL}api/workouts/routines/${obj.regimentId}`,obj,tokenBearer(token))
+    return response.data;
+}
+
+const deleteWorkout = async (obj,token)=>{
+    const response = await axios.put(`${EXPO_PUBLIC_APP_URL}api/workouts/routines/${obj.regimentId}/delete`,obj,tokenBearer(token))
+    return response.data;
+}
  
 const workoutServices ={
     getAlWorkouts,
     getAllBodyTargets,
     getAllEquipments,
     getAllMuscleTargets,
-    createWorkout
+    createWorkout,
+    updateWorkout,
+    deleteWorkout
 }
 
 export default workoutServices;

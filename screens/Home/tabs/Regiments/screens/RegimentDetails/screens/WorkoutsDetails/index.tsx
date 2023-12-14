@@ -17,7 +17,7 @@ const WorkoutDetails = ({ route, navigation }) => {
       getAllWorkouts({ token: currentUser.userToken, page: 1, limit: 10 })
     );
   }, []);
-  let workoutsDetails = workouts?.items.filter(
+  let workoutsDetails = workouts?.items?.filter(
     (value) => value.id === route.params.workoutId
   )[0];
   return (
