@@ -20,6 +20,7 @@ const WorkoutDetails = ({ route, navigation }) => {
   let workoutsDetails = workouts?.items?.filter(
     (value) => value.id === route.params.workoutId
   )[0];
+  console.log("workoutDetails", workoutsDetails);
   return (
     <View
       style={{
@@ -30,7 +31,7 @@ const WorkoutDetails = ({ route, navigation }) => {
     >
       <Image
         source={{
-          uri: workoutsDetails.gifUrl,
+          uri: workoutsDetails?.gifUrl,
         }}
         style={{
           width: 80,
@@ -39,13 +40,13 @@ const WorkoutDetails = ({ route, navigation }) => {
           borderRadius: 50,
         }}
       />
-      <Text>{workoutsDetails.name}</Text>
-      <Text>{workoutsDetails.bodyPart}</Text>
+      <Text>{workoutsDetails?.name}</Text>
+      <Text>{workoutsDetails?.bodyPart}</Text>
       <View style={{ marginVertical: 20, marginHorizontal: 10 }}>
         <Text style={{ fontSize: 18, marginBottom: 10, fontWeight: "600" }}>
           Instructions
         </Text>
-        {workoutsDetails.instructions.map((val, idx) => (
+        {workoutsDetails?.instructions.map((val, idx) => (
           <Text style={{ marginVertical: 5 }} key={idx}>
             {`${idx + 1}.)`}
             {val}
@@ -63,7 +64,7 @@ const WorkoutDetails = ({ route, navigation }) => {
         >
           Secondary Muscles
         </Text>
-        {workoutsDetails.secondaryMuscles.map((val, idx) => (
+        {workoutsDetails?.secondaryMuscles.map((val, idx) => (
           <Text style={{ marginVertical: 5, marginHorizontal: 10 }} key={idx}>
             {`${idx + 1}.)`}
             {val}

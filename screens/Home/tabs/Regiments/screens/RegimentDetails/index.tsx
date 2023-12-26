@@ -6,9 +6,10 @@ import {
   Image,
   RefreshControl,
   TouchableHighlight,
+  Platform,
 } from "react-native";
-import React, { useEffect, useCallback } from "react";
-import { Button, Chip } from "react-native-paper";
+import React, { useEffect, useState, useCallback } from "react";
+import { Button, Chip, Snackbar } from "react-native-paper";
 
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../../redux/app/store";
@@ -21,6 +22,16 @@ import { getSingleRegiment } from "../../../../../../redux/features/regiments/re
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import TrainingDayScreens from "./screens/TrainingDayScreens";
 import { deleteWorkout } from "../../../../../../redux/features/workouts/workoutSlice";
+import axios from "axios";
+let names = {
+  monday: "Mon",
+  tuesday: "Tues",
+  wednesday: "Wed",
+  thursday: "Thurs",
+  friday: "Fri",
+  saturday: "Sat",
+  sunday: "Sun",
+};
 
 /* TODO:
 Delete Regiment
@@ -50,6 +61,76 @@ export default function RegimentDetails({ route, navigation }) {
   const dispatch = useDispatch<AppDispatch>();
 
   const [refreshing, setRefreshing] = React.useState(false);
+  const [image, setImage] = useState<any>();
+  const [visible, setVisible] = useState(false);
+  const onToggleSnackBar = () => setVisible(!visible);
+
+  const onDismissSnackBar = () => setVisible(false);
+  const fetchImage = async () => {
+    [
+      "all",
+      "all_lower",
+      "all_upper",
+      "abductors",
+      "abs",
+      "adductors",
+      "back",
+      "back_lower",
+      "back_upper",
+      "biceps",
+      "calfs",
+      "chest",
+      "core",
+      "core_lower",
+      "core_upper",
+      "forearms",
+      "gluteus",
+      "hamstring",
+      "hands",
+      "latissimus",
+      "legs",
+      "neck",
+      "quadriceps",
+      "shoulders",
+      "shoulders_back",
+      "shoulders_front",
+      "triceps",
+    ];
+    try {
+      const response = await axios.get(
+        `https://muscle-group-image-generator.p.rapidapi.com/getMulticolorImage`,
+        {
+          headers: {
+            "X-RapidAPI-Key":
+              "ac819a08e2msh6beaecd882152c1p1188e5jsnf15223ffb4db",
+            "X-RapidAPI-Host": "muscle-group-image-generator.p.rapidapi.com",
+            "Content-Type": "multipart/form-data",
+          },
+          params: {
+            primaryColor: "255,60,80",
+            secondaryColor: "230,30,0",
+            primaryMuscleGroups: "chest,back",
+            secondaryMuscleGroups: "triceps,shoulders",
+            transparentBackground: "0",
+          },
+          responseType: "blob",
+        }
+      );
+      if (Platform.OS === "ios") {
+        setImage(URL.createObjectURL(response.data));
+      }
+      let blob = new Blob([response.data], {
+        type: "text/vtt; charset=utf-8",
+      });
+      const fileReaderInstance = new FileReader();
+      fileReaderInstance.readAsDataURL(blob);
+      fileReaderInstance.onload = (res) => {
+        setImage(fileReaderInstance.result);
+      };
+    } catch (error) {
+      console.error(error);
+    }
+  };
   // ON LOAD
   useEffect(() => {
     if (route.params !== undefined) {
@@ -62,8 +143,10 @@ export default function RegimentDetails({ route, navigation }) {
     }
   }, [route]);
 
+  useEffect(() => {
+    fetchImage();
+  }, []);
   const ProfileScreen = ({ name }) => {
-    console.log("name", name);
     return (
       <View style={style.container}>
         <ScrollView
@@ -87,7 +170,18 @@ export default function RegimentDetails({ route, navigation }) {
             data.routines.map((val, idx) => {
               if (val.day === name) {
                 return (
-                  <View>
+                  <View key={idx} style={{ backgroundColor: "white", flex: 1 }}>
+                    <Image
+                      source={{ uri: image }}
+                      style={{
+                        width: 200,
+                        height: 180,
+                        marginTop: 35,
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                      }}
+                    />
+
                     <TouchableHighlight
                       onPress={() => {
                         navigation.navigate("Create Workout", {
@@ -120,7 +214,7 @@ export default function RegimentDetails({ route, navigation }) {
                         marginTop: 20,
                         width: "95%",
                         borderColor: "#e5daf8",
-                        borderWidth: 1,
+                        borderWidth: 2,
                         marginLeft: "auto",
                         marginRight: "auto",
                         backgroundColor: "white",
@@ -163,18 +257,21 @@ export default function RegimentDetails({ route, navigation }) {
                         </Text>
                       </View>
                     </TouchableHighlight>
-                    <View style={{ marginHorizontal: 20 }}>
-                      <Text
-                        style={{
-                          textTransform: "capitalize",
-                          color: "black",
-                          fontSize: 25,
-                          fontWeight: "500",
-                          marginBottom: 20,
-                        }}
-                      >
-                        Workouts
-                      </Text>
+                    <Button
+                      style={{ marginBottom: 20, marginTop: 20 }}
+                      onPress={() => {
+                        navigation.navigate("Workouts", {
+                          ...route,
+                          day: val.day,
+                          routineId: val._id,
+                          regimentId: detailInfo._id,
+                        });
+                      }}
+                    >
+                      Add Workout
+                    </Button>
+
+                    <View style={{ marginHorizontal: 20, marginBottom: 70 }}>
                       {val.workouts.map((value, idx) => (
                         <TouchableHighlight
                           key={idx}
@@ -183,10 +280,30 @@ export default function RegimentDetails({ route, navigation }) {
                               workoutId: value.id,
                             })
                           }
-                          onLongPress={() => dispatch(deleteWorkout({
-                            regimentId:detailInfo._id,
-                            id:value.id
-                          })).then((val)=>{console.log("val",val)})}
+                          onLongPress={() =>
+                            dispatch(
+                              deleteWorkout({
+                                regimentId: detailInfo._id,
+                                routineId: val._id,
+                                id: value.id,
+                              })
+                            ).then((val) => {
+                              if (val.meta.requestStatus === "fulfilled") {
+                                if (route.params !== undefined) {
+                                  dispatch(getSingleRegiment(route.params));
+                                  dispatch(getAllTrainingDays(route.params));
+                                }
+                                if (route.params.regimentId !== undefined) {
+                                  dispatch(
+                                    getSingleRegiment(route.params.regimentId)
+                                  );
+                                  dispatch(
+                                    getAllTrainingDays(route.params.regimentId)
+                                  );
+                                }
+                              }
+                            })
+                          }
                         >
                           <View
                             style={{
@@ -206,6 +323,7 @@ export default function RegimentDetails({ route, navigation }) {
                               style={{
                                 display: "flex",
                                 flexDirection: "column",
+
                                 marginLeft: 10,
                                 padding: 10,
                               }}
@@ -249,33 +367,10 @@ export default function RegimentDetails({ route, navigation }) {
                               </View>
                             </View>
                             {/* TODO: Displaying Image */}
-                            {/* <Image
-                              source={{
-                                uri: "https://v2.exercisedb.io/image/cdSJF9p7r4ICMU",
-                              }}
-                              style={{
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "red",
-                                borderRadius: 50,
-                              }}
-                            /> */}
                           </View>
                         </TouchableHighlight>
                       ))}
                     </View>
-                    <Button
-                      onPress={() => {
-                        navigation.navigate("Workouts", {
-                          ...route,
-                          day: val.day,
-                          routineId: val._id,
-                          regimentId: detailInfo._id,
-                        });
-                      }}
-                    >
-                      Add Workout
-                    </Button>
                   </View>
                 );
               }
@@ -298,6 +393,7 @@ export default function RegimentDetails({ route, navigation }) {
           setRefreshing(false);
         }
       });
+      fetchImage();
     }, 2000);
   }, [refreshing]);
   return days.length === 0 ? null : (
@@ -360,12 +456,24 @@ export default function RegimentDetails({ route, navigation }) {
       <Tab.Navigator>
         <Tab.Group>
           {days?.map((val, idx) => (
-            <Tab.Screen key={idx}  name={val}>
+            <Tab.Screen key={idx} name={names[val]}>
               {(prop) => <ProfileScreen name={val} />}
             </Tab.Screen>
           ))}
         </Tab.Group>
       </Tab.Navigator>
+      <Snackbar
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: "Undo",
+          onPress: () => {
+            // Do something
+          },
+        }}
+      >
+        Hey there! I'm a Snackbar.
+      </Snackbar>
     </>
   );
 }

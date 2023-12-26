@@ -103,6 +103,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
             flexDirection: "row",
             alignItems: "flex-end",
             marginBottom: 20,
+            marginTop: 0,
             justifyContent: "space-between",
           }}
         >
@@ -130,7 +131,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
           leading={<AntDesign name="search1" size={24} color="black" />}
           onChangeText={(text) => setinput(text)}
         ></TextInput>
-        <ScrollView>
+        {/* <ScrollView>
           {workouts?.items
             ?.filter((val) => {
               if (input === "") {
@@ -215,7 +216,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
                 </Box>
               </TouchableHighlight>
             ))}
-        </ScrollView>
+        </ScrollView> */}
       </Box>
     </SafeAreaView>
   );
