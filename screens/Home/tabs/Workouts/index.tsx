@@ -38,6 +38,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
   const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
     (state: any) => state.workouts
   );
+
   // console.log("workouts", workouts,equipments,bodyTargets,muscles);
   const { currentUser } = useSelector((state: any) => state.auth);
   const style = StyleSheet.create({
@@ -52,7 +53,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
   });
   useEffect(() => {
     dispatch(
-      getAllWorkouts({ token: currentUser.userToken, page: 1, limit: 10 })
+      getAllWorkouts({ token: currentUser.userToken, page: 1, limit: 100 })
     ).then((val) => console.log(val));
     dispatch(getAllEquipment({ token: currentUser.userToken })).then((val) =>
       console.log(val)
@@ -69,11 +70,10 @@ const WorkoutsScreen = ({ route, navigation }) => {
           routineId: route.params.routineId,
           regimentId: route.params.regimentId,
           ...selectedWorkouts,
-          muscle_target: "y",
+          muscle_target: selectedWorkouts.target,
         })
       ).then((val) => {
         if (val.meta.requestStatus === "fulfilled") {
-          console.log("ROUTE", val);
           dispatch(getAllTrainingDays(route.params.regimentId));
           navigation.navigate("Regiment Details", { route });
           setselectedWorkouts(undefined);
@@ -93,10 +93,11 @@ const WorkoutsScreen = ({ route, navigation }) => {
   const handleCreateWorkout = (val) => {
     setselectedWorkouts(val);
   };
+
   return (
     <SafeAreaView style={style.container}>
       <Box style={{ width: "100%" }}>
-        <Box
+        {/* <Box
           style={{
             display: "flex",
             width: "100%",
@@ -107,16 +108,6 @@ const WorkoutsScreen = ({ route, navigation }) => {
             justifyContent: "space-between",
           }}
         >
-          <Text
-            style={{
-              fontSize: 28,
-              color: "white",
-              marginLeft: 10,
-              marginTop: 30,
-            }}
-          >
-            Workouts
-          </Text>
           <FontAwesome
             name="filter"
             size={24}
@@ -124,21 +115,24 @@ const WorkoutsScreen = ({ route, navigation }) => {
             color="white"
             onPress={() => navigation.navigate("WorkoutsFilters")}
           />
-        </Box>
+        </Box> */}
 
+        {/* Search */}
         <TextInput
-          style={{ margin: 10, borderRadius: 90, marginHorizontal: 20 }}
+          style={{ margin: 10, borderRadius: 120, marginHorizontal: 20 }}
+          placeholder="Search Workout"
           leading={<AntDesign name="search1" size={24} color="black" />}
           onChangeText={(text) => setinput(text)}
         ></TextInput>
-        {/* <ScrollView>
+
+        {/* Workouts */}
+        <ScrollView>
           {workouts?.items
             ?.filter((val) => {
               if (input === "") {
                 return val;
               }
-
-              // return val.name.toLowerCase().includes(input.toLowerCase());
+              return val.name.toLowerCase().includes(input.toLowerCase());
             })
             .map((val, idx) => (
               <TouchableHighlight
@@ -216,7 +210,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
                 </Box>
               </TouchableHighlight>
             ))}
-        </ScrollView> */}
+        </ScrollView>
       </Box>
     </SafeAreaView>
   );

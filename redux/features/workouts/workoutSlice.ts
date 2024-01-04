@@ -96,13 +96,12 @@ export const createNewWorkout = createAsyncThunk<
   }
 });
 
-
 export const deleteWorkout = createAsyncThunk<any, any, { state: RootState }>(
   `workouts/deleteWorkout`,
   async (obj: any, thunkAPI) => {
     try {
       const { currentUser } = thunkAPI.getState().auth;
-      console.log("OBJ",obj)
+      console.log("OBJ", obj);
       const response = await workoutServices.deleteWorkout(
         obj,
         currentUser.userToken
@@ -113,7 +112,6 @@ export const deleteWorkout = createAsyncThunk<any, any, { state: RootState }>(
     }
   }
 );
-
 
 export const workoutSlice = createSlice({
   name: "workouts",

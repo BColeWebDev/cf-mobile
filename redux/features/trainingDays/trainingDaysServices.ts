@@ -4,7 +4,6 @@ import tokenBearer from "../helpers/tokenHeader";
 import { IRegiments } from "../interfaces/IRegiments";
 
 const getAllTrainingDays = async (regimentId: string, token: string) => {
-  console.log("reg",regimentId)
   const response = await axios.get(
     `${EXPO_PUBLIC_APP_URL}api/workouts/trainingdays/${regimentId}`,
     tokenBearer(token)

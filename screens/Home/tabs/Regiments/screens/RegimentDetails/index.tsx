@@ -53,9 +53,14 @@ export default function RegimentDetails({ route, navigation }) {
       display: "flex",
     },
   });
-  const { data, days, isLoading, isSuccess } = useSelector(
-    (state: RootState) => state.trainingDays
-  );
+  const {
+    data,
+    days,
+    isLoading,
+    primaryMuscleGroup,
+    secondaryMuscleGroup,
+    isSuccess,
+  } = useSelector((state: RootState) => state.trainingDays);
   const { detailInfo } = useSelector((state: any) => state.regiments);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -108,8 +113,8 @@ export default function RegimentDetails({ route, navigation }) {
           },
           params: {
             primaryColor: "255,60,80",
-            secondaryColor: "230,30,0",
-            primaryMuscleGroups: "chest,back",
+            secondaryColor: "200,30,0",
+            primaryMuscleGroups: "legs",
             secondaryMuscleGroups: "triceps,shoulders",
             transparentBackground: "0",
           },
@@ -396,7 +401,67 @@ export default function RegimentDetails({ route, navigation }) {
       fetchImage();
     }, 2000);
   }, [refreshing]);
-  return days.length === 0 ? null : (
+  return days.length === 0 ? (
+    <View>
+      <View
+        style={{
+          marginHorizontal: "auto",
+          display: "flex",
+          padding: 10,
+          width: "100%",
+          backgroundColor: "#4f1d9e",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            marginBottom: 20,
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "left",
+              fontSize: 30,
+              fontWeight: "600",
+              color: "white",
+            }}
+          >
+            {detailInfo.name}
+          </Text>
+          <Button
+            mode="outlined"
+            textColor="white"
+            onPress={() =>
+              navigation.navigate("Create Workout", detailInfo._id)
+            }
+            style={{
+              padding: 5,
+              backgroundColor: "#6023c0",
+              borderColor: "#e5daf8",
+              marginLeft: "auto",
+            }}
+            icon={"plus"}
+          >
+            Create Training Day
+          </Button>
+        </View>
+
+        <Text style={{ width: "100%", color: "white", textAlign: "left" }}>
+          {detailInfo.description}
+        </Text>
+      </View>
+      <Text style={{ textAlign: "center", marginTop: 50 }}>
+        No Training Days
+      </Text>
+    </View>
+  ) : (
     <>
       <View
         style={{
