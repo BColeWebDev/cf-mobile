@@ -14,6 +14,7 @@ import {
   Badge,
   Flex,
   Button,
+  Portal,
 } from "@react-native-material/core";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -28,6 +29,7 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { IWorkouts } from "../../../../redux/features/interfaces/IWorkouts";
 import { getAllTrainingDays } from "../../../../redux/features/trainingDays/trainingDaysSlice";
 import { AppDispatch } from "../../../../redux/app/store";
+import { Snackbar } from "react-native-paper";
 
 // TODO: Infinite Scrolling
 // Rename workouts to exercises for less confusion
@@ -38,6 +40,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
   const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
     (state: any) => state.workouts
   );
+  const [view, setview] = useState("");
 
   // console.log("workouts", workouts,equipments,bodyTargets,muscles);
   const { currentUser } = useSelector((state: any) => state.auth);
@@ -46,7 +49,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
       flex: 1,
       padding: 1,
       justifyContent: "flex-start",
-      backgroundColor: "#292929",
+      backgroundColor: "#1d2025",
       alignItems: "center",
       display: "flex",
     },
@@ -79,7 +82,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
           setselectedWorkouts(undefined);
         }
         if (val.meta.requestStatus === "rejected") {
-          console.log(val);
+          setview(val.payload.response.data.message);
           setselectedWorkouts(undefined);
         }
       });
@@ -211,6 +214,22 @@ const WorkoutsScreen = ({ route, navigation }) => {
               </TouchableHighlight>
             ))}
         </ScrollView>
+
+        {view === "" ? null : (
+          <Snackbar
+            visible={true}
+            style={{ marginBottom: 100 }}
+            onDismiss={() => setview("")}
+            action={{
+              label: "Close",
+              onPress: () => {
+                setview("");
+              },
+            }}
+          >
+            {view}
+          </Snackbar>
+        )}
       </Box>
     </SafeAreaView>
   );
