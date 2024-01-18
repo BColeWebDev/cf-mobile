@@ -2,7 +2,6 @@ import Loading from "./Loading";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./Login";
-import SignUpScreens from "./SignUp";
 import Confirmation from "./Confirmation";
 import Error from "./Error";
 import Home from "./Home";
@@ -13,6 +12,7 @@ import CreateRegiment from "./Home/tabs/Regiments/screens/Create Regiment";
 import RegimentDetails from "./Home/tabs/Regiments/screens/RegimentDetails";
 import WorkoutsScreen from "./Home/tabs/Workouts";
 import SignUpNamesScreens from "./SignUp/screens/SignUpNames";
+import SignUpEmailScreens from "./SignUp/screens/SignUpEmail";
 import CreateWorkout from "./Home/tabs/Regiments/screens/Create Workout";
 import WorkoutDetails from "./Home/tabs/Regiments/screens/RegimentDetails/screens/WorkoutsDetails";
 const Stack = createNativeStackNavigator();
@@ -27,14 +27,15 @@ export default function AllScreens() {
           component={Loading}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="Sign Up"
-          component={SignUpScreens}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="SignUpNamesScreens"
           component={SignUpNamesScreens}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SignUpEmailScreens"
+          component={SignUpEmailScreens}
           options={{ headerShown: false }}
         />
         <Stack.Screen

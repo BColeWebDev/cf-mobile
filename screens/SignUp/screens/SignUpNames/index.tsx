@@ -5,14 +5,7 @@ import {
   SafeAreaView,
   Platform,
 } from "react-native";
-import {
-  Box,
-  Button,
-  Stack,
-  Surface,
-  TextInput,
-  Text,
-} from "@react-native-material/core";
+import { Button, Surface, TextInput, Text } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator } from "@react-native-material/core";
 import React from "react";
@@ -21,26 +14,22 @@ import { setRegister } from "../../../../redux/features/auth/authSlice";
 
 const SignUpNamesScreens = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading, register } = useSelector((state: RootState) => state.auth);
+  const { register } = useSelector((state: RootState) => state.auth);
   console.log("register", register);
   const style = StyleSheet.create({
     textInput: {
       width: "100%",
-      marginLeft: "auto",
-      marginRight: "auto",
-      marginBottom: 20,
-      backgroundColor: "",
-      paddingLeft: 10,
-      marginVertical: 20,
+      marginBottom: 30,
     },
     inputStyles: {
-      color: "#F9C000",
+      color: "white",
+      backgroundColor: "white",
       borderBottomColor: "white",
     },
     container: {
       flex: 1,
       height: "100%",
-      backgroundColor: "#292929",
+      backgroundColor: "white",
       alignItems: "flex-end",
       justifyContent: "center",
       color: "white",
@@ -58,7 +47,7 @@ const SignUpNamesScreens = ({ navigation }) => {
           marginRight: "auto",
         }}
       >
-        <Box
+        <View
           style={{ display: "flex", alignItems: "flex-start", marginTop: 110 }}
         >
           {/* <CfIcon/> */}
@@ -67,13 +56,13 @@ const SignUpNamesScreens = ({ navigation }) => {
               fontSize: 35,
               marginLeft: 20,
               fontWeight: "600",
-              color: "white",
+              color: "black",
             }}
           >
             Sign Up
           </Text>
-        </Box>
-        <Box
+        </View>
+        <View
           style={{
             width: "90%",
             flex: 1,
@@ -85,8 +74,13 @@ const SignUpNamesScreens = ({ navigation }) => {
           }}
         >
           <TextInput
-            label="First Name"
-            style={style.textInput}
+            placeholder="First Name"
+            textColor="black"
+            mode={"outlined"}
+            style={{ marginHorizontal: 20, width: "100%", marginBottom: 40 }}
+            selectionColor={"black"}
+            cursorColor={"#F9C000"}
+            defaultValue={register.first_name}
             onChangeText={(text) => {
               console.log("text", text);
               // setregister(prevState => ({...prevState,first_name:text}))
@@ -94,23 +88,55 @@ const SignUpNamesScreens = ({ navigation }) => {
             }}
           />
           <TextInput
-            label="Last Name"
-            style={style.textInput}
+            placeholder="First Name"
+            textColor="black"
+            mode={"outlined"}
+            style={{ marginHorizontal: 20, width: "100%", marginBottom: 40 }}
+            selectionColor={"black"}
+            cursorColor={"#F9C000"}
             onChangeText={(text) => {
               // setregister(prevState => ({...prevState,first_name:text}))
               dispatch(setRegister({ value: text, name: "last_name" }));
             }}
           />
-        </Box>
+        </View>
         {register.first_name !== "" && register.last_name !== "" ? (
           <Button
-            style={{ marginTop: "40%" }}
-            color="#FAC000"
-            variant={"outlined"}
-            title={"Next"}
-            onPress={() => navigation.navigate("Login")}
-          />
+            buttonColor="black"
+            textColor="white"
+            style={{
+              width: 220,
+              marginBottom: 20,
+              borderRadius: 15,
+              marginLeft: "auto",
+              marginRight: "auto",
+              height: 40,
+              justifyContent: "center",
+            }}
+            mode="elevated"
+            onPress={() => navigation.navigate("SignUpEmailScreens")}
+          >
+            Next
+          </Button>
         ) : null}
+
+        <Button
+          buttonColor="white"
+          textColor="black"
+          style={{
+            width: 220,
+            marginBottom: 20,
+            borderRadius: 15,
+            marginLeft: "auto",
+            marginRight: "auto",
+            height: 40,
+            justifyContent: "center",
+          }}
+          mode="elevated"
+          onPress={() => navigation.navigate("Login")}
+        >
+          Back to Login
+        </Button>
       </ScrollView>
     </View>
   );

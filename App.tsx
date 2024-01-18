@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider } from "react-redux";
 import { store } from "./redux/app/store";
 import AllScreens from "./screens";
-import { Animated } from "react-native";
+import { Animated, StatusBar } from "react-native";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 
@@ -13,10 +13,11 @@ export default function App() {
     duration: 1000,
     useNativeDriver: true,
   }).start();
-  useEffect(() => {}, []);
+
   return (
     <Provider store={store}>
       <PaperProvider>
+        <StatusBar />
         <AllScreens />
       </PaperProvider>
     </Provider>

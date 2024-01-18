@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import React, { useState } from "react";
 import { Button, Surface, Text } from "react-native-paper";
 import CfIcon from "../../assets/images/CF-Icon.svg";
@@ -11,24 +11,13 @@ export default function Login({ navigation }) {
   const [showPassword, setshowPassword] = useState(false);
 
   const style = StyleSheet.create({
-    textInput: {
-      width: "100%",
-      backgroundColor: "",
-      paddingLeft: 10,
-      marginVertical: 20,
-      borderRadius: 1000,
-    },
     inputStyles: {
-      color: "#F9C000",
+      color: "black",
       borderBottomColor: "white",
     },
     container: {
-      flex: 1,
-      padding: 20,
-      backgroundColor: "#121212",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "white",
+      height: "100%",
+      backgroundColor: "white",
     },
   });
 
@@ -41,6 +30,7 @@ export default function Login({ navigation }) {
           setlogin({ email: "", password: "" });
           console.log(val.payload);
           dispatch(setCurrentUser(val.payload));
+          navigation.reset({ index: 0, routes: [{ name: "Home" }] });
         }
         if (val.meta.requestStatus === "rejected") {
           navigation.navigate("Login");
@@ -52,37 +42,38 @@ export default function Login({ navigation }) {
 
   return (
     <>
-      <View style={style.container}>
-        <CfIcon width={80} />
-        <Text
-          style={{
-            fontSize: 35,
-            fontWeight: "300",
-            color: "white",
-            marginTop: 20,
-            marginRight: "65%",
-          }}
-        >
-          Login
-        </Text>
+      <SafeAreaView>
+        <View style={style.container}>
+          <View
+            style={{
+              width: "auto",
+              justifyContent: "center",
+              marginTop: 30,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            <CfIcon width={110} />
+          </View>
+          <Text
+            style={{
+              fontSize: 35,
+              fontWeight: "800",
+              color: "black",
+              marginTop: 20,
+              marginRight: "65%",
+              margin: 20,
+            }}
+          >
+            Login
+          </Text>
 
-        <Surface
-          style={{
-            width: "95%",
-            marginBottom: 10,
-            marginTop: 10,
-            borderRadius: 10,
-            backgroundColor: "#121212",
-            alignItems: "center",
-            justifyContent: "space-around",
-          }}
-        >
           <TextInput
-            style={style.textInput}
             placeholder="Email"
-            textColor="white"
+            textColor="black"
             mode={"outlined"}
-            selectionColor={"white"}
+            selectionColor={"black"}
+            style={{ marginBottom: 25, marginHorizontal: 20 }}
             onChangeText={(text) =>
               setlogin((prevState) => ({ ...prevState, email: text }))
             }
@@ -91,11 +82,11 @@ export default function Login({ navigation }) {
           />
 
           <TextInput
-            style={style.textInput}
             placeholder="Password"
-            textColor="white"
+            textColor="black"
             mode={"outlined"}
-            selectionColor={"white"}
+            style={{ marginHorizontal: 20 }}
+            selectionColor={"black"}
             cursorColor={"#F9C000"}
             defaultValue={login.password}
             onChangeText={(text) =>
@@ -110,52 +101,60 @@ export default function Login({ navigation }) {
             secureTextEntry={!showPassword ? true : false}
             keyboardType={"email-address"}
           />
-        </Surface>
 
-        <View
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            width: "100%",
-            direction: "ltr",
-          }}
-        >
-          <Button
-            mode="contained"
-            onPress={() => {
-              handleLoginUser();
-              navigation.navigate("Loading");
-            }}
+          <View
             style={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
               width: "100%",
-              marginBottom: 20,
-              height: 40,
-              justifyContent: "center",
+              marginTop: 60,
+              direction: "ltr",
             }}
           >
-            Login
-          </Button>
-          <Text
-            style={{ color: "white", textAlign: "center", marginBottom: 20 }}
-          >
-            Don't have an account?
-          </Text>
-          <Button
-            style={{
-              width: "100%",
-              marginBottom: 20,
-              height: 40,
-              justifyContent: "center",
-            }}
-            mode="elevated"
-            onPress={() => {
-              navigation.navigate("SignUpNamesScreens");
-            }}
-          >
-            Sign Up
-          </Button>
+            <Button
+              mode="elevated"
+              buttonColor="black"
+              textColor="white"
+              onPress={() => {
+                handleLoginUser();
+                navigation.navigate("Loading");
+              }}
+              style={{
+                width: 220,
+                marginBottom: 20,
+                borderRadius: 15,
+                height: 40,
+                justifyContent: "center",
+              }}
+            >
+              Login
+            </Button>
+            <Text
+              style={{ color: "black", textAlign: "center", marginBottom: 20 }}
+            >
+              Don't have an account?
+            </Text>
+            <Button
+              buttonColor="white"
+              textColor="black"
+              style={{
+                width: 220,
+                marginBottom: 20,
+                borderRadius: 15,
+                height: 40,
+                justifyContent: "center",
+              }}
+              mode="elevated"
+              onPress={() => {
+                navigation.navigate("SignUpNamesScreens");
+              }}
+            >
+              Sign Up
+            </Button>
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     </>
   );
 }

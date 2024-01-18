@@ -84,7 +84,7 @@ const RegimentScreen = ({ navigation }) => {
             color: "black",
             marginTop: 30,
             fontWeight: "500",
-            textAlign: "center",
+            textAlign: "left",
             marginVertical: 20,
           }}
         >
@@ -95,12 +95,12 @@ const RegimentScreen = ({ navigation }) => {
           textColor="white"
           onPress={() => navigation.navigate("Create Regiment")}
           style={{
-            marginVertical: 25,
+            marginVertical: 15,
             width: 180,
             padding: 5,
-            marginRight: 30,
-            backgroundColor: "#4f1d9e",
-            borderColor: "#6023c0",
+            marginRight: 15,
+            backgroundColor: "black",
+            borderColor: "black",
             marginLeft: "auto",
           }}
           icon={"plus"}
@@ -139,8 +139,8 @@ const RegimentScreen = ({ navigation }) => {
                   <Surface
                     elevation={1}
                     style={{
-                      backgroundColor: "#e5daf8",
-                      borderColor: "#a379e7",
+                      backgroundColor: "black",
+                      borderColor: "white",
                       borderWidth: 2,
                       borderRadius: 10,
                       padding: 10,
@@ -158,7 +158,7 @@ const RegimentScreen = ({ navigation }) => {
                         style={{
                           fontSize: 22,
                           fontWeight: "500",
-                          color: "#3b1676",
+                          color: "white",
                           marginBottom: 10,
                           marginLeft: 5,
                         }}
@@ -169,13 +169,11 @@ const RegimentScreen = ({ navigation }) => {
                         style={{
                           marginRight: 5,
                           marginBottom: 15,
-                          backgroundColor: val.isCompleted
-                            ? "#b795ec"
-                            : "#3b1676",
+                          backgroundColor: val.isCompleted ? "white" : "red",
                         }}
                       ></Badge>
                     </View>
-                    <Text style={{ textAlign: "center", color: "#3b1676" }}>
+                    <Text style={{ textAlign: "center", color: "white" }}>
                       {val.description}
                     </Text>
                     <View

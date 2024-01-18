@@ -62,16 +62,16 @@ const Settings = ({ navigation }) => {
   useEffect(() => {
     if (currentUser !== undefined || currentUser !== null) {
       setMetricChecked(
-        currentUser.existingUser.settings?.weight === "kg" ? true : false
+        currentUser.existingUser?.settings?.weight === "kg" ? true : false
       );
       setThemeChecked(
-        currentUser.existingUser.settings?.theme === "light" ? true : false
+        currentUser.existingUser?.settings?.theme === "light" ? true : false
       );
       setInchesChecked(
-        currentUser.existingUser.settings?.size === "inches" ? true : false
+        currentUser.existingUser?.settings?.size === "inches" ? true : false
       );
       setDistanceChecked(
-        currentUser.existingUser.settings?.distance === "km" ? true : false
+        currentUser.existingUser?.settings?.distance === "km" ? true : false
       );
     }
   }, [currentUser]);
@@ -169,6 +169,10 @@ const Settings = ({ navigation }) => {
         onPress={() => {
           dispatch(setCurrentUser({}));
           navigation.navigate("Login");
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Login" }],
+          });
         }}
       />
     </View>
