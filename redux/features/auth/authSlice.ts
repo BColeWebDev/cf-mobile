@@ -39,17 +39,17 @@ const initialState = {
     last_name: "",
     email: "",
     password: "",
-    reEnterPassword: "",
     bio: "",
     experience: "",
     crown_member: false,
     age: "",
-    sex: "",
+    sex: "M",
     device: Platform.OS,
   },
   isError: false,
   isLoading: false,
   isSuccess: false,
+  messages: [],
   message: "",
   isLoggedIn: isLoggedIn ? true : false,
   currentUser: currentUser && isLoggedIn ? currentUser : {},
@@ -124,6 +124,9 @@ export const authSlice = createSlice({
         [action.payload.name]: action.payload.value,
       };
     },
+    resetRegister: (state) => {
+      state.register = initialState.register;
+    },
     updateCurrentUser: (state, action) => {
       console.log(action.payload);
       if (state.isLoggedIn) {
@@ -167,15 +170,18 @@ export const authSlice = createSlice({
       .addCase(RegisterUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        console.log(action.payload);
+        state.message = action.payload.message;
       })
-      .addCase(RegisterUser.rejected, (state, action) => {
+      .addCase(RegisterUser.rejected, (state, action: any) => {
         state.isLoading = false;
         state.isError = true;
+        state.messages = action.payload!.response.data.errors;
       });
   },
 });
 
-export const { setCurrentUser, updateCurrentUser, setRegister } =
+export const { setCurrentUser, updateCurrentUser, resetRegister, setRegister } =
   authSlice.actions;
 
 export default authSlice.reducer;

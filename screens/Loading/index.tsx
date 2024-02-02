@@ -11,6 +11,7 @@ export default function Loading() {
       alignItems: "center",
       justifyContent: "center",
       color: "white",
+      width: "100%",
     },
   });
 

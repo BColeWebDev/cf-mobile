@@ -176,7 +176,7 @@ export default function RegimentDetails({ route, navigation }) {
               if (val.day === name) {
                 return (
                   <View key={idx} style={{ backgroundColor: "white", flex: 1 }}>
-                    <Image
+                    {/* <Image
                       source={{ uri: image }}
                       style={{
                         width: 200,
@@ -185,7 +185,7 @@ export default function RegimentDetails({ route, navigation }) {
                         marginLeft: "auto",
                         marginRight: "auto",
                       }}
-                    />
+                    /> */}
 
                     <TouchableHighlight
                       onPress={() => {
@@ -218,8 +218,8 @@ export default function RegimentDetails({ route, navigation }) {
                         padding: 10,
                         marginTop: 20,
                         width: "95%",
-                        borderColor: "#e5daf8",
-                        borderWidth: 2,
+                        borderColor: "#211a23",
+                        borderWidth: 1,
                         marginLeft: "auto",
                         marginRight: "auto",
                         backgroundColor: "white",
@@ -244,7 +244,11 @@ export default function RegimentDetails({ route, navigation }) {
                           >
                             {val.name}
                           </Text>
-                          <Chip mode={"flat"} selectedColor="purple">
+                          <Chip
+                            mode={"flat"}
+                            selectedColor="white"
+                            style={{ backgroundColor: "black" }}
+                          >
                             {val.day}
                           </Chip>
                         </View>
@@ -263,7 +267,19 @@ export default function RegimentDetails({ route, navigation }) {
                       </View>
                     </TouchableHighlight>
                     <Button
-                      style={{ marginBottom: 20, marginTop: 20 }}
+                      style={{
+                        width: 220,
+                        marginBottom: 20,
+                        marginTop: 20,
+                        backgroundColor: "#211a23",
+                        borderRadius: 15,
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        height: 40,
+                        justifyContent: "center",
+                      }}
+                      mode="elevated"
+                      textColor="white"
                       onPress={() => {
                         navigation.navigate("Workouts", {
                           ...route,
@@ -319,7 +335,7 @@ export default function RegimentDetails({ route, navigation }) {
                               marginHorizontal: 10,
                               padding: 0,
 
-                              backgroundColor: "#4f1d9e",
+                              backgroundColor: "#2e242c",
                               borderRadius: 15,
                               marginBottom: 10,
                             }}
@@ -443,8 +459,8 @@ export default function RegimentDetails({ route, navigation }) {
             }
             style={{
               padding: 5,
-              backgroundColor: "#6023c0",
-              borderColor: "#e5daf8",
+              backgroundColor: "red",
+              borderColor: "black",
               marginLeft: "auto",
             }}
             icon={"plus"}
@@ -469,7 +485,7 @@ export default function RegimentDetails({ route, navigation }) {
           display: "flex",
           padding: 10,
           width: "100%",
-          backgroundColor: "#4f1d9e",
+          backgroundColor: "#110c11",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
@@ -503,8 +519,8 @@ export default function RegimentDetails({ route, navigation }) {
             }
             style={{
               padding: 5,
-              backgroundColor: "#6023c0",
-              borderColor: "#e5daf8",
+              backgroundColor: "#211a23",
+              borderColor: "black",
               marginLeft: "auto",
             }}
             icon={"plus"}

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../../../redux/app/store";
 import { getAllWorkouts } from "../../../../../../../../redux/features/workouts/workoutSlice";
+import Loading from "../../../../../../../Loading";
 
 const WorkoutDetails = ({ route, navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,6 +22,24 @@ const WorkoutDetails = ({ route, navigation }) => {
     (value) => value.id === route.params.workoutId
   )[0];
   console.log("workoutDetails", workoutsDetails);
+
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          flex: 1,
+          width: "100%",
+        }}
+      >
+        <Loading />
+      </View>
+    );
+  }
+
   return (
     <View
       style={{

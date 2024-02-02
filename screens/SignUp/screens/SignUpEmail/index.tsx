@@ -1,15 +1,43 @@
-import { View, StyleSheet, ScrollView } from "react-native";
-import { Button, TextInput, Text } from "react-native-paper";
-import React, { useState } from "react";
+import { View, StyleSheet, ScrollView, PixelRatio } from "react-native";
+import {
+  Button,
+  TextInput,
+  Text,
+  ActivityIndicator,
+  Snackbar,
+} from "react-native-paper";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../redux/app/store";
-import { setRegister } from "../../../../redux/features/auth/authSlice";
+import {
+  RegisterUser,
+  resetRegister,
+  setRegister,
+} from "../../../../redux/features/auth/authSlice";
 
 const SignUpEmail = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { register } = useSelector((state: RootState) => state.auth);
+  const { register, isLoading, isError, isSuccess, messages, message } =
+    useSelector((state: RootState) => state.auth);
   console.log("register", register);
   const [showPassword, setshowPassword] = useState(false);
+  const [visible, setvisible] = useState(false);
+  const [successvisible, setSuccessVisible] = useState(false);
+  const handleRegister = () => {
+    dispatch(RegisterUser(register)).then((val) => {
+      // Successfully submitted
+      if (val.meta.requestStatus === "fulfilled") {
+        setSuccessVisible(true);
+        navigation.navigate("Login");
+        dispatch(resetRegister());
+      }
+      // error message
+      if (val.meta.requestStatus === "rejected") {
+        console.log(val.payload.response.data.errors);
+        setvisible(true);
+      }
+    });
+  };
 
   const style = StyleSheet.create({
     textInput: {
@@ -30,6 +58,17 @@ const SignUpEmail = ({ navigation }) => {
       color: "white",
     },
   });
+
+  useEffect(() => {
+    if (isError) {
+      setvisible(!visible);
+    }
+  }, [isError]);
+  useEffect(() => {
+    if (isSuccess) {
+      setSuccessVisible(!successvisible);
+    }
+  }, [isSuccess]);
   return (
     <View style={style.container}>
       <ScrollView
@@ -51,13 +90,13 @@ const SignUpEmail = ({ navigation }) => {
           {/* <CfIcon/> */}
           <Text
             style={{
-              fontSize: 35,
+              fontSize: 25,
               marginLeft: 20,
-              fontWeight: "900",
+
               color: "black",
             }}
           >
-            Sign Up
+            Sign Up - Email
           </Text>
         </View>
         <View
@@ -105,34 +144,12 @@ const SignUpEmail = ({ navigation }) => {
             secureTextEntry={!showPassword ? true : false}
             keyboardType={"email-address"}
           />
-
-          <TextInput
-            placeholder="Re-Enter Password"
-            textColor="black"
-            mode={"outlined"}
-            style={{ marginHorizontal: 20, width: "100%", marginBottom: 40 }}
-            selectionColor={"black"}
-            cursorColor={"black"}
-            onChangeText={(text) => {
-              // setregister(prevState => ({...prevState,first_name:text}))
-              dispatch(setRegister({ value: text, name: "reEnterPassword" }));
-            }}
-            right={
-              <TextInput.Icon
-                icon={"eye"}
-                onPress={() => setshowPassword(!showPassword)}
-              />
-            }
-            secureTextEntry={!showPassword ? true : false}
-            keyboardType={"email-address"}
-          />
         </View>
-        {register.password === register.reEnterPassword &&
-        register.password !== "" &&
-        register.reEnterPassword !== "" ? (
+        {register.email !== "" && register.password !== "" ? (
           <Button
+            disabled={isLoading}
             style={{
-              marginTop: "40%",
+              marginTop: PixelRatio.get() * 5,
               width: 220,
               marginLeft: "auto",
               marginRight: "auto",
@@ -140,12 +157,55 @@ const SignUpEmail = ({ navigation }) => {
             buttonColor="black"
             textColor="white"
             mode={"outlined"}
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => {
+              if (isLoading) {
+                return;
+              }
+              handleRegister();
+            }}
           >
-            Next
+            {isLoading ? <ActivityIndicator color="gray" /> : "Submit"}
+          </Button>
+        ) : null}
+        {!isLoading ? (
+          <Button
+            style={{
+              marginTop: PixelRatio.get() * 5,
+              width: 220,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+            buttonColor="black"
+            textColor="white"
+            mode="elevated"
+            onPress={() => navigation.navigate("SignUpNamesScreens")}
+          >
+            Back to Login
           </Button>
         ) : null}
       </ScrollView>
+      <Snackbar
+        visible={visible}
+        duration={3000}
+        elevation={3}
+        style={{ backgroundColor: "red" }}
+        onDismiss={() => setvisible(!visible)}
+      >
+        {messages.map((val) => (
+          <Text style={{ color: "white" }}>{val}</Text>
+        ))}
+      </Snackbar>
+      {isSuccess ? (
+        <Snackbar
+          visible={successvisible}
+          duration={3000}
+          elevation={3}
+          style={{ backgroundColor: "green" }}
+          onDismiss={() => setSuccessVisible(!successvisible)}
+        >
+          {message}
+        </Snackbar>
+      ) : null}
     </View>
   );
 };

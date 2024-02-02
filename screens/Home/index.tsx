@@ -50,7 +50,7 @@ export default function Home({ navigation }) {
         }}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Nutritions"
         component={NutritionScreen}
         options={{
@@ -59,7 +59,7 @@ export default function Home({ navigation }) {
             <PlatIcon width={size} fill={color} />
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 }

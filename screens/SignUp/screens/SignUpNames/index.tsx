@@ -1,16 +1,12 @@
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  Platform,
-} from "react-native";
-import { Button, Surface, TextInput, Text } from "react-native-paper";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { Button, RadioButton, TextInput, Text } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-import { ActivityIndicator } from "@react-native-material/core";
 import React from "react";
 import { AppDispatch, RootState } from "../../../../redux/app/store";
-import { setRegister } from "../../../../redux/features/auth/authSlice";
+import {
+  resetRegister,
+  setRegister,
+} from "../../../../redux/features/auth/authSlice";
 
 const SignUpNamesScreens = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,13 +49,12 @@ const SignUpNamesScreens = ({ navigation }) => {
           {/* <CfIcon/> */}
           <Text
             style={{
-              fontSize: 35,
+              fontSize: 25,
               marginLeft: 20,
-              fontWeight: "600",
               color: "black",
             }}
           >
-            Sign Up
+            Sign Up - Name
           </Text>
         </View>
         <View
@@ -74,7 +69,7 @@ const SignUpNamesScreens = ({ navigation }) => {
           }}
         >
           <TextInput
-            placeholder="First Name"
+            placeholder="Last Name"
             textColor="black"
             mode={"outlined"}
             style={{ marginHorizontal: 20, width: "100%", marginBottom: 40 }}
@@ -83,7 +78,6 @@ const SignUpNamesScreens = ({ navigation }) => {
             defaultValue={register.first_name}
             onChangeText={(text) => {
               console.log("text", text);
-              // setregister(prevState => ({...prevState,first_name:text}))
               dispatch(setRegister({ value: text, name: "first_name" }));
             }}
           />
@@ -95,12 +89,121 @@ const SignUpNamesScreens = ({ navigation }) => {
             selectionColor={"black"}
             cursorColor={"#F9C000"}
             onChangeText={(text) => {
-              // setregister(prevState => ({...prevState,first_name:text}))
               dispatch(setRegister({ value: text, name: "last_name" }));
             }}
           />
+
+          <TextInput
+            placeholder="Age"
+            textColor="black"
+            mode={"outlined"}
+            style={{ marginHorizontal: 20, width: "100%", marginBottom: 40 }}
+            selectionColor={"black"}
+            keyboardType={"numeric"}
+            cursorColor={"#F9C000"}
+            onChangeText={(text) => {
+              dispatch(setRegister({ value: text, name: "age" }));
+            }}
+          />
+
+          <TextInput
+            placeholder="Bio"
+            textColor="black"
+            mode={"outlined"}
+            style={{
+              marginHorizontal: 20,
+              width: "100%",
+              height: 120,
+              marginBottom: 40,
+            }}
+            selectionColor={"black"}
+            keyboardType={"number-pad"}
+            cursorColor={"#F9C000"}
+            onChangeText={(text) => {
+              // setregister(prevState => ({...prevState,first_name:text}))
+              dispatch(setRegister({ value: text, name: "bio" }));
+            }}
+          />
+
+          <Text
+            style={{
+              fontSize: 20,
+              textAlign: "left",
+              width: "100%",
+              marginBottom: 16,
+            }}
+          >
+            Experience
+          </Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text style={{ fontSize: 16 }}>Beginner</Text>
+            <RadioButton
+              value="beginner"
+              status={
+                register.experience === "beginner" ? "checked" : "unchecked"
+              }
+              onPress={() => {
+                dispatch(
+                  setRegister({ value: "beginner", name: "experience" })
+                );
+              }}
+            />
+          </View>
+
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text style={{ fontSize: 16 }}>Intermediate</Text>
+            <RadioButton
+              value="intermediate"
+              status={
+                register.experience === "intermediate" ? "checked" : "unchecked"
+              }
+              onPress={() => {
+                dispatch(
+                  setRegister({ value: "intermediate", name: "experience" })
+                );
+              }}
+            />
+          </View>
+
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text style={{ fontSize: 16 }}>Advance</Text>
+            <RadioButton
+              value="advance"
+              status={
+                register.experience === "advance" ? "checked" : "unchecked"
+              }
+              onPress={() => {
+                dispatch(setRegister({ value: "advance", name: "experience" }));
+              }}
+            />
+          </View>
         </View>
-        {register.first_name !== "" && register.last_name !== "" ? (
+        {register.first_name !== "" &&
+        register.last_name !== "" &&
+        register.age !== "" &&
+        register.experience !== "" &&
+        register.bio !== "" ? (
           <Button
             buttonColor="black"
             textColor="white"
@@ -133,7 +236,10 @@ const SignUpNamesScreens = ({ navigation }) => {
             justifyContent: "center",
           }}
           mode="elevated"
-          onPress={() => navigation.navigate("Login")}
+          onPress={() => {
+            navigation.navigate("Login");
+            dispatch(resetRegister());
+          }}
         >
           Back to Login
         </Button>
