@@ -48,7 +48,8 @@ export default function RegimentDetails({ route, navigation }) {
     container: {
       flex: 1,
       justifyContent: "flex-start",
-
+      padding:10,
+      backgroundColor:"#3D4663",
       alignItems: "center",
       display: "flex",
     },
@@ -148,14 +149,14 @@ export default function RegimentDetails({ route, navigation }) {
     }
   }, [route]);
 
-  useEffect(() => {
-    fetchImage();
-  }, []);
+  // useEffect(() => {
+  //   fetchImage();
+  // }, []);
   const ProfileScreen = ({ name }) => {
     return (
       <View style={style.container}>
         <ScrollView
-          style={{ width: "100%" }}
+          style={{ width: "100%", height:"100%"}}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -175,7 +176,7 @@ export default function RegimentDetails({ route, navigation }) {
             data.routines.map((val, idx) => {
               if (val.day === name) {
                 return (
-                  <View key={idx} style={{ backgroundColor: "white", flex: 1 }}>
+                  <View key={idx} style={{ backgroundColor: "white", borderRadius:10 }}>
                     {/* <Image
                       source={{ uri: image }}
                       style={{
@@ -417,74 +418,79 @@ export default function RegimentDetails({ route, navigation }) {
       fetchImage();
     }, 2000);
   }, [refreshing]);
-  return days.length === 0 ? (
-    <View>
+
+  if(days.length ===0){
+    return   <View>
+    <View
+      style={{
+        marginHorizontal: "auto",
+        display: "flex",
+        padding: 10,
+        width: "100%",
+        backgroundColor: "#110c11",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <View
         style={{
-          marginHorizontal: "auto",
           display: "flex",
-          padding: 10,
-          width: "100%",
-          backgroundColor: "#4f1d9e",
-          flexDirection: "column",
-          justifyContent: "center",
+          flexDirection: "row",
+          justifyContent: "space-between",
           alignItems: "center",
+          width: "100%",
+          marginBottom: 20,
         }}
       >
-        <View
+        <Text
           style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            marginBottom: 20,
+            textAlign: "left",
+            fontSize: 30,
+            fontWeight: "600",
+            color: "white",
           }}
         >
-          <Text
-            style={{
-              textAlign: "left",
-              fontSize: 30,
-              fontWeight: "600",
-              color: "white",
-            }}
-          >
-            {detailInfo.name}
-          </Text>
-          <Button
-            mode="outlined"
-            textColor="white"
-            onPress={() =>
-              navigation.navigate("Create Workout", detailInfo._id)
-            }
-            style={{
-              padding: 5,
-              backgroundColor: "red",
-              borderColor: "black",
-              marginLeft: "auto",
-            }}
-            icon={"plus"}
-          >
-            Create Training Day
-          </Button>
-        </View>
-
-        <Text style={{ width: "100%", color: "white", textAlign: "left" }}>
-          {detailInfo.description}
+          {detailInfo.name}
         </Text>
+        <Button
+          mode="outlined"
+          textColor="white"
+          onPress={() =>
+            navigation.navigate("Create Workout", detailInfo._id)
+          }
+          style={{
+            padding: 5,
+            backgroundColor: "#211a23",
+            borderColor: "black",
+            marginLeft: "auto",
+          }}
+          icon={"plus"}
+        >
+          Create Training Day
+        </Button>
       </View>
-      <Text style={{ textAlign: "center", marginTop: 50 }}>
-        No Training Days
+
+      <Text style={{ width: "100%", color: "white", textAlign: "left" }}>
+        {detailInfo.description}
       </Text>
     </View>
-  ) : (
-    <>
+    <Text style={{ textAlign: "center", marginTop: 50 }}>
+      No Training Days
+    </Text>
+  </View>
+  }
+
+
+
+  return  <>
       <View
         style={{
           marginHorizontal: "auto",
           display: "flex",
           padding: 10,
           width: "100%",
+
           backgroundColor: "#110c11",
           flexDirection: "column",
           justifyContent: "center",
@@ -537,7 +543,7 @@ export default function RegimentDetails({ route, navigation }) {
       <Tab.Navigator>
         <Tab.Group>
           {days?.map((val, idx) => (
-            <Tab.Screen key={idx} name={names[val]}>
+            <Tab.Screen  key={idx} name={names[val]}>
               {(prop) => <ProfileScreen name={val} />}
             </Tab.Screen>
           ))}
@@ -556,5 +562,5 @@ export default function RegimentDetails({ route, navigation }) {
         Hey there! I'm a Snackbar.
       </Snackbar>
     </>
-  );
+  
 }
