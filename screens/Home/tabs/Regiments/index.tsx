@@ -24,6 +24,7 @@ import {
   getRegiments,
 } from "../../../../redux/features/regiments/regimentsSlice";
 import { useSelector } from "react-redux";
+import { getAllWorkouts } from "../../../../redux/features/workouts/workoutSlice";
 
 const RegimentScreen = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -56,17 +57,13 @@ const RegimentScreen = ({ navigation }) => {
       display: "flex",
     },
   });
-  console.log("data", data);
+
   useEffect(() => {
     if (currentUser !== undefined) {
-      dispatch(getRegiments(currentUser?.existingUser?._id)).then((val) => {
-        if (val.meta.requestStatus === "fulfilled") {
-          console.log("val", val);
-        }
-        if (val.meta.requestStatus === "rejected") {
-          console.log("val", val);
-        }
-      });
+      dispatch(getRegiments(currentUser?.existingUser?._id));
+      dispatch(
+        getAllWorkouts({ token: currentUser.userToken, page: 1, limit: 100 })
+      );
     }
   }, [currentUser]);
 

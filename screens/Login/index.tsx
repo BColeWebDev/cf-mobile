@@ -73,7 +73,11 @@ export default function Login({ navigation }) {
             textColor="black"
             mode={"outlined"}
             selectionColor={"black"}
-            style={{ marginBottom: 25, marginHorizontal: 20 }}
+            style={{
+              marginBottom: 25,
+              marginHorizontal: 20,
+              backgroundColor: "white",
+            }}
             onChangeText={(text) =>
               setlogin((prevState) => ({ ...prevState, email: text }))
             }
@@ -85,7 +89,7 @@ export default function Login({ navigation }) {
             placeholder="Password"
             textColor="black"
             mode={"outlined"}
-            style={{ marginHorizontal: 20 }}
+            style={{ marginHorizontal: 20, backgroundColor: "white" }}
             selectionColor={"black"}
             cursorColor={"#F9C000"}
             defaultValue={login.password}

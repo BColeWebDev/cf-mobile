@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import workoutServices from "./workoutService";
 import { RootState } from "../../app/store";
+import { IUpdateTrainingDaysForm } from "../interfaces/ITrainingDays";
 
 const initialState = {
   workouts: {},
@@ -113,6 +114,24 @@ export const deleteWorkout = createAsyncThunk<any, any, { state: RootState }>(
   }
 );
 
+export const updateWorkout = createAsyncThunk<
+  IUpdateTrainingDaysForm,
+  IUpdateTrainingDaysForm,
+  { state: RootState }
+>(`workouts/updateWorkout`, async (obj: IUpdateTrainingDaysForm, thunkAPI) => {
+  try {
+    const { currentUser } = thunkAPI.getState().auth;
+    console.log("OBJ", obj);
+    const response = await workoutServices.updateWorkout(
+      obj,
+      currentUser.userToken
+    );
+    return response;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
 export const workoutSlice = createSlice({
   name: "workouts",
   initialState,
@@ -185,6 +204,18 @@ export const workoutSlice = createSlice({
         state.isSuccess = true;
       })
       .addCase(createNewWorkout.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(updateWorkout.pending, (state) => {
+        state.isLoading = true;
+      })
+      // when data hase been received
+      .addCase(updateWorkout.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(updateWorkout.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });

@@ -9,8 +9,7 @@ import {
   Platform,
 } from "react-native";
 import React, { useEffect, useState, useCallback } from "react";
-import { Button, Chip, Snackbar } from "react-native-paper";
-
+import { Button, Chip, List, Snackbar } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../../redux/app/store";
 import { useSelector } from "react-redux";
@@ -21,8 +20,12 @@ import {
 import { getSingleRegiment } from "../../../../../../redux/features/regiments/regimentsSlice";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import TrainingDayScreens from "./screens/TrainingDayScreens";
-import { deleteWorkout } from "../../../../../../redux/features/workouts/workoutSlice";
+import {
+  deleteWorkout,
+  updateWorkout,
+} from "../../../../../../redux/features/workouts/workoutSlice";
 import axios from "axios";
+import { useIsFocused } from "@react-navigation/native";
 let names = {
   monday: "Mon",
   tuesday: "Tues",
@@ -42,14 +45,16 @@ Update Workout (Replace)
 const Tab = createMaterialTopTabNavigator();
 
 export default function RegimentDetails({ route, navigation }) {
-  /* 2. Get the param */
+  const isFocused = useIsFocused();
 
+  /* 2. Get the param */
+  const dispatch = useDispatch<AppDispatch>();
   const style = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: "flex-start",
-      padding:10,
-      backgroundColor:"#3D4663",
+      padding: 10,
+      backgroundColor: "#3D4663",
       alignItems: "center",
       display: "flex",
     },
@@ -62,9 +67,11 @@ export default function RegimentDetails({ route, navigation }) {
     secondaryMuscleGroup,
     isSuccess,
   } = useSelector((state: RootState) => state.trainingDays);
-  const { detailInfo } = useSelector((state: any) => state.regiments);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const { detailInfo } = useSelector((state: any) => state.regiments);
+  const { workouts, equipments, bodyTargets, muscles } = useSelector(
+    (state: any) => state.workouts
+  );
 
   const [refreshing, setRefreshing] = React.useState(false);
   const [image, setImage] = useState<any>();
@@ -148,15 +155,31 @@ export default function RegimentDetails({ route, navigation }) {
       dispatch(getAllTrainingDays(route.params.regimentId));
     }
   }, [route]);
-
-  // useEffect(() => {
-  //   fetchImage();
-  // }, []);
-  const ProfileScreen = ({ name }) => {
+  const handleDeleteRegiment = (val) => {
+    dispatch(
+      deleteWorkout({
+        regimentId: detailInfo._id,
+        routineId: val._id,
+        id: val.id,
+      })
+    ).then((val) => {
+      if (val.meta.requestStatus === "fulfilled") {
+        if (route.params !== undefined) {
+          dispatch(getSingleRegiment(route.params));
+          dispatch(getAllTrainingDays(route.params));
+        }
+        if (route.params.regimentId !== undefined) {
+          dispatch(getSingleRegiment(route.params.regimentId));
+          dispatch(getAllTrainingDays(route.params.regimentId));
+        }
+      }
+    });
+  };
+  const WorkoutTab = ({ name }) => {
     return (
       <View style={style.container}>
         <ScrollView
-          style={{ width: "100%", height:"100%"}}
+          style={{ width: "100%", height: "100%" }}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -176,18 +199,10 @@ export default function RegimentDetails({ route, navigation }) {
             data.routines.map((val, idx) => {
               if (val.day === name) {
                 return (
-                  <View key={idx} style={{ backgroundColor: "white", borderRadius:10 }}>
-                    {/* <Image
-                      source={{ uri: image }}
-                      style={{
-                        width: 200,
-                        height: 180,
-                        marginTop: 35,
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                      }}
-                    /> */}
-
+                  <View
+                    key={idx}
+                    style={{ backgroundColor: "white", borderRadius: 10 }}
+                  >
                     <TouchableHighlight
                       onPress={() => {
                         navigation.navigate("Create Workout", {
@@ -196,22 +211,22 @@ export default function RegimentDetails({ route, navigation }) {
                           regimentId: detailInfo._id,
                         });
                       }}
-                      onLongPress={() => {
-                        dispatch(
-                          deleteTrainingDays({
-                            routineId: val._id,
-                            regimentId: detailInfo._id,
-                          })
-                        ).then((val) => {
-                          if (val.meta.requestStatus === "fulfilled") {
-                            dispatch(getAllTrainingDays(detailInfo._id));
-                          }
-                          if (val.meta.requestStatus === "rejected") {
-                            console.log(val);
-                            alert("not working");
-                          }
-                        });
-                      }}
+                      // onLongPress={() => {
+                      //   dispatch(
+                      //     deleteTrainingDays({
+                      //       routineId: val._id,
+                      //       regimentId: detailInfo._id,
+                      //     })
+                      //   ).then((val) => {
+                      //     if (val.meta.requestStatus === "fulfilled") {
+                      //       dispatch(getAllTrainingDays(detailInfo._id));
+                      //     }
+                      //     if (val.meta.requestStatus === "rejected") {
+                      //       console.log(val);
+                      //       alert("not working");
+                      //     }
+                      //   });
+                      // }}
                       key={idx}
                       underlayColor={"white"}
                       style={{
@@ -219,8 +234,7 @@ export default function RegimentDetails({ route, navigation }) {
                         padding: 10,
                         marginTop: 20,
                         width: "95%",
-                        borderColor: "#211a23",
-                        borderWidth: 1,
+
                         marginLeft: "auto",
                         marginRight: "auto",
                         backgroundColor: "white",
@@ -295,102 +309,144 @@ export default function RegimentDetails({ route, navigation }) {
 
                     <View style={{ marginHorizontal: 20, marginBottom: 70 }}>
                       {val.workouts.map((value, idx) => (
-                        <TouchableHighlight
-                          key={idx}
-                          onPress={() =>
-                            navigation.navigate("WorkoutsDetails", {
-                              workoutId: value.id,
-                            })
-                          }
-                          onLongPress={() =>
-                            dispatch(
-                              deleteWorkout({
-                                regimentId: detailInfo._id,
+                        <View>
+                          <TouchableHighlight
+                            key={idx}
+                            onPress={() =>
+                              navigation.navigate("WorkoutsDetails", {
+                                workoutId: value._id,
+                                sets: value.sets,
+                                restTime: value.restTime,
                                 routineId: val._id,
-                                id: value.id,
+                                regimentId: detailInfo._id,
+                                wId: value.id,
+                                btnName: "Update Workout",
+                                action: (val) => {
+                                  dispatch(
+                                    updateWorkout({
+                                      routineId: val._id,
+                                      workoutId: value._id,
+                                      regimentId: detailInfo._id,
+                                      sets: val.sets,
+                                      restTime: route.params.restTime,
+                                    })
+                                  ).then((value) => {
+                                    console.log("value", value);
+                                    if (
+                                      value.meta.requestStatus === "fulfilled"
+                                    ) {
+                                      navigation.goBack();
+                                    }
+                                  });
+                                },
                               })
-                            ).then((val) => {
-                              if (val.meta.requestStatus === "fulfilled") {
-                                if (route.params !== undefined) {
-                                  dispatch(getSingleRegiment(route.params));
-                                  dispatch(getAllTrainingDays(route.params));
-                                }
-                                if (route.params.regimentId !== undefined) {
-                                  dispatch(
-                                    getSingleRegiment(route.params.regimentId)
-                                  );
-                                  dispatch(
-                                    getAllTrainingDays(route.params.regimentId)
-                                  );
-                                }
-                              }
-                            })
-                          }
-                        >
-                          <View
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              marginHorizontal: 10,
-                              padding: 0,
-
-                              backgroundColor: "#2e242c",
-                              borderRadius: 15,
-                              marginBottom: 10,
-                            }}
+                            }
+                            onLongPress={() =>
+                              handleDeleteRegiment({
+                                id: value.id,
+                                _id: val._id,
+                              })
+                            }
                           >
                             <View
                               style={{
                                 display: "flex",
                                 flexDirection: "column",
-
-                                marginLeft: 10,
-                                padding: 10,
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                margin: 10,
+                                padding: 0,
                               }}
                             >
-                              <View>
-                                <Text
+                              <View
+                                style={{
+                                  width: "100%",
+                                  backgroundColor: "#2e242c",
+                                  borderRadius: 15,
+                                  marginLeft: 10,
+                                }}
+                              >
+                                <View
                                   style={{
-                                    fontSize: 20,
-                                    color: "white",
-                                    fontWeight: "600",
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    padding: 10,
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
                                   }}
                                 >
-                                  {value.name}
-                                </Text>
-                                <Text
-                                  style={{
-                                    fontSize: 20,
-                                    color: "white",
-                                  }}
-                                >
-                                  {" "}
-                                  {value.bodyPart}
-                                </Text>
-                              </View>
+                                  <View>
+                                    <Text
+                                      style={{
+                                        width: "100%",
+                                        fontSize: 14,
+                                        margin: 10,
+                                        color: "white",
+                                        fontWeight: "600",
+                                      }}
+                                    >
+                                      {value.name}
+                                    </Text>
 
-                              <View>
-                                <Text
-                                  style={{
-                                    color: "white",
-                                  }}
-                                >
-                                  {value.equipment}
-                                </Text>
-                                <Text
-                                  style={{
-                                    color: "white",
-                                  }}
-                                >
-                                  {value.muscle_target}
-                                </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 14,
+                                        margin: 10,
+                                        color: "white",
+                                      }}
+                                    >
+                                      {value.bodyPart}
+                                    </Text>
+                                  </View>
+
+                                  <Image
+                                    source={{
+                                      uri: workouts?.items.filter(
+                                        (workout) => workout.id == value.id
+                                      )[0].gifUrl,
+                                    }}
+                                    style={{
+                                      width: 75,
+                                      height: 75,
+                                      borderRadius: 150 / 2,
+                                      overflow: "hidden",
+                                      borderWidth: 3,
+                                      borderColor: "black",
+                                    }}
+                                  />
+                                </View>
+
+                                {/* Sets */}
+                                {value.sets.map((value, key) => (
+                                  <View
+                                    key={key}
+                                    style={{
+                                      display: "flex",
+                                      margin: 0,
+                                      padding: 10,
+                                      backgroundColor: "black",
+                                      flexDirection: "row",
+                                      borderEndEndRadius: 15,
+                                      borderBottomLeftRadius: 15,
+                                      justifyContent: "space-evenly",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    <Text style={{ color: "white" }}>
+                                      Sets {value.sets}
+                                    </Text>
+                                    <Text style={{ color: "white" }}>
+                                      Reps {value.reps}
+                                    </Text>
+                                    <Text style={{ color: "white" }}>
+                                      Kg {value.weight}
+                                    </Text>
+                                  </View>
+                                ))}
                               </View>
                             </View>
-                            {/* TODO: Displaying Image */}
-                          </View>
-                        </TouchableHighlight>
+                          </TouchableHighlight>
+                        </View>
                       ))}
                     </View>
                   </View>
@@ -415,75 +471,89 @@ export default function RegimentDetails({ route, navigation }) {
           setRefreshing(false);
         }
       });
-      fetchImage();
+      // fetchImage();
     }, 2000);
   }, [refreshing]);
 
-  if(days.length ===0){
-    return   <View>
-    <View
-      style={{
-        marginHorizontal: "auto",
-        display: "flex",
-        padding: 10,
-        width: "100%",
-        backgroundColor: "#110c11",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-          marginBottom: 20,
-        }}
-      >
-        <Text
-          style={{
-            textAlign: "left",
-            fontSize: 30,
-            fontWeight: "600",
-            color: "white",
-          }}
-        >
-          {detailInfo.name}
-        </Text>
-        <Button
-          mode="outlined"
-          textColor="white"
-          onPress={() =>
-            navigation.navigate("Create Workout", detailInfo._id)
-          }
-          style={{
-            padding: 5,
-            backgroundColor: "#211a23",
-            borderColor: "black",
-            marginLeft: "auto",
-          }}
-          icon={"plus"}
-        >
-          Create Training Day
-        </Button>
-      </View>
+  useEffect(() => {
+    console.log("isFocused", isFocused);
+    dispatch(getAllTrainingDays(detailInfo._id)).then((val) => {
+      if (val.meta.requestStatus === "fulfilled") {
+        setRefreshing(false);
+      }
+      if (val.meta.requestStatus === "rejected") {
+        console.log(val);
+        setRefreshing(false);
+      }
+    });
+  }, [isFocused]);
 
-      <Text style={{ width: "100%", color: "white", textAlign: "left" }}>
-        {detailInfo.description}
-      </Text>
-    </View>
-    <Text style={{ textAlign: "center", marginTop: 50 }}>
-      No Training Days
-    </Text>
-  </View>
+  if (days.length === 0) {
+    return (
+      <View>
+        <View
+          style={{
+            marginHorizontal: "auto",
+            display: "flex",
+            padding: 10,
+            width: "100%",
+            backgroundColor: "#110c11",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              marginBottom: 20,
+            }}
+          >
+            <Text
+              style={{
+                textAlign: "left",
+                fontSize: 30,
+                fontWeight: "600",
+                color: "white",
+              }}
+            >
+              {detailInfo.name}
+            </Text>
+            <Button
+              mode="outlined"
+              textColor="white"
+              onPress={() =>
+                navigation.navigate("Create Workout", detailInfo._id)
+              }
+              style={{
+                padding: 5,
+                backgroundColor: "#211a23",
+                borderColor: "black",
+                marginLeft: "auto",
+              }}
+              icon={"plus"}
+            >
+              Create Training Day
+            </Button>
+          </View>
+
+          <Text style={{ width: "100%", color: "white", textAlign: "left" }}>
+            {detailInfo.description}
+          </Text>
+        </View>
+        <Text style={{ textAlign: "center", marginTop: 50 }}>
+          No Training Days
+        </Text>
+      </View>
+    );
   }
 
-
-
-  return  <>
+  return (
+    <>
       <View
         style={{
           marginHorizontal: "auto",
@@ -543,8 +613,8 @@ export default function RegimentDetails({ route, navigation }) {
       <Tab.Navigator>
         <Tab.Group>
           {days?.map((val, idx) => (
-            <Tab.Screen  key={idx} name={names[val]}>
-              {(prop) => <ProfileScreen name={val} />}
+            <Tab.Screen key={idx} name={names[val]}>
+              {(prop) => <WorkoutTab name={val} />}
             </Tab.Screen>
           ))}
         </Tab.Group>
@@ -554,13 +624,11 @@ export default function RegimentDetails({ route, navigation }) {
         onDismiss={onDismissSnackBar}
         action={{
           label: "Undo",
-          onPress: () => {
-            // Do something
-          },
+          onPress: () => {},
         }}
       >
         Hey there! I'm a Snackbar.
       </Snackbar>
     </>
-  
+  );
 }

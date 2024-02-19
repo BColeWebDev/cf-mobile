@@ -1,4 +1,4 @@
-import { View, StyleSheet, Platform } from "react-native";
+import { View, StyleSheet, Platform, Image } from "react-native";
 import { Text, Surface } from "react-native-paper";
 import React, { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -74,7 +74,31 @@ export default function ProfileScreen({ navigation }) {
               flexDirection: "row",
             }}
           >
-            <Ionicons name="person-circle-sharp" size={50} color="#4f1d9e" />
+            {currentUser?.existingUser?.avatarProfile === "" ? (
+              <Ionicons
+                name="person-circle-sharp"
+                size={50}
+                color="#4f1d9e"
+                onPress={() => console.log("testing")}
+              />
+            ) : (
+              //  Profile Image
+
+              <Image
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 150 / 2,
+                  overflow: "hidden",
+                  borderWidth: 3,
+                  borderColor: "black",
+                }}
+                source={{
+                  uri: `data:image/png;base64,${currentUser?.existingUser?.avatarProfile}`,
+                }}
+              />
+            )}
+
             <Text
               style={{
                 color: "#3b1676",
@@ -118,7 +142,7 @@ export default function ProfileScreen({ navigation }) {
             flexDirection: "column",
             justifyContent: "center",
             width: "100%",
-            marginTop: 100,
+            marginTop: 25,
           }}
         >
           <Text

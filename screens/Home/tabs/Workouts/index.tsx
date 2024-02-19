@@ -8,14 +8,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  Box,
-  TextInput,
-  Badge,
-  Flex,
-  Button,
-  Portal,
-} from "@react-native-material/core";
+import { Box, TextInput } from "@react-native-material/core";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
@@ -55,46 +48,51 @@ const WorkoutsScreen = ({ route, navigation }) => {
     },
   });
   useEffect(() => {
-    dispatch(
-      getAllWorkouts({ token: currentUser.userToken, page: 1, limit: 100 })
-    ).then((val) => console.log(val));
-    dispatch(getAllEquipment({ token: currentUser.userToken })).then((val) =>
-      console.log(val)
-    );
-    dispatch(getAllBodyTargets({ token: currentUser.userToken })).then((val) =>
-      console.log(val)
-    );
+    // dispatch(getAllEquipment({ token: currentUser.userToken })).then((val) =>
+    //   console.log(val)
+    // );
+    // dispatch(getAllBodyTargets({ token: currentUser.userToken })).then((val) =>
+    //   console.log(val)
+    // );
   }, []);
-  useEffect(() => {
-    if (selectedWorkouts !== undefined) {
-      console.log(selectedWorkouts);
-      dispatch(
-        createNewWorkout({
-          routineId: route.params.routineId,
-          regimentId: route.params.regimentId,
-          ...selectedWorkouts,
-          muscle_target: selectedWorkouts.target,
-        })
-      ).then((val) => {
-        if (val.meta.requestStatus === "fulfilled") {
-          dispatch(getAllTrainingDays(route.params.regimentId));
-          navigation.navigate("Regiment Details", { route });
-          setselectedWorkouts(undefined);
-        }
-        if (val.meta.requestStatus === "rejected") {
-          setview(val.payload.response.data.message);
-          setselectedWorkouts(undefined);
-        }
-      });
-    }
-  }, [selectedWorkouts]);
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading color={"red"} />;
   }
 
   const handleCreateWorkout = (val) => {
-    setselectedWorkouts(val);
+    navigation.navigate("WorkoutsDetails", {
+      workoutId: "",
+      sets: [{ sets: 1, reps: 10, weight: 0, kg: 0 }],
+      restTime: "0",
+      routineId: route.params.routineId,
+      regimentId: route.params.regimentId,
+      wId: val.id,
+      btnName: "Add To Regiment",
+      action: (value) => {
+        console.log(value, val);
+        dispatch(
+          createNewWorkout({
+            routineId: route.params.routineId,
+            regimentId: route.params.regimentId,
+            ...val,
+            muscle_target: val.target,
+            sets: value.sets,
+          })
+        ).then((val) => {
+          console.log("VAL", val);
+          if (val.meta.requestStatus === "fulfilled") {
+            dispatch(getAllTrainingDays(route.params.regimentId));
+            navigation.navigate("Regiment Details", { route });
+            setselectedWorkouts(undefined);
+          }
+          if (val.meta.requestStatus === "rejected") {
+            setview(val.payload.response.data.message);
+            setselectedWorkouts(undefined);
+          }
+        });
+      },
+    });
   };
 
   return (
@@ -151,7 +149,9 @@ const WorkoutsScreen = ({ route, navigation }) => {
                   alignItems: "center",
                   marginHorizontal: 20,
                 }}
-                onPress={() => handleCreateWorkout(val)}
+                onPress={() => {
+                  handleCreateWorkout(val);
+                }}
               >
                 <Box
                   style={{
@@ -162,7 +162,14 @@ const WorkoutsScreen = ({ route, navigation }) => {
                 >
                   <Image
                     source={{ uri: val.gifUrl }}
-                    style={{ width: 60, height: 60, borderRadius: 0.5 }}
+                    style={{
+                      width: 100,
+                      height: 100,
+                      borderRadius: 150 / 2,
+                      overflow: "hidden",
+                      borderWidth: 3,
+                      borderColor: "black",
+                    }}
                   />
                   <Box style={{ flex: 1 }}>
                     <Text

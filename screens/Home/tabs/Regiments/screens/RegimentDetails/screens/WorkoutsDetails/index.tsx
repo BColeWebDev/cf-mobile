@@ -1,27 +1,38 @@
-import { View, Text, Image } from "react-native";
-import React, { useEffect } from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../../../redux/app/store";
-import { getAllWorkouts } from "../../../../../../../../redux/features/workouts/workoutSlice";
+import { updateWorkout } from "../../../../../../../../redux/features/workouts/workoutSlice";
 import Loading from "../../../../../../../Loading";
+import { Button, TextInput } from "react-native-paper";
+import { ISets } from "../../../../../../../../redux/features/interfaces/ISets";
 
 const WorkoutDetails = ({ route, navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
-    (state: any) => state.workouts
-  );
+  const { workouts, isLoading } = useSelector((state: any) => state.workouts);
   const { currentUser } = useSelector((state: any) => state.auth);
+  const [Data, setData] = useState<ISets>({});
 
-  useEffect(() => {
-    dispatch(
-      getAllWorkouts({ token: currentUser.userToken, page: 1, limit: 10 })
-    );
-  }, []);
   let workoutsDetails = workouts?.items?.filter(
-    (value) => value.id === route.params.workoutId
+    (value) => value.id === route.params.wId
   )[0];
-  console.log("workoutDetails", workoutsDetails);
+  console.log("workoutDetails", Data);
+
+  const style = StyleSheet.create({
+    setsContainer: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 10,
+      marginHorizontal: 30,
+    },
+  });
+  useEffect(() => {
+    if (route.params.sets !== undefined || route.params.sets.length > 0)
+      setData(route.params.sets[0]);
+  }, [route.params.sets]);
 
   if (isLoading) {
     return (
@@ -35,10 +46,16 @@ const WorkoutDetails = ({ route, navigation }) => {
           width: "100%",
         }}
       >
-        <Loading />
+        <Loading color={"black"} />
       </View>
     );
   }
+
+  const handleUpdateWorkout = () => {
+    route.params.action({
+      sets: Data,
+    });
+  };
 
   return (
     <View
@@ -89,7 +106,89 @@ const WorkoutDetails = ({ route, navigation }) => {
             {val}
           </Text>
         ))}
+
+        {/* Sets, Reps & Weights/Kg */}
+        <View>
+          <View style={style.setsContainer}>
+            <Text>Sets: </Text>
+            <TextInput
+              textColor="black"
+              mode={"outlined"}
+              style={{ marginHorizontal: 20, backgroundColor: "white" }}
+              selectionColor={"black"}
+              cursorColor={"#F9C000"}
+              value={String(Data?.sets)}
+              onChangeText={(e) =>
+                setData((prevState) => ({ ...prevState, sets: Number(e) }))
+              }
+              keyboardType={"number-pad"}
+            />
+          </View>
+          <View style={style.setsContainer}>
+            <Text>Reps: </Text>
+            <TextInput
+              textColor="black"
+              mode={"outlined"}
+              style={{ marginHorizontal: 20, backgroundColor: "white" }}
+              selectionColor={"black"}
+              cursorColor={"#F9C000"}
+              value={String(Data?.reps)}
+              keyboardType={"number-pad"}
+              onChangeText={(e) =>
+                setData((prevState) => ({ ...prevState, reps: Number(e) }))
+              }
+            />
+          </View>
+          <View style={style.setsContainer}>
+            <Text>Weight: </Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row-reverse",
+                alignItems: "center",
+              }}
+            >
+              <TextInput
+                textColor="black"
+                mode={"outlined"}
+                style={{ marginHorizontal: 20, backgroundColor: "white" }}
+                selectionColor={"black"}
+                cursorColor={"#F9C000"}
+                textAlign="center"
+                value={String(Data?.weight)}
+                onChangeText={(e) =>
+                  setData((prevState) => ({
+                    ...prevState,
+                    weight: Number(e),
+                  }))
+                }
+                keyboardType={"number-pad"}
+              />
+              <Text>{currentUser?.existingUser?.settings.weight}</Text>
+            </View>
+          </View>
+        </View>
+        <Text>{route.params.rest}</Text>
       </View>
+
+      <Button
+        style={{
+          width: 220,
+          marginBottom: 20,
+          marginTop: 20,
+          backgroundColor: "#211a23",
+          borderRadius: 15,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 40,
+          justifyContent: "center",
+        }}
+        mode="elevated"
+        textColor="white"
+        onPress={() => handleUpdateWorkout()}
+      >
+        {route.params.btnName}
+      </Button>
     </View>
   );
 };
