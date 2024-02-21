@@ -8,13 +8,14 @@ import {
   updateCurrentUser,
 } from "../../redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/app/store";
 const Settings = ({ navigation }) => {
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch<AppDispatch>();
   const [metric, setMetricChecked] = useState(false);
   const [theme, setThemeChecked] = useState(false);
   const [inches, setInchesChecked] = useState(false);
   const [distance, setDistanceChecked] = useState(false);
-  const { currentUser } = useSelector((state: any) => state.auth);
+  const { currentUser } = useSelector((state: RootState) => state.auth);
 
   const handleSubmit = () => {
     dispatch(

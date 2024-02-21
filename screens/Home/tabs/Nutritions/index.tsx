@@ -1,23 +1,33 @@
-import { View, Text,StyleSheet } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import React from "react";
 
 const NutritionScreen = () => {
   const style = StyleSheet.create({
     container: {
-        flex:1,
-        padding:20,
-        justifyContent:"center",
-        backgroundColor: '#292929',
-        alignItems: 'center',
-       display:"flex"
-      
-      },
-})
+      height: "100%",
+      justifyContent: "flex-start",
+      backgroundColor: "white",
+      alignItems: "center",
+    },
+  });
   return (
-    <View style={style.container}>
-      <Text>NutritionScreen</Text>
-    </View>
-  )
-}
+    <SafeAreaView style={style.container}>
+      <Text
+        style={{
+          fontSize: 28,
+          width: "100%",
+          marginLeft: 50,
+          color: "black",
+          marginTop: 30,
+          fontWeight: "500",
+          textAlign: "left",
+          marginVertical: 20,
+        }}
+      >
+        Nutritions
+      </Text>
+    </SafeAreaView>
+  );
+};
 
-export default NutritionScreen
+export default NutritionScreen;

@@ -7,9 +7,10 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { RootState } from "../../../../redux/app/store";
 
 export default function ProfileScreen({ navigation }) {
-  const { currentUser } = useSelector((state: any) => state.auth);
+  const { currentUser } = useSelector((state: RootState) => state.auth);
   const style = StyleSheet.create({
     container: {
       height: "100%",
@@ -43,7 +44,7 @@ export default function ProfileScreen({ navigation }) {
           <Feather
             name="settings"
             size={24}
-            color="#3b1676"
+            color="black"
             style={{ alignItems: "flex-end", marginRight: 10 }}
             onPress={() => navigation.navigate("Settings")}
           />
@@ -51,7 +52,7 @@ export default function ProfileScreen({ navigation }) {
             <FontAwesome5
               name="crown"
               size={24}
-              color="#FAC000"
+              color="orange"
               onPress={() => alert("Crown Member")}
             />
           ) : null}
@@ -74,7 +75,8 @@ export default function ProfileScreen({ navigation }) {
               flexDirection: "row",
             }}
           >
-            {currentUser?.existingUser?.avatarProfile === "" ? (
+            {/* Memory Issue */}
+            {/* {currentUser?.existingUser?.avatarProfile === "" ? (
               <Ionicons
                 name="person-circle-sharp"
                 size={50}
@@ -97,26 +99,14 @@ export default function ProfileScreen({ navigation }) {
                   uri: `data:image/png;base64,${currentUser?.existingUser?.avatarProfile}`,
                 }}
               />
-            )}
-
-            <Text
-              style={{
-                color: "#3b1676",
-
-                marginRight: 10,
-                fontSize: 16,
-              }}
-            >
-              {currentUser.existingUser?.first_name}{" "}
-              {currentUser.existingUser?.last_name}
-            </Text>
+            )} */}
           </View>
           <View
             style={{
               padding: 4,
               borderWidth: 1,
-              borderColor: "#3b1676",
-              backgroundColor: "#3b1676",
+              borderColor: "black",
+              backgroundColor: "black",
 
               borderRadius: 8,
               alignItems: "center",
@@ -128,7 +118,7 @@ export default function ProfileScreen({ navigation }) {
           >
             <Text
               style={{
-                color: "#f9f6fd",
+                color: "white",
                 textAlign: "center",
                 textTransform: "capitalize",
               }}
@@ -147,7 +137,18 @@ export default function ProfileScreen({ navigation }) {
         >
           <Text
             style={{
-              color: "#3b1676",
+              color: "black",
+
+              marginRight: 10,
+              fontSize: 16,
+            }}
+          >
+            {currentUser.existingUser?.first_name}{" "}
+            {currentUser.existingUser?.last_name}
+          </Text>
+          <Text
+            style={{
+              color: "black",
               marginBottom: 20,
               marginRight: 20,
               textAlign: "left",
@@ -160,7 +161,7 @@ export default function ProfileScreen({ navigation }) {
           <View
             style={{
               backgroundColor: "white",
-              borderColor: "#7434db",
+              borderColor: "black",
               borderWidth: 2,
               display: "flex",
               paddingRight: 15,
@@ -176,7 +177,7 @@ export default function ProfileScreen({ navigation }) {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 width: "100%",
-                height: 300,
+                height: 100,
                 alignItems: "flex-start",
               }}
             >

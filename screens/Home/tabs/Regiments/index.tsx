@@ -176,9 +176,11 @@ const RegimentScreen = ({ navigation }) => {
                     <View
                       style={{
                         display: "flex",
+                        borderRadius: 20,
                         flexDirection: "row",
-                        justifyContent: "center",
+                        justifyContent: "space-between",
                         marginTop: 10,
+                        width: "100%",
                       }}
                     >
                       <Text
@@ -297,7 +299,7 @@ const RegimentScreen = ({ navigation }) => {
           contentContainerStyle={{ backgroundColor: "white", padding: 20 }}
           onDismiss={() => setVisible(!visible)}
         >
-          <Text>Delete {selected?.name}</Text>
+          <Text style={{ padding: 10 }}>Delete {selected?.name}</Text>
           <Button
             mode="contained"
             onPress={() => {

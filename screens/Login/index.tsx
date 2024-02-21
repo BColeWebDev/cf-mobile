@@ -5,8 +5,9 @@ import CfIcon from "../../assets/images/CF-Icon.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { LoginUser, setCurrentUser } from "../../redux/features/auth/authSlice";
 import { TextInput } from "react-native-paper";
+import { AppDispatch } from "../../redux/app/store";
 export default function Login({ navigation }) {
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch<AppDispatch>();
   const [login, setlogin] = useState({ email: "", password: "" });
   const [showPassword, setshowPassword] = useState(false);
 
@@ -17,6 +18,7 @@ export default function Login({ navigation }) {
     },
     container: {
       height: "100%",
+      display: "flex",
       backgroundColor: "white",
     },
   });
@@ -49,62 +51,74 @@ export default function Login({ navigation }) {
               width: "auto",
               justifyContent: "center",
               marginTop: 30,
+              marginBottom: 20,
               marginLeft: "auto",
               marginRight: "auto",
             }}
           >
             <CfIcon width={110} />
           </View>
-          <Text
-            style={{
-              fontSize: 35,
-              fontWeight: "800",
-              color: "black",
-              marginTop: 20,
-              marginRight: "65%",
-              margin: 20,
-            }}
-          >
-            Login
-          </Text>
 
-          <TextInput
-            placeholder="Email"
-            textColor="black"
-            mode={"outlined"}
-            selectionColor={"black"}
-            style={{
-              marginBottom: 25,
-              marginHorizontal: 20,
-              backgroundColor: "white",
-            }}
-            onChangeText={(text) =>
-              setlogin((prevState) => ({ ...prevState, email: text }))
-            }
-            keyboardType={"email-address"}
-            defaultValue={login.email}
-          />
+          <View>
+            <Text
+              style={{
+                fontSize: 35,
+                fontWeight: "800",
+                color: "black",
+                marginTop: 20,
+                marginRight: "65%",
+                margin: 20,
+              }}
+            >
+              Login
+            </Text>
 
-          <TextInput
-            placeholder="Password"
-            textColor="black"
-            mode={"outlined"}
-            style={{ marginHorizontal: 20, backgroundColor: "white" }}
-            selectionColor={"black"}
-            cursorColor={"#F9C000"}
-            defaultValue={login.password}
-            onChangeText={(text) =>
-              setlogin((prevState) => ({ ...prevState, password: text }))
-            }
-            right={
-              <TextInput.Icon
-                icon={"eye"}
-                onPress={() => setshowPassword(!showPassword)}
-              />
-            }
-            secureTextEntry={!showPassword ? true : false}
-            keyboardType={"email-address"}
-          />
+            <TextInput
+              placeholder="Email"
+              textColor="black"
+              mode={"outlined"}
+              style={{
+                marginBottom: 25,
+                marginHorizontal: 20,
+                backgroundColor: "white",
+              }}
+              activeOutlineColor="black"
+              selectionColor={"black"}
+              cursorColor={"black"}
+              onChangeText={(text) =>
+                setlogin((prevState) => ({ ...prevState, email: text }))
+              }
+              keyboardType={"email-address"}
+              defaultValue={login.email}
+            />
+
+            <TextInput
+              placeholder="Password"
+              textColor="black"
+              mode={"outlined"}
+              style={{
+                marginBottom: 25,
+                marginHorizontal: 20,
+                backgroundColor: "white",
+              }}
+              activeOutlineColor="black"
+              selectionColor={"black"}
+              cursorColor={"black"}
+              defaultValue={login.password}
+              onChangeText={(text) =>
+                setlogin((prevState) => ({ ...prevState, password: text }))
+              }
+              right={
+                <TextInput.Icon
+                  icon={"eye"}
+                  color={"black"}
+                  onPress={() => setshowPassword(!showPassword)}
+                />
+              }
+              secureTextEntry={!showPassword ? true : false}
+              keyboardType={"email-address"}
+            />
+          </View>
 
           <View
             style={{

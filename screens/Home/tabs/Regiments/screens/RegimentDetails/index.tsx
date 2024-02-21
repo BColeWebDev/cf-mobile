@@ -19,13 +19,14 @@ import {
 } from "../../../../../../redux/features/trainingDays/trainingDaysSlice";
 import { getSingleRegiment } from "../../../../../../redux/features/regiments/regimentsSlice";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import TrainingDayScreens from "./screens/TrainingDayScreens";
 import {
   deleteWorkout,
   updateWorkout,
 } from "../../../../../../redux/features/workouts/workoutSlice";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
+import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 let names = {
   monday: "Mon",
   tuesday: "Tues",
@@ -80,35 +81,6 @@ export default function RegimentDetails({ route, navigation }) {
 
   const onDismissSnackBar = () => setVisible(false);
   const fetchImage = async () => {
-    [
-      "all",
-      "all_lower",
-      "all_upper",
-      "abductors",
-      "abs",
-      "adductors",
-      "back",
-      "back_lower",
-      "back_upper",
-      "biceps",
-      "calfs",
-      "chest",
-      "core",
-      "core_lower",
-      "core_upper",
-      "forearms",
-      "gluteus",
-      "hamstring",
-      "hands",
-      "latissimus",
-      "legs",
-      "neck",
-      "quadriceps",
-      "shoulders",
-      "shoulders_back",
-      "shoulders_front",
-      "triceps",
-    ];
     try {
       const response = await axios.get(
         `https://muscle-group-image-generator.p.rapidapi.com/getMulticolorImage`,
@@ -204,29 +176,22 @@ export default function RegimentDetails({ route, navigation }) {
                     style={{ backgroundColor: "white", borderRadius: 10 }}
                   >
                     <TouchableHighlight
-                      onPress={() => {
-                        navigation.navigate("Create Workout", {
-                          val,
-                          index: idx,
-                          regimentId: detailInfo._id,
+                      onLongPress={() => {
+                        dispatch(
+                          deleteTrainingDays({
+                            routineId: val._id,
+                            regimentId: detailInfo._id,
+                          })
+                        ).then((val) => {
+                          if (val.meta.requestStatus === "fulfilled") {
+                            dispatch(getAllTrainingDays(detailInfo._id));
+                          }
+                          if (val.meta.requestStatus === "rejected") {
+                            console.log(val);
+                            alert("not working");
+                          }
                         });
                       }}
-                      // onLongPress={() => {
-                      //   dispatch(
-                      //     deleteTrainingDays({
-                      //       routineId: val._id,
-                      //       regimentId: detailInfo._id,
-                      //     })
-                      //   ).then((val) => {
-                      //     if (val.meta.requestStatus === "fulfilled") {
-                      //       dispatch(getAllTrainingDays(detailInfo._id));
-                      //     }
-                      //     if (val.meta.requestStatus === "rejected") {
-                      //       console.log(val);
-                      //       alert("not working");
-                      //     }
-                      //   });
-                      // }}
                       key={idx}
                       underlayColor={"white"}
                       style={{
@@ -246,26 +211,59 @@ export default function RegimentDetails({ route, navigation }) {
                             display: "flex",
                             flexDirection: "row",
                             justifyContent: "space-between",
-                            alignItems: "flex-end",
+                            alignItems: "flex-start",
                           }}
                         >
-                          <Text
+                          <View
                             style={{
-                              textTransform: "capitalize",
-                              color: "black",
-                              fontSize: 15,
-                              fontWeight: "500",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "space-between",
+                              alignItems: "center",
                             }}
                           >
-                            {val.name}
-                          </Text>
-                          <Chip
-                            mode={"flat"}
-                            selectedColor="white"
-                            style={{ backgroundColor: "black" }}
+                            <Text
+                              style={{
+                                textTransform: "capitalize",
+                                color: "black",
+                                fontSize: 15,
+                                fontWeight: "500",
+                                marginBottom: 10,
+                              }}
+                            >
+                              {val.name}
+                            </Text>
+                            <Chip
+                              mode={"flat"}
+                              selectedColor="white"
+                              style={{ backgroundColor: "black" }}
+                            >
+                              {val.day}
+                            </Chip>
+                          </View>
+                          <View
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
                           >
-                            {val.day}
-                          </Chip>
+                            <AntDesign
+                              style={{ marginRight: 30 }}
+                              onPress={() => {
+                                navigation.navigate("Create Workout", {
+                                  val,
+                                  index: idx,
+                                  regimentId: detailInfo._id,
+                                });
+                              }}
+                              name="edit"
+                              size={24}
+                              color="black"
+                            />
+                            <AntDesign name="delete" size={24} color="black" />
+                          </View>
                         </View>
 
                         <Text
@@ -309,7 +307,13 @@ export default function RegimentDetails({ route, navigation }) {
 
                     <View style={{ marginHorizontal: 20, marginBottom: 70 }}>
                       {val.workouts.map((value, idx) => (
-                        <View>
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row-reverse",
+                            alignItems: "center",
+                          }}
+                        >
                           <TouchableHighlight
                             key={idx}
                             onPress={() =>
@@ -321,13 +325,13 @@ export default function RegimentDetails({ route, navigation }) {
                                 regimentId: detailInfo._id,
                                 wId: value.id,
                                 btnName: "Update Workout",
-                                action: (val) => {
+                                action: (data) => {
                                   dispatch(
                                     updateWorkout({
                                       routineId: val._id,
                                       workoutId: value._id,
                                       regimentId: detailInfo._id,
-                                      sets: val.sets,
+                                      sets: data.sets,
                                       restTime: route.params.restTime,
                                     })
                                   ).then((value) => {
@@ -336,6 +340,13 @@ export default function RegimentDetails({ route, navigation }) {
                                       value.meta.requestStatus === "fulfilled"
                                     ) {
                                       navigation.goBack();
+                                    }
+                                    if (
+                                      value.meta.requestStatus === "rejected"
+                                    ) {
+                                      alert(
+                                        "Workout could not be updated please try again!"
+                                      );
                                     }
                                   });
                                 },
@@ -523,6 +534,7 @@ export default function RegimentDetails({ route, navigation }) {
             >
               {detailInfo.name}
             </Text>
+
             <Button
               mode="outlined"
               textColor="white"
@@ -587,22 +599,24 @@ export default function RegimentDetails({ route, navigation }) {
           >
             {detailInfo.name}
           </Text>
-          <Button
-            mode="outlined"
-            textColor="white"
-            onPress={() =>
-              navigation.navigate("Create Workout", detailInfo._id)
-            }
-            style={{
-              padding: 5,
-              backgroundColor: "#211a23",
-              borderColor: "black",
-              marginLeft: "auto",
-            }}
-            icon={"plus"}
-          >
-            Create Training Day
-          </Button>
+          {days.length === 7 ? null : (
+            <Button
+              mode="outlined"
+              textColor="white"
+              onPress={() =>
+                navigation.navigate("Create Workout", detailInfo._id)
+              }
+              style={{
+                padding: 5,
+                backgroundColor: "#211a23",
+                borderColor: "black",
+                marginLeft: "auto",
+              }}
+              icon={"plus"}
+            >
+              Create Training Day
+            </Button>
+          )}
         </View>
 
         <Text style={{ width: "100%", color: "white", textAlign: "left" }}>
@@ -613,7 +627,16 @@ export default function RegimentDetails({ route, navigation }) {
       <Tab.Navigator>
         <Tab.Group>
           {days?.map((val, idx) => (
-            <Tab.Screen key={idx} name={names[val]}>
+            <Tab.Screen
+              key={idx}
+              name={names[val]}
+              options={{
+                tabBarLabelStyle: {
+                  fontSize: 9,
+                  fontWeight: "600",
+                },
+              }}
+            >
               {(prop) => <WorkoutTab name={val} />}
             </Tab.Screen>
           ))}

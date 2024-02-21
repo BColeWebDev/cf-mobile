@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Box, TextInput } from "@react-native-material/core";
+import { TextInput } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
@@ -27,6 +27,7 @@ import { Snackbar } from "react-native-paper";
 // TODO: Infinite Scrolling
 // Rename workouts to exercises for less confusion
 const WorkoutsScreen = ({ route, navigation }) => {
+  console.log("routes", route, navigation);
   const [input, setinput] = useState("");
   const [selectedWorkouts, setselectedWorkouts] = useState<IWorkouts>();
   const dispatch = useDispatch<AppDispatch>();
@@ -42,18 +43,14 @@ const WorkoutsScreen = ({ route, navigation }) => {
       flex: 1,
       padding: 1,
       justifyContent: "flex-start",
-      backgroundColor: "#1d2025",
+      backgroundColor: "white",
       alignItems: "center",
       display: "flex",
     },
   });
   useEffect(() => {
-    // dispatch(getAllEquipment({ token: currentUser.userToken })).then((val) =>
-    //   console.log(val)
-    // );
-    // dispatch(getAllBodyTargets({ token: currentUser.userToken })).then((val) =>
-    //   console.log(val)
-    // );
+    dispatch(getAllEquipment({ token: currentUser.userToken }));
+    dispatch(getAllBodyTargets({ token: currentUser.userToken }));
   }, []);
 
   if (isLoading) {
@@ -97,147 +94,159 @@ const WorkoutsScreen = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={style.container}>
-      <Box style={{ width: "100%" }}>
-        {/* <Box
-          style={{
-            display: "flex",
-            width: "100%",
-            flexDirection: "row",
-            alignItems: "flex-end",
-            marginBottom: 20,
-            marginTop: 0,
-            justifyContent: "space-between",
-          }}
-        >
-          <FontAwesome
-            name="filter"
-            size={24}
-            style={{ marginRight: 20 }}
-            color="white"
-            onPress={() => navigation.navigate("WorkoutsFilters")}
-          />
-        </Box> */}
+      <View
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          margin: 20,
+          marginHorizontal: 20,
 
+          alignItems: "center",
+        }}
+      >
         {/* Search */}
         <TextInput
-          style={{ margin: 10, borderRadius: 120, marginHorizontal: 20 }}
+          style={{
+            marginBottom: 25,
+            marginHorizontal: 20,
+            backgroundColor: "white",
+            width: "85%",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+          textColor="black"
+          mode={"outlined"}
+          activeOutlineColor="black"
+          selectionColor={"black"}
+          cursorColor={"black"}
           placeholder="Search Workout"
-          leading={<AntDesign name="search1" size={24} color="black" />}
+          right={<AntDesign name="search1" size={24} color="black" />}
           onChangeText={(text) => setinput(text)}
         ></TextInput>
 
-        {/* Workouts */}
-        <ScrollView>
-          {workouts?.items
-            ?.filter((val) => {
-              if (input === "") {
-                return val;
-              }
-              return val.name.toLowerCase().includes(input.toLowerCase());
-            })
-            .map((val, idx) => (
-              <TouchableHighlight
-                key={idx}
+        <FontAwesome
+          name="filter"
+          size={24}
+          style={{ marginRight: 20, marginBottom: 20, textAlign: "right" }}
+          color="black"
+          onPress={() => navigation.navigate("WorkoutsFilters")}
+        />
+      </View>
+      {/* Workouts */}
+      <ScrollView>
+        {workouts?.items
+          ?.filter((val) => {
+            if (input === "") {
+              return val;
+            }
+            return val.name.toLowerCase().includes(input.toLowerCase());
+          })
+          .map((val, idx) => (
+            <TouchableHighlight
+              key={idx}
+              style={{
+                display: "flex",
+                flexDirection: "row-reverse",
+                marginBottom: 20,
+                backgroundColor: "black",
+                borderRadius: 10,
+                padding: 10,
+                justifyContent: "space-around",
+                alignItems: "center",
+                marginHorizontal: 20,
+              }}
+              onPress={() => {
+                if (route.params === undefined) {
+                  return;
+                }
+                handleCreateWorkout(val);
+              }}
+            >
+              <View
                 style={{
                   display: "flex",
                   flexDirection: "row-reverse",
-                  marginBottom: 20,
-                  backgroundColor: "black",
-                  borderRadius: 10,
-                  padding: 10,
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                  marginHorizontal: 20,
-                }}
-                onPress={() => {
-                  handleCreateWorkout(val);
+                  alignItems: "flex-start",
                 }}
               >
-                <Box
+                <Image
+                  source={{ uri: val.gifUrl }}
                   style={{
-                    display: "flex",
-                    flexDirection: "row-reverse",
-                    alignItems: "flex-start",
+                    width: 100,
+                    height: 100,
+                    borderRadius: 150 / 2,
+                    overflow: "hidden",
+                    borderWidth: 3,
+                    borderColor: "black",
                   }}
-                >
-                  <Image
-                    source={{ uri: val.gifUrl }}
+                />
+                <View style={{ flex: 1 }}>
+                  <Text
                     style={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: 150 / 2,
-                      overflow: "hidden",
-                      borderWidth: 3,
-                      borderColor: "black",
+                      fontSize: 20,
+                      flex: 1,
+                      color: "white",
+                      marginTop: 10,
+                      marginBottom: 10,
                     }}
-                  />
-                  <Box style={{ flex: 1 }}>
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        flex: 1,
-                        color: "white",
-                        marginTop: 10,
-                        marginBottom: 10,
-                      }}
-                    >
-                      {val.name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        flex: 1,
-                        color: "white",
-                        marginTop: 10,
-                        marginBottom: 10,
-                      }}
-                    >
-                      {val.target}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        flex: 1,
-                        color: "white",
-                        marginTop: 10,
-                        marginBottom: 10,
-                      }}
-                    >
-                      {val.bodyPart}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        flex: 1,
-                        color: "white",
-                        marginTop: 10,
-                        marginBottom: 10,
-                      }}
-                    >
-                      {val.equipment}
-                    </Text>
-                  </Box>
-                </Box>
-              </TouchableHighlight>
-            ))}
-        </ScrollView>
+                  >
+                    {val.name}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      flex: 1,
+                      color: "white",
+                      marginTop: 10,
+                      marginBottom: 10,
+                    }}
+                  >
+                    {val.target}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      flex: 1,
+                      color: "white",
+                      marginTop: 10,
+                      marginBottom: 10,
+                    }}
+                  >
+                    {val.bodyPart}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      flex: 1,
+                      color: "white",
+                      marginTop: 10,
+                      marginBottom: 10,
+                    }}
+                  >
+                    {val.equipment}
+                  </Text>
+                </View>
+              </View>
+            </TouchableHighlight>
+          ))}
+      </ScrollView>
 
-        {view === "" ? null : (
-          <Snackbar
-            visible={true}
-            style={{ marginBottom: 100 }}
-            onDismiss={() => setview("")}
-            action={{
-              label: "Close",
-              onPress: () => {
-                setview("");
-              },
-            }}
-          >
-            {view}
-          </Snackbar>
-        )}
-      </Box>
+      {view === "" ? null : (
+        <Snackbar
+          visible={true}
+          style={{ marginBottom: 100 }}
+          onDismiss={() => setview("")}
+          action={{
+            label: "Close",
+            onPress: () => {
+              setview("");
+            },
+          }}
+        >
+          {view}
+        </Snackbar>
+      )}
     </SafeAreaView>
   );
 };

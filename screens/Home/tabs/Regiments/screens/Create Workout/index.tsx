@@ -11,11 +11,14 @@ import {
 import { AppDispatch } from "../../../../../../redux/app/store";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../../redux/app/store";
+import Loading from "../../../../../Loading";
 const CreateWorkout = ({ route, navigation }) => {
   console.log("route", route);
   const dispatch = useDispatch<AppDispatch>();
-  
-  const { days } = useSelector((state: RootState) => state.trainingDays);
+
+  const { days, isLoading } = useSelector(
+    (state: RootState) => state.trainingDays
+  );
   const initialState = {
     name: "",
     description: "",
@@ -64,7 +67,6 @@ const CreateWorkout = ({ route, navigation }) => {
   });
 
   const handleCreateWorkout = () => {
-    
     dispatch(
       createTrainingDays({ ...formData, regimentId: route.params })
     ).then((val) => {
@@ -86,21 +88,23 @@ const CreateWorkout = ({ route, navigation }) => {
       })
     ).then((val) => {
       if (val.meta.requestStatus === "fulfilled") {
-        dispatch(getAllTrainingDays(route.params.regimentId)).then((val)=>{
-          if (val.meta.requestStatus === "fulfilled"){
+        dispatch(getAllTrainingDays(route.params.regimentId)).then((val) => {
+          if (val.meta.requestStatus === "fulfilled") {
             navigation.navigate("Regiment Details", route);
           }
-          if (val.meta.requestStatus === "rejected"){
-            console.log(val)
+          if (val.meta.requestStatus === "rejected") {
+            console.log(val);
           }
-        })
-       
+        });
       }
       if (val.meta.requestStatus === "rejected") {
         console.log(val);
       }
     });
   };
+  if (isLoading) {
+    return <Loading color={"black"} />;
+  }
 
   return (
     <View>
@@ -108,8 +112,9 @@ const CreateWorkout = ({ route, navigation }) => {
         style={{ marginVertical: 25, textAlign: "center", fontWeight: "600" }}
         variant="headlineMedium"
       >
-        {route?.params?.val?.name !== undefined ? 'Update Workout':"Create a New Workout"}
-        
+        {route?.params?.val?.name !== undefined
+          ? "Update Workout"
+          : "Create a New Workout"}
       </Text>
       <TextInput
         style={style.textInput}
@@ -143,34 +148,36 @@ const CreateWorkout = ({ route, navigation }) => {
         Choose workout day
       </Text>
       {data.map((val, idx) => {
-        if(days.includes(val)){
+        if (days.includes(val)) {
           return;
         }
-        return<TouchableHighlight
-        style={{
-          marginLeft: 20,
-          marginRight: 20,
-        }}
-        key={idx}
-        onPress={() => {
-          setformData((prevState) => ({ ...prevState, day: String(idx) }));
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text style={{ fontSize: 20 }}>{val}</Text>
-          <RadioButton
-            value={String(idx)}
-            status={formData.day === String(idx) ? "checked" : "unchecked"}
-          />
-        </View>
-      </TouchableHighlight>
+        return (
+          <TouchableHighlight
+            style={{
+              marginLeft: 20,
+              marginRight: 20,
+            }}
+            key={idx}
+            onPress={() => {
+              setformData((prevState) => ({ ...prevState, day: String(idx) }));
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>{val}</Text>
+              <RadioButton
+                value={String(idx)}
+                status={formData.day === String(idx) ? "checked" : "unchecked"}
+              />
+            </View>
+          </TouchableHighlight>
+        );
       })}
       {route?.params?.val?.name === undefined ? (
         <Button

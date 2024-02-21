@@ -5,7 +5,7 @@ import Login from "./Login";
 import Confirmation from "./Confirmation";
 import Error from "./Error";
 import Home from "./Home";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Settings from "./Settings";
 import WorkoutsModal from "./Modals/WorkoutsModal";
 import CreateRegiment from "./Home/tabs/Regiments/screens/Create Regiment";
@@ -15,84 +15,106 @@ import SignUpNamesScreens from "./SignUp/screens/SignUpNames";
 import SignUpEmailScreens from "./SignUp/screens/SignUpEmail";
 import CreateWorkout from "./Home/tabs/Regiments/screens/Create Workout";
 import WorkoutDetails from "./Home/tabs/Regiments/screens/RegimentDetails/screens/WorkoutsDetails";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
+import { AppDispatch } from "../redux/app/store";
+import { setCurrentUser } from "../redux/features/auth/authSlice";
 const Stack = createNativeStackNavigator();
 
 export default function AllScreens() {
   const { currentUser, isLoggedIn } = useSelector((state: any) => state.auth);
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName={isLoggedIn ? "Home" : "Login"}>
-        <Stack.Screen
-          name="Loading"
-          component={Loading}
-          options={{ headerShown: false }}
-        />
+  console.log("isLoggedId", isLoggedIn, currentUser);
+  const dispatch = useDispatch<AppDispatch>();
+  const [initRoute, setinitRoute] = useState<string>("Login");
+  useEffect(() => {
+    // AsyncStorage.getItem("currentUser", (err, results) => {
+    //   if (Object.keys(results).length === 0) {
+    //     return;
+    //   }
+    //   dispatch(setCurrentUser(JSON.parse(results)));
+    // });
+    // AsyncStorage.getItem("isLoggedIn", (err, results) => {
+    //   JSON.parse(results) ? setinitRoute("Home") : setinitRoute("Login");
+    // });
+  }, []);
+  console.log("in", initRoute);
 
-        <Stack.Screen
-          name="SignUpNamesScreens"
-          component={SignUpNamesScreens}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignUpEmailScreens"
-          component={SignUpEmailScreens}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Confirmation"
-          component={Confirmation}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Error"
-          component={Error}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Settings"
-          component={Settings}
-          options={{ headerTitle: "" }}
-        />
-        <Stack.Screen
-          name="Create Regiment"
-          component={CreateRegiment}
-          options={{ headerTitle: "" }}
-        />
-        <Stack.Screen
-          name="Create Workout"
-          component={CreateWorkout}
-          options={{ headerTitle: "" }}
-        />
-        <Stack.Screen
-          name="Regiment Details"
-          component={RegimentDetails}
-          options={{ headerTitle: "" }}
-        />
-        <Stack.Group screenOptions={{ presentation: "modal" }}>
+  if (initRoute !== "") {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName={initRoute}>
           <Stack.Screen
-            name="WorkoutsFilters"
+            name="Loading"
+            component={Loading}
             options={{ headerShown: false }}
-            component={WorkoutsModal}
           />
-          <Stack.Screen name="WorkoutsDetails" component={WorkoutDetails} />
 
           <Stack.Screen
-            name="Workouts"
-            component={WorkoutsScreen}
-            options={{ headerTitle: "All Workouts" }}
+            name="SignUpNamesScreens"
+            component={SignUpNamesScreens}
+            options={{ headerShown: false }}
           />
-        </Stack.Group>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+          <Stack.Screen
+            name="SignUpEmailScreens"
+            component={SignUpEmailScreens}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Confirmation"
+            component={Confirmation}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Error"
+            component={Error}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={Settings}
+            options={{ headerTitle: "" }}
+          />
+          <Stack.Screen
+            name="Create Regiment"
+            component={CreateRegiment}
+            options={{ headerTitle: "" }}
+          />
+          <Stack.Screen
+            name="Create Workout"
+            component={CreateWorkout}
+            options={{ headerTitle: "" }}
+          />
+          <Stack.Screen
+            name="Regiment Details"
+            component={RegimentDetails}
+            options={{ headerTitle: "" }}
+          />
+          <Stack.Group screenOptions={{ presentation: "modal" }}>
+            <Stack.Screen
+              name="WorkoutsFilters"
+              options={{ headerShown: false }}
+              component={WorkoutsModal}
+            />
+            <Stack.Screen name="WorkoutsDetails" component={WorkoutDetails} />
+
+            <Stack.Screen
+              name="Workouts"
+              component={WorkoutsScreen}
+              options={{ headerTitle: "All Workouts" }}
+            />
+          </Stack.Group>
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
 }

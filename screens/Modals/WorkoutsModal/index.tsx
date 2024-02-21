@@ -1,6 +1,6 @@
 import { ScrollView, View } from "react-native";
 import React from "react";
-import { Text, Button } from "@react-native-material/core";
+import { Text, Button } from "react-native-paper";
 import { useSelector } from "react-redux";
 
 const WorkoutsModal = ({ navigation }) => {
@@ -11,19 +11,36 @@ const WorkoutsModal = ({ navigation }) => {
     <View
       style={{ flex: 1, alignItems: "center", justifyContent: "space-between" }}
     >
-      <Text
+      <View
         style={{
-          fontSize: 30,
           display: "flex",
-          backgroundColor: "green",
-          color: "white",
+          backgroundColor: "gray",
+          flexDirection: "row-reverse",
+          alignItems: "center",
+          justifyContent: "space-between",
           width: "100%",
           padding: 10,
-          fontWeight: "600",
         }}
       >
-        Filters
-      </Text>
+        <Button
+          mode="elevated"
+          buttonColor="black"
+          textColor="white"
+          onPress={() => navigation.goBack()}
+          style={{
+            width: 110,
+            borderRadius: 15,
+            height: 40,
+            justifyContent: "center",
+          }}
+        >
+          Close
+        </Button>
+        <Text style={{ fontSize: 30, color: "white", fontWeight: "600" }}>
+          Filters
+        </Text>
+      </View>
+
       <ScrollView style={{ width: "90%", padding: 30 }}>
         {equipments.map((val, idx) => (
           <Text
@@ -38,7 +55,6 @@ const WorkoutsModal = ({ navigation }) => {
           </Text>
         ))}
       </ScrollView>
-      <Button onPress={() => navigation.goBack()} title="Dismiss" />
     </View>
   );
 };

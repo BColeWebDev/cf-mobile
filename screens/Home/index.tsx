@@ -1,4 +1,4 @@
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 import React from "react";
 import CFIcon from "../../assets/images/CF-Icon-Black.svg";
 import ChadIcon from "../../assets/images/Chad.svg";
@@ -10,7 +10,8 @@ import ProfileScreen from "./tabs/Profile";
 import RegimentScreen from "./tabs/Regiments";
 import WorkoutsScreen from "./tabs/Workouts";
 import NutritionScreen from "./tabs/Nutritions";
-
+import { Text } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 export default function Home({ navigation }) {
   const { isError, isLoading, isLoggedIn, currentUser } = useSelector(
     (state: any) => state.auth
@@ -23,9 +24,9 @@ export default function Home({ navigation }) {
       screenOptions={({ route }) => ({
         headerShown: true,
         tabBarStyle: {
-          paddingHorizontal: 5,
+          paddingHorizontal: 10,
           paddingTop: 0,
-          backgroundColor: "rgba(34,36,40,1)",
+          backgroundColor: "black",
           position: "absolute",
           borderTopWidth: 0,
         },
@@ -36,7 +37,16 @@ export default function Home({ navigation }) {
         component={ProfileScreen}
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => <CFIcon width={size} fill={color} />,
+          tabBarIcon: ({ color, size, focused }) => (
+            <CFIcon width={size} fill={focused ? "white" : color} />
+          ),
+          tabBarLabel: ({ color, focused }) => (
+            <View>
+              <Text style={{ color: focused ? "white" : color, fontSize: 10 }}>
+                Profile
+              </Text>
+            </View>
+          ),
         }}
       />
       <Tab.Screen
@@ -44,22 +54,56 @@ export default function Home({ navigation }) {
         component={RegimentScreen}
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <MuscleIcon width={size} fill={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <MuscleIcon width={size} fill={focused ? "white" : color} />
+          ),
+          tabBarLabel: ({ color, focused }) => (
+            <View>
+              <Text style={{ color: focused ? "white" : color, fontSize: 10 }}>
+                Regiments
+              </Text>
+            </View>
           ),
         }}
       />
 
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Nutritions"
         component={NutritionScreen}
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <PlatIcon width={size} fill={color} />
+
+          tabBarIcon: ({ color, size, focused }) => (
+            <PlatIcon width={size} fill={focused ? "white" : color} />
+          ),
+
+          tabBarLabel: ({ color, focused }) => (
+            <View>
+              <Text style={{ color: focused ? "white" : color, fontSize: 10 }}>
+                Nutritions
+              </Text>
+            </View>
           ),
         }}
-      /> */}
+      />
+
+      <Tab.Screen
+        name="Workouts"
+        component={WorkoutsScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size, focused }) => (
+            <ChadIcon width={size} fill={focused ? "white" : color} />
+          ),
+          tabBarLabel: ({ color, focused }) => (
+            <View>
+              <Text style={{ color: focused ? "white" : color, fontSize: 10 }}>
+                Workouts
+              </Text>
+            </View>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
