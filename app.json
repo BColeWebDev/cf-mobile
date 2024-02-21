@@ -2,7 +2,13 @@
   "expo": {
     "name": "Crown Fitness",
     "slug": "crown-fitness",
-  
+    "orientation":"portrait",
+    
+    "splash":{
+      "image":"./assets/images/icon.png",
+    
+      "backgroundColor":"white"
+    },
     "ios": {
       "bundleIdentifier": "com.bcolewebdev.crownfitness"
     },
