@@ -7,7 +7,7 @@
     "splash":{
       "image":"./assets/images/icon.png",
     
-      "backgroundColor":"white"
+      "backgroundColor":"#FFFFFF"
     },
     "ios": {
       "bundleIdentifier": "com.bcolewebdev.crownfitness"
