@@ -27,6 +27,7 @@ import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import Loading from "../../../../../Loading";
 let names = {
   monday: "Mon",
   tuesday: "Tues",
@@ -118,16 +119,16 @@ export default function RegimentDetails({ route, navigation }) {
   };
   // ON LOAD
   useEffect(() => {
-    if (route.params !== undefined) {
-      dispatch(getSingleRegiment(route.params));
-      dispatch(getAllTrainingDays(route.params));
-    }
+    console.log("route", route);
+
     if (route.params.regimentId !== undefined) {
       dispatch(getSingleRegiment(route.params.regimentId));
       dispatch(getAllTrainingDays(route.params.regimentId));
     }
   }, [route]);
-  const handleDeleteRegiment = (val) => {
+
+  const handleDeleteWorkout = (val) => {
+    console.log(val);
     dispatch(
       deleteWorkout({
         regimentId: detailInfo._id,
@@ -135,6 +136,7 @@ export default function RegimentDetails({ route, navigation }) {
         id: val.id,
       })
     ).then((val) => {
+      console.log(val);
       if (val.meta.requestStatus === "fulfilled") {
         if (route.params !== undefined) {
           dispatch(getSingleRegiment(route.params));
@@ -147,6 +149,26 @@ export default function RegimentDetails({ route, navigation }) {
       }
     });
   };
+
+  const handleTrainingDays = (val) => {
+    console.log("val", val);
+    dispatch(
+      deleteTrainingDays({
+        routineId: val._id,
+        regimentId: detailInfo._id,
+        trainingDay: val,
+      })
+    ).then((val) => {
+      console.log(val);
+      if (val.meta.requestStatus === "fulfilled") {
+        onToggleSnackBar();
+      }
+      if (val.meta.requestStatus === "rejected") {
+        alert("not working");
+      }
+    });
+  };
+
   const WorkoutTab = ({ name }) => {
     return (
       <View style={style.container}>
@@ -176,22 +198,6 @@ export default function RegimentDetails({ route, navigation }) {
                     style={{ backgroundColor: "white", borderRadius: 10 }}
                   >
                     <TouchableHighlight
-                      onLongPress={() => {
-                        dispatch(
-                          deleteTrainingDays({
-                            routineId: val._id,
-                            regimentId: detailInfo._id,
-                          })
-                        ).then((val) => {
-                          if (val.meta.requestStatus === "fulfilled") {
-                            dispatch(getAllTrainingDays(detailInfo._id));
-                          }
-                          if (val.meta.requestStatus === "rejected") {
-                            console.log(val);
-                            alert("not working");
-                          }
-                        });
-                      }}
                       key={idx}
                       underlayColor={"white"}
                       style={{
@@ -199,7 +205,6 @@ export default function RegimentDetails({ route, navigation }) {
                         padding: 10,
                         marginTop: 20,
                         width: "95%",
-
                         marginLeft: "auto",
                         marginRight: "auto",
                         backgroundColor: "white",
@@ -262,7 +267,12 @@ export default function RegimentDetails({ route, navigation }) {
                               size={24}
                               color="black"
                             />
-                            <AntDesign name="delete" size={24} color="black" />
+                            <AntDesign
+                              name="delete"
+                              size={24}
+                              color="black"
+                              onPress={() => handleTrainingDays(val)}
+                            />
                           </View>
                         </View>
 
@@ -308,6 +318,7 @@ export default function RegimentDetails({ route, navigation }) {
                     <View style={{ marginHorizontal: 20, marginBottom: 70 }}>
                       {val.workouts.map((value, idx) => (
                         <View
+                          key={idx}
                           style={{
                             display: "flex",
                             flexDirection: "row-reverse",
@@ -315,7 +326,6 @@ export default function RegimentDetails({ route, navigation }) {
                           }}
                         >
                           <TouchableHighlight
-                            key={idx}
                             onPress={() =>
                               navigation.navigate("WorkoutsDetails", {
                                 workoutId: value._id,
@@ -350,12 +360,6 @@ export default function RegimentDetails({ route, navigation }) {
                                     }
                                   });
                                 },
-                              })
-                            }
-                            onLongPress={() =>
-                              handleDeleteRegiment({
-                                id: value.id,
-                                _id: val._id,
                               })
                             }
                           >
@@ -564,6 +568,10 @@ export default function RegimentDetails({ route, navigation }) {
     );
   }
 
+  if (isLoading) {
+    return <Loading color={"black"} />;
+  }
+
   return (
     <>
       <View
@@ -642,15 +650,8 @@ export default function RegimentDetails({ route, navigation }) {
           ))}
         </Tab.Group>
       </Tab.Navigator>
-      <Snackbar
-        visible={visible}
-        onDismiss={onDismissSnackBar}
-        action={{
-          label: "Undo",
-          onPress: () => {},
-        }}
-      >
-        Hey there! I'm a Snackbar.
+      <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
+        Removed Training Day
       </Snackbar>
     </>
   );

@@ -48,10 +48,6 @@ const WorkoutsScreen = ({ route, navigation }) => {
       display: "flex",
     },
   });
-  useEffect(() => {
-    dispatch(getAllEquipment({ token: currentUser.userToken }));
-    dispatch(getAllBodyTargets({ token: currentUser.userToken }));
-  }, []);
 
   if (isLoading) {
     return <Loading color={"red"} />;

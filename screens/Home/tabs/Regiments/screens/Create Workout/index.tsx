@@ -117,23 +117,35 @@ const CreateWorkout = ({ route, navigation }) => {
           : "Create a New Workout"}
       </Text>
       <TextInput
-        style={style.textInput}
+        placeholder="Name"
         textColor="black"
         mode={"outlined"}
+        style={{
+          marginBottom: 25,
+          marginHorizontal: 20,
+          backgroundColor: "white",
+        }}
+        activeOutlineColor="black"
         selectionColor={"black"}
+        cursorColor={"black"}
         value={formData.name}
-        placeholder="Name"
         onChangeText={(text) => {
           setformData((prevState) => ({ ...prevState, name: text }));
         }}
       />
       <TextInput
-        style={style.textInput}
-        value={formData.description}
         placeholder="Description"
         textColor="black"
         mode={"outlined"}
+        style={{
+          marginBottom: 25,
+          marginHorizontal: 20,
+          backgroundColor: "white",
+        }}
+        activeOutlineColor="black"
         selectionColor={"black"}
+        cursorColor={"black"}
+        value={formData.description}
         onChangeText={(text) => {
           setformData((prevState) => ({ ...prevState, description: text }));
         }}
@@ -170,8 +182,11 @@ const CreateWorkout = ({ route, navigation }) => {
                 justifyContent: "space-between",
               }}
             >
-              <Text style={{ fontSize: 20 }}>{val}</Text>
+              <Text style={{ fontSize: 20, color: "black", fontWeight: "500" }}>
+                {val}
+              </Text>
               <RadioButton
+                color="red"
                 value={String(idx)}
                 status={formData.day === String(idx) ? "checked" : "unchecked"}
               />
@@ -185,14 +200,18 @@ const CreateWorkout = ({ route, navigation }) => {
             formData.day === "" && formData.description === "" ? true : false
           }
           style={{
-            width: "60%",
-
+            width: 220,
+            marginBottom: 20,
+            borderRadius: 15,
+            height: 40,
             marginLeft: "auto",
             marginRight: "auto",
-            height: 40,
+            marginTop: 20,
             justifyContent: "center",
           }}
-          mode="contained"
+          mode="elevated"
+          buttonColor="black"
+          textColor="white"
           onPress={() => handleCreateWorkout()}
         >
           CREATE WORKOUT
@@ -203,14 +222,18 @@ const CreateWorkout = ({ route, navigation }) => {
             formData.day === "" && formData.description === "" ? true : false
           }
           style={{
-            width: "60%",
-
+            width: 220,
+            marginBottom: 20,
+            borderRadius: 15,
+            height: 40,
             marginLeft: "auto",
             marginRight: "auto",
-            height: 40,
+            marginTop: 20,
             justifyContent: "center",
           }}
-          mode="contained"
+          mode="elevated"
+          buttonColor="black"
+          textColor="white"
           onPress={() => handleUpdateWorkout()}
         >
           UPDATE WORKOUT

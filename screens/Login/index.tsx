@@ -6,6 +6,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { LoginUser, setCurrentUser } from "../../redux/features/auth/authSlice";
 import { TextInput } from "react-native-paper";
 import { AppDispatch } from "../../redux/app/store";
+import {
+  getAllBodyTargets,
+  getAllEquipment,
+  getAllWorkouts,
+} from "../../redux/features/workouts/workoutSlice";
 export default function Login({ navigation }) {
   const dispatch = useDispatch<AppDispatch>();
   const [login, setlogin] = useState({ email: "", password: "" });
@@ -30,8 +35,19 @@ export default function Login({ navigation }) {
         if (val.meta.requestStatus === "fulfilled") {
           navigation.navigate("Home");
           setlogin({ email: "", password: "" });
-          console.log(val.payload);
+
           dispatch(setCurrentUser(val.payload));
+
+          dispatch(
+            getAllWorkouts({
+              token: val.payload.userToken,
+              page: 1,
+              limit: 100,
+            })
+          );
+
+          dispatch(getAllEquipment({ token: val.payload.userToken }));
+          dispatch(getAllBodyTargets({ token: val.payload.userToken }));
           navigation.reset({ index: 0, routes: [{ name: "Home" }] });
         }
         if (val.meta.requestStatus === "rejected") {

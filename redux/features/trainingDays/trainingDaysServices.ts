@@ -35,7 +35,7 @@ const deleteTrainingDays = async (obj: any, token: string) => {
   console.log("data", obj, token);
   const response = await axios.put(
     `${EXPO_PUBLIC_APP_URL}api/workouts/trainingdays/${obj.regimentId}/delete`,
-    { _id: obj.routineId },
+    obj,
     tokenBearer(token)
   );
   return response.data;

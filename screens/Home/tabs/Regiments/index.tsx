@@ -61,9 +61,6 @@ const RegimentScreen = ({ navigation }) => {
   useEffect(() => {
     if (currentUser !== undefined) {
       dispatch(getRegiments(currentUser?.existingUser?._id));
-      dispatch(
-        getAllWorkouts({ token: currentUser.userToken, page: 1, limit: 100 })
-      );
     }
   }, [currentUser]);
 
@@ -130,7 +127,9 @@ const RegimentScreen = ({ navigation }) => {
                     setVisible(!visible);
                   }}
                   onPress={() => {
-                    navigation.navigate("Regiment Details", val._id);
+                    navigation.navigate("Regiment Details", {
+                      regimentId: val._id,
+                    });
                   }}
                 >
                   <Surface
@@ -194,7 +193,7 @@ const RegimentScreen = ({ navigation }) => {
                             val?.days?.filter((val) => val === "sunday")
                               .length === 1
                               ? "#4f1d9e"
-                              : "#e5daf8",
+                              : "white",
                         }}
                       >
                         Sun
@@ -208,7 +207,7 @@ const RegimentScreen = ({ navigation }) => {
                           padding: 4,
                           backgroundColor: val?.days?.includes("monday")
                             ? "#4f1d9e"
-                            : "#e5daf8",
+                            : "white",
                         }}
                       >
                         Mon
@@ -223,7 +222,7 @@ const RegimentScreen = ({ navigation }) => {
 
                           backgroundColor: val?.days?.includes("tuesday")
                             ? "#4f1d9e"
-                            : "#e5daf8",
+                            : "white",
                         }}
                       >
                         Tues
@@ -237,7 +236,7 @@ const RegimentScreen = ({ navigation }) => {
                           padding: 4,
                           backgroundColor: val?.days?.includes("wednesday")
                             ? "#4f1d9e"
-                            : "#e5daf8",
+                            : "white",
                         }}
                       >
                         Wed
@@ -251,7 +250,7 @@ const RegimentScreen = ({ navigation }) => {
                           padding: 4,
                           backgroundColor: val?.days?.includes("thursday")
                             ? "#4f1d9e"
-                            : "#e5daf8",
+                            : "white",
                         }}
                       >
                         Thurs
@@ -265,7 +264,7 @@ const RegimentScreen = ({ navigation }) => {
                           padding: 4,
                           backgroundColor: val?.days?.includes("friday")
                             ? "#4f1d9e"
-                            : "#e5daf8",
+                            : "white",
                         }}
                       >
                         Fri
@@ -279,7 +278,7 @@ const RegimentScreen = ({ navigation }) => {
                           padding: 4,
                           backgroundColor: val?.days?.includes("saturday")
                             ? "#4f1d9e"
-                            : "#e5daf8",
+                            : "white",
                         }}
                       >
                         Sat

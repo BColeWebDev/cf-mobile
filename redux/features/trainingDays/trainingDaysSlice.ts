@@ -105,18 +105,25 @@ export const trainingDaysSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
       })
-      .addCase(getAllTrainingDays.pending, (state) => {
+
+      // when data hase been received
+      .addCase(getAllTrainingDays.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.days = action.payload.days;
+      })
+
+      .addCase(deleteTrainingDays.pending, (state) => {
         state.isLoading = true;
       })
       // when data hase been received
-      .addCase(getAllTrainingDays.fulfilled, (state, action) => {
+      .addCase(deleteTrainingDays.fulfilled, (state, action) => {
         console.log("payload", action.payload.routines);
         state.isLoading = false;
         state.isSuccess = true;
         state.data = action.payload;
         state.days = action.payload.days;
       })
-      .addCase(getAllTrainingDays.rejected, (state, action) => {
+      .addCase(deleteTrainingDays.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });

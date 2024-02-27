@@ -35,22 +35,23 @@ export default function CreateRegiment({ navigation }) {
       style={{
         flex: 1,
         padding: 20,
-        justifyContent: "space-between",
+        justifyContent: "flex-start",
         backgroundColor: "white",
         alignItems: "center",
         display: "flex",
       }}
     >
-      <View style={{ display: "flex", flex: 0 }}>
+      <View style={{ display: "flex", justifyContent: "flex-start" }}>
         <Text
           style={{
             fontSize: 28,
             color: "black",
 
             marginTop: 30,
+            marginBottom: 100,
             fontWeight: "500",
             textAlign: "center",
-            marginVertical: 20,
+            marginVertical: 5,
           }}
         >
           Create Regiment
@@ -62,48 +63,53 @@ export default function CreateRegiment({ navigation }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          flex: 1,
         }}
       >
         <TextInput
           style={{
+            marginBottom: 25,
+            marginHorizontal: 20,
+            backgroundColor: "white",
             width: "100%",
-            backgroundColor: "",
-            paddingLeft: 10,
-            marginVertical: 20,
-            borderRadius: 1000,
           }}
-          placeholder="Name"
-          placeholderTextColor={"#3b1676"}
+          placeholderTextColor={"black"}
           mode={"outlined"}
-          selectionColor={"#3b1676"}
+          selectionColor={"black"}
+          placeholder="Name"
           onChangeText={(text) =>
             setformData((prevState) => ({ ...prevState, name: text }))
           }
         />
         <TextInput
           style={{
+            marginBottom: 25,
+            marginHorizontal: 20,
+            backgroundColor: "white",
             width: "100%",
-            backgroundColor: "",
-            paddingLeft: 10,
-            marginVertical: 20,
-            borderRadius: 1000,
           }}
-          placeholder="Description"
-          placeholderTextColor={"#3b1676"}
+          placeholderTextColor={"black"}
           mode={"outlined"}
-          selectionColor={"#3b1676"}
+          selectionColor={"black"}
+          placeholder="Description"
           onChangeText={(text) =>
             setformData((prevState) => ({ ...prevState, description: text }))
           }
         />
 
         <Button
-          style={{ width: "100%", height: 40, justifyContent: "center" }}
+          style={{
+            width: 220,
+            marginBottom: 20,
+            borderRadius: 15,
+            height: 40,
+            marginTop: 20,
+            justifyContent: "center",
+          }}
+          mode="elevated"
+          buttonColor="black"
+          textColor="white"
           onPress={() => handleCreateLead()}
-          mode={"contained"}
         >
-          {" "}
           CREATE REGIMENT
         </Button>
       </View>
