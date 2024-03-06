@@ -44,7 +44,7 @@ const SignUpNamesScreens = ({ navigation }) => {
         }}
       >
         <View
-          style={{ display: "flex", alignItems: "flex-start", marginTop: 110 }}
+          style={{ display: "flex", alignItems: "flex-start", marginTop: 50}}
         >
           {/* <CfIcon/> */}
           <Text
@@ -52,6 +52,7 @@ const SignUpNamesScreens = ({ navigation }) => {
               fontSize: 25,
               marginLeft: 20,
               color: "black",
+              marginBottom:20
             }}
           >
             Sign Up - Name
@@ -61,20 +62,26 @@ const SignUpNamesScreens = ({ navigation }) => {
           style={{
             width: "90%",
             flex: 1,
-            marginTop: "10%",
             justifyContent: "center",
             alignItems: "center",
             marginLeft: "auto",
             marginRight: "auto",
+          
           }}
         >
           <TextInput
-            placeholder="Last Name"
+            placeholder="First Name"
             textColor="black"
             mode={"outlined"}
-            style={{ marginHorizontal: 20, width: "100%", marginBottom: 40 }}
+            style={{
+              marginBottom: 25,
+              marginHorizontal: 20,
+              backgroundColor: "white",
+              width:"100%"
+            }}
+            activeOutlineColor="black"
             selectionColor={"black"}
-            cursorColor={"#F9C000"}
+            cursorColor={"black"}
             defaultValue={register.first_name}
             onChangeText={(text) => {
               console.log("text", text);
@@ -82,12 +89,18 @@ const SignUpNamesScreens = ({ navigation }) => {
             }}
           />
           <TextInput
-            placeholder="First Name"
-            textColor="black"
-            mode={"outlined"}
-            style={{ marginHorizontal: 20, width: "100%", marginBottom: 40 }}
-            selectionColor={"black"}
-            cursorColor={"#F9C000"}
+               placeholder="Last Name"
+             textColor="black"
+             mode={"outlined"}
+             style={{
+              marginBottom: 25,
+              marginHorizontal: 20,
+              backgroundColor: "white",
+              width:"100%"
+            }}
+             activeOutlineColor="black"
+             selectionColor={"black"}
+             cursorColor={"black"}
             onChangeText={(text) => {
               dispatch(setRegister({ value: text, name: "last_name" }));
             }}
@@ -97,10 +110,16 @@ const SignUpNamesScreens = ({ navigation }) => {
             placeholder="Age"
             textColor="black"
             mode={"outlined"}
-            style={{ marginHorizontal: 20, width: "100%", marginBottom: 40 }}
+            style={{
+              marginBottom: 25,
+              marginHorizontal: 20,
+              backgroundColor: "white",
+              width:"100%"
+            }}
+            activeOutlineColor="black"
             selectionColor={"black"}
-            keyboardType={"numeric"}
-            cursorColor={"#F9C000"}
+            cursorColor={"black"}
+            keyboardType={"number-pad"}
             onChangeText={(text) => {
               dispatch(setRegister({ value: text, name: "age" }));
             }}
@@ -109,16 +128,16 @@ const SignUpNamesScreens = ({ navigation }) => {
           <TextInput
             placeholder="Bio"
             textColor="black"
-            mode={"outlined"}
-            style={{
-              marginHorizontal: 20,
-              width: "100%",
-              height: 120,
-              marginBottom: 40,
-            }}
-            selectionColor={"black"}
-            keyboardType={"number-pad"}
-            cursorColor={"#F9C000"}
+              mode={"outlined"}
+              style={{
+                marginBottom: 25,
+                marginHorizontal: 20,
+                backgroundColor: "white",
+                width:"100%"
+              }}
+              activeOutlineColor="black"
+              selectionColor={"black"}
+              cursorColor={"black"}
             onChangeText={(text) => {
               // setregister(prevState => ({...prevState,first_name:text}))
               dispatch(setRegister({ value: text, name: "bio" }));

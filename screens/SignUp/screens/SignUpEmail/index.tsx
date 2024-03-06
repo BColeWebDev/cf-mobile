@@ -114,7 +114,12 @@ const SignUpEmail = ({ navigation }) => {
             placeholder="Email"
             textColor="black"
             mode={"outlined"}
-            style={{ marginHorizontal: 20, width: "100%", marginBottom: 40 }}
+          style={{
+                marginBottom: 25,
+                marginHorizontal: 20,
+                backgroundColor: "white",
+                width:"100%"
+              }}
             selectionColor={"black"}
             cursorColor={"black"}
             onChangeText={(text) => {
@@ -128,7 +133,12 @@ const SignUpEmail = ({ navigation }) => {
             placeholder="Password"
             textColor="black"
             mode={"outlined"}
-            style={{ marginHorizontal: 20, width: "100%", marginBottom: 40 }}
+          style={{
+                marginBottom: 25,
+                marginHorizontal: 20,
+                backgroundColor: "white",
+                width:10
+              }}
             selectionColor={"black"}
             cursorColor={"black"}
             onChangeText={(text) => {
@@ -141,8 +151,9 @@ const SignUpEmail = ({ navigation }) => {
                 onPress={() => setshowPassword(!showPassword)}
               />
             }
-            secureTextEntry={!showPassword ? true : false}
-            keyboardType={"email-address"}
+            multiline={true}
+            secureTextEntry={true}
+            keyboardType={"visible-password"}
           />
         </View>
         {register.email !== "" && register.password !== "" ? (
