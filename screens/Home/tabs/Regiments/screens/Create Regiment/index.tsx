@@ -15,7 +15,7 @@ export default function CreateRegiment({ navigation }) {
   const initialState = { name: "", description: "", userid: "" };
   const [formData, setformData] = useState(initialState);
 
-  const handleCreateLead = () => {
+  const handleCreateRegiment = () => {
     formData.userid = currentUser?.existingUser?._id;
     console.log("userid", currentUser?.existingUser?._id);
     dispatch(createRegiment(formData)).then((val) => {
@@ -66,30 +66,34 @@ export default function CreateRegiment({ navigation }) {
         }}
       >
         <TextInput
+          textColor="black"
+          mode={"outlined"}
           style={{
             marginBottom: 25,
             marginHorizontal: 20,
             backgroundColor: "white",
             width: "100%",
           }}
-          placeholderTextColor={"black"}
-          mode={"outlined"}
+          activeOutlineColor="black"
           selectionColor={"black"}
+          cursorColor={"black"}
           placeholder="Name"
           onChangeText={(text) =>
             setformData((prevState) => ({ ...prevState, name: text }))
           }
         />
         <TextInput
+          textColor="black"
+          mode={"outlined"}
           style={{
             marginBottom: 25,
             marginHorizontal: 20,
             backgroundColor: "white",
             width: "100%",
           }}
-          placeholderTextColor={"black"}
-          mode={"outlined"}
+          activeOutlineColor="black"
           selectionColor={"black"}
+          cursorColor={"black"}
           placeholder="Description"
           onChangeText={(text) =>
             setformData((prevState) => ({ ...prevState, description: text }))
@@ -108,7 +112,7 @@ export default function CreateRegiment({ navigation }) {
           mode="elevated"
           buttonColor="black"
           textColor="white"
-          onPress={() => handleCreateLead()}
+          onPress={() => handleCreateRegiment()}
         >
           CREATE REGIMENT
         </Button>

@@ -36,7 +36,6 @@ const CreateWorkout = ({ route, navigation }) => {
   useEffect(() => {
     console.log(route?.params?.val?.name);
     if (route?.params?.val?.name !== undefined) {
-      console.log("called");
       setformData({
         name: route?.params?.val?.name,
         description: route?.params?.val?.description,
@@ -67,6 +66,7 @@ const CreateWorkout = ({ route, navigation }) => {
   });
 
   const handleCreateWorkout = () => {
+    console.log("route", route.params);
     dispatch(
       createTrainingDays({ ...formData, regimentId: route.params })
     ).then((val) => {
@@ -109,7 +109,12 @@ const CreateWorkout = ({ route, navigation }) => {
   return (
     <View>
       <Text
-        style={{ marginVertical: 25, textAlign: "center", fontWeight: "600" }}
+        style={{
+          marginVertical: 25,
+          textAlign: "center",
+          fontWeight: "600",
+          color: "black",
+        }}
         variant="headlineMedium"
       >
         {route?.params?.val?.name !== undefined
@@ -155,6 +160,7 @@ const CreateWorkout = ({ route, navigation }) => {
         style={{
           marginLeft: 20,
           marginVertical: 30,
+          color: "black",
         }}
       >
         Choose workout day
@@ -186,7 +192,7 @@ const CreateWorkout = ({ route, navigation }) => {
                 {val}
               </Text>
               <RadioButton
-                color="red"
+                color="black"
                 value={String(idx)}
                 status={formData.day === String(idx) ? "checked" : "unchecked"}
               />
@@ -194,10 +200,15 @@ const CreateWorkout = ({ route, navigation }) => {
           </TouchableHighlight>
         );
       })}
+
       {route?.params?.val?.name === undefined ? (
         <Button
           disabled={
-            formData.day === "" && formData.description === "" ? true : false
+            formData.day === "" ||
+            formData.description === "" ||
+            formData.day === ""
+              ? true
+              : false
           }
           style={{
             width: 220,

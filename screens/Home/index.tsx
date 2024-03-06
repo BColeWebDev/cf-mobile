@@ -12,6 +12,7 @@ import WorkoutsScreen from "./tabs/Workouts";
 import NutritionScreen from "./tabs/Nutritions";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import SharableScreen from "./tabs/Sharable";
 export default function Home({ navigation }) {
   const { isError, isLoading, isLoggedIn, currentUser } = useSelector(
     (state: any) => state.auth
@@ -49,25 +50,7 @@ export default function Home({ navigation }) {
           ),
         }}
       />
-      <Tab.Screen
-        name="My Regiments"
-        component={RegimentScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ color, size, focused }) => (
-            <MuscleIcon width={size} fill={focused ? "white" : color} />
-          ),
-          tabBarLabel: ({ color, focused }) => (
-            <View>
-              <Text style={{ color: focused ? "white" : color, fontSize: 10 }}>
-                Regiments
-              </Text>
-            </View>
-          ),
-        }}
-      />
-
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Nutritions"
         component={NutritionScreen}
         options={{
@@ -81,6 +64,23 @@ export default function Home({ navigation }) {
             <View>
               <Text style={{ color: focused ? "white" : color, fontSize: 10 }}>
                 Nutritions
+              </Text>
+            </View>
+          ),
+        }}
+      /> */}
+      <Tab.Screen
+        name="My Regiments"
+        component={RegimentScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size, focused }) => (
+            <MuscleIcon width={size} fill={focused ? "white" : color} />
+          ),
+          tabBarLabel: ({ color, focused }) => (
+            <View>
+              <Text style={{ color: focused ? "white" : color, fontSize: 10 }}>
+                Regiments
               </Text>
             </View>
           ),
@@ -104,6 +104,23 @@ export default function Home({ navigation }) {
           ),
         }}
       />
+      {/* <Tab.Screen
+        name="Community Workouts"
+        component={SharableScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size, focused }) => (
+            <ChadIcon width={size} fill={focused ? "white" : color} />
+          ),
+          tabBarLabel: ({ color, focused }) => (
+            <View>
+              <Text style={{ color: focused ? "white" : color, fontSize: 10 }}>
+                Community Workouts
+              </Text>
+            </View>
+          ),
+        }}
+      /> */}
     </Tab.Navigator>
   );
 }

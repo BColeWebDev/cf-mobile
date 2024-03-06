@@ -56,14 +56,13 @@ const WorkoutsScreen = ({ route, navigation }) => {
   const handleCreateWorkout = (val) => {
     navigation.navigate("WorkoutsDetails", {
       workoutId: "",
-      sets: [{ sets: 1, reps: 10, weight: 0, kg: 0 }],
+      sets: [{ sets: 1, reps: 10, weight: 0 }],
       restTime: "0",
       routineId: route.params.routineId,
       regimentId: route.params.regimentId,
       wId: val.id,
       btnName: "Add To Regiment",
       action: (value) => {
-        console.log(value, val);
         dispatch(
           createNewWorkout({
             routineId: route.params.routineId,
@@ -227,22 +226,6 @@ const WorkoutsScreen = ({ route, navigation }) => {
             </TouchableHighlight>
           ))}
       </ScrollView>
-
-      {view === "" ? null : (
-        <Snackbar
-          visible={true}
-          style={{ marginBottom: 100 }}
-          onDismiss={() => setview("")}
-          action={{
-            label: "Close",
-            onPress: () => {
-              setview("");
-            },
-          }}
-        >
-          {view}
-        </Snackbar>
-      )}
     </SafeAreaView>
   );
 };

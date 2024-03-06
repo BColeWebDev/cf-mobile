@@ -26,6 +26,7 @@ const NutritionScreen = () => {
       >
         Nutritions
       </Text>
+      <Text>Coming Soon!</Text>
     </SafeAreaView>
   );
 };

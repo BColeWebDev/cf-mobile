@@ -9,6 +9,7 @@ import { AppDispatch } from "../../redux/app/store";
 import {
   getAllBodyTargets,
   getAllEquipment,
+  getAllMuscleTargets,
   getAllWorkouts,
 } from "../../redux/features/workouts/workoutSlice";
 export default function Login({ navigation }) {
@@ -48,6 +49,7 @@ export default function Login({ navigation }) {
 
           dispatch(getAllEquipment({ token: val.payload.userToken }));
           dispatch(getAllBodyTargets({ token: val.payload.userToken }));
+          dispatch(getAllMuscleTargets({ token: val.payload.userToken }));
           navigation.reset({ index: 0, routes: [{ name: "Home" }] });
         }
         if (val.meta.requestStatus === "rejected") {

@@ -1,12 +1,41 @@
 import { ScrollView, View } from "react-native";
-import React from "react";
-import { Text, Button } from "react-native-paper";
+import React, { useState } from "react";
+import { Text, Button, Chip } from "react-native-paper";
 import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/app/store";
 
 const WorkoutsModal = ({ navigation }) => {
   const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
-    (state: any) => state.workouts
+    (state: RootState) => state.workouts
   );
+  const [toggle, settoggle] = useState(true);
+
+  const [filters, setfilter] = useState({
+    equipments: [],
+    bodyTargets: [],
+    muscles: [],
+  });
+
+  const handleAddFilters = (val: string, key: string) => {
+    setfilter((prevState) => {
+      let arr = prevState[key];
+      arr.push(val);
+      prevState[key] = [...new Set(arr)];
+
+      return prevState;
+    });
+  };
+
+  const handleRemoveFilter = (val: string, key: string) => {
+    setfilter((prevState) => {
+      return {
+        ...prevState,
+        [key]: prevState.muscles.filter((v) => v !== val),
+      };
+    });
+  };
+
+  console.log("fill", filters);
   return (
     <View
       style={{ flex: 1, alignItems: "center", justifyContent: "space-between" }}
@@ -41,20 +70,122 @@ const WorkoutsModal = ({ navigation }) => {
         </Text>
       </View>
 
-      <ScrollView style={{ width: "90%", padding: 30 }}>
-        {equipments.map((val, idx) => (
-          <Text
-            style={{
-              marginBottom: 10,
-              fontWeight: "600",
-              textTransform: "capitalize",
-            }}
-            key={idx}
-          >
-            {val}
-          </Text>
-        ))}
+      <ScrollView style={{ width: "100%", maxHeight: "90%" }}>
+        {<Text>{toggle}</Text>}
+        {/* Equipments */}
+        <Text style={{ fontSize: 18, color: "black", padding: 10 }}>
+          Equipments {filters.equipments.length}
+        </Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flex: 1,
+            flexWrap: "wrap",
+            padding: 3,
+          }}
+        >
+          {equipments.map((val, idx) => (
+            <Chip
+              style={{ margin: 5, borderColor: "black" }}
+              selectedColor="black"
+              selected={filters.equipments.includes(val) ? true : false}
+              onPress={() => {
+                if (filters.equipments.includes(val)) {
+                  handleRemoveFilter(val, "equipments");
+                  settoggle(!toggle);
+                } else if (!filters.equipments.includes(val)) {
+                  handleAddFilters(val, "equipments");
+                  settoggle(!toggle);
+                }
+              }}
+              mode={"outlined"}
+              elevated={true}
+              key={idx}
+              showSelectedOverlay={
+                filters.equipments.includes(val) ? true : false
+              }
+            >
+              {val}
+            </Chip>
+          ))}
+        </View>
+        {/* Targets */}
+        <Text style={{ fontSize: 18, color: "black", padding: 10 }}>
+          Muscle Targets {filters.bodyTargets.length}
+        </Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flex: 1,
+            flexWrap: "wrap",
+            padding: 3,
+          }}
+        >
+          {bodyTargets.map((val, idx) => (
+            <Chip
+              style={{ margin: 5, borderColor: "black" }}
+              selectedColor="black"
+              selected={filters.bodyTargets.includes(val) ? true : false}
+              onPress={() => {
+                if (filters.bodyTargets.includes(val)) {
+                  handleRemoveFilter(val, "bodyTargets");
+                  settoggle(!toggle);
+                } else if (!filters.bodyTargets.includes(val)) {
+                  handleAddFilters(val, "bodyTargets");
+                  settoggle(!toggle);
+                }
+              }}
+              mode={"outlined"}
+              elevated={true}
+              key={idx}
+              showSelectedOverlay={
+                filters.bodyTargets.includes(val) ? true : false
+              }
+            >
+              {val}
+            </Chip>
+          ))}
+        </View>
+        {/* Muscle Targets */}
+        <Text style={{ fontSize: 18, color: "black", padding: 10 }}>
+          Muscle Targets {filters.muscles.length}
+        </Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flex: 1,
+            flexWrap: "wrap",
+            padding: 3,
+          }}
+        >
+          {muscles?.map((val, idx) => (
+            <Chip
+              style={{ margin: 5, borderColor: "black" }}
+              selectedColor="black"
+              selected={filters.muscles.includes(val) ? true : false}
+              onPress={() => {
+                if (filters.muscles.includes(val)) {
+                  handleRemoveFilter(val, "muscles");
+                  settoggle(!toggle);
+                } else if (!filters.muscles.includes(val)) {
+                  handleAddFilters(val, "muscles");
+                  settoggle(!toggle);
+                }
+              }}
+              mode={"outlined"}
+              elevated={true}
+              key={idx}
+              showSelectedOverlay={filters.muscles.includes(val) ? true : false}
+            >
+              {val}
+            </Chip>
+          ))}
+        </View>
       </ScrollView>
+      <View style={{ padding: 15 }}></View>
     </View>
   );
 };

@@ -298,8 +298,21 @@ const RegimentScreen = ({ navigation }) => {
           contentContainerStyle={{ backgroundColor: "white", padding: 20 }}
           onDismiss={() => setVisible(!visible)}
         >
-          <Text style={{ padding: 10 }}>Delete {selected?.name}</Text>
+          <Text style={{ padding: 10, fontSize: 18 }}>
+            Delete {selected?.name}?
+          </Text>
           <Button
+            style={{
+              width: 220,
+              marginBottom: 20,
+              marginTop: 20,
+              backgroundColor: "#211a23",
+              borderRadius: 15,
+              marginLeft: "auto",
+              marginRight: "auto",
+              height: 40,
+              justifyContent: "center",
+            }}
             mode="contained"
             onPress={() => {
               dispatch(deleteRegiment(selected?._id)).then((val) => {
@@ -314,6 +327,14 @@ const RegimentScreen = ({ navigation }) => {
           >
             Delete
           </Button>
+          <Text
+            onPress={() => {
+              setVisible(!visible);
+            }}
+            style={{ textAlign: "center" }}
+          >
+            Cancel
+          </Text>
         </Modal>
       </Portal>
     </SafeAreaView>

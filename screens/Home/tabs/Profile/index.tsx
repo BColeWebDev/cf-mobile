@@ -138,7 +138,6 @@ export default function ProfileScreen({ navigation }) {
           <Text
             style={{
               color: "black",
-
               marginRight: 10,
               fontSize: 16,
             }}
@@ -185,6 +184,7 @@ export default function ProfileScreen({ navigation }) {
                 style={{
                   padding: 20,
                   fontWeight: "800",
+                  color: "black",
                 }}
               >
                 Completed Workouts ✅

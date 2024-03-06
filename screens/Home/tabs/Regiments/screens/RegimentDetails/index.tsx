@@ -7,9 +7,17 @@ import {
   RefreshControl,
   TouchableHighlight,
   Platform,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useEffect, useState, useCallback } from "react";
-import { Button, Chip, List, Snackbar } from "react-native-paper";
+import {
+  Button,
+  Chip,
+  List,
+  Modal,
+  Portal,
+  Snackbar,
+} from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../../redux/app/store";
 import { useSelector } from "react-redux";
@@ -61,23 +69,15 @@ export default function RegimentDetails({ route, navigation }) {
       display: "flex",
     },
   });
-  const {
-    data,
-    days,
-    isLoading,
-    primaryMuscleGroup,
-    secondaryMuscleGroup,
-    isSuccess,
-  } = useSelector((state: RootState) => state.trainingDays);
-
+  const { data, days } = useSelector((state: RootState) => state.trainingDays);
   const { detailInfo } = useSelector((state: any) => state.regiments);
-  const { workouts, equipments, bodyTargets, muscles } = useSelector(
-    (state: any) => state.workouts
-  );
+  const { workouts } = useSelector((state: any) => state.workouts);
+  const { currentUser } = useSelector((state: RootState) => state.auth);
 
   const [refreshing, setRefreshing] = React.useState(false);
   const [image, setImage] = useState<any>();
   const [visible, setVisible] = useState(false);
+  const [selectValue, setselectValue] = useState();
   const onToggleSnackBar = () => setVisible(!visible);
 
   const onDismissSnackBar = () => setVisible(false);
@@ -95,8 +95,8 @@ export default function RegimentDetails({ route, navigation }) {
           params: {
             primaryColor: "255,60,80",
             secondaryColor: "200,30,0",
-            primaryMuscleGroups: "legs",
-            secondaryMuscleGroups: "triceps,shoulders",
+            primaryMuscleGroups: "all_lower",
+            secondaryMuscleGroups: "chest,shoulders",
             transparentBackground: "0",
           },
           responseType: "blob",
@@ -119,16 +119,15 @@ export default function RegimentDetails({ route, navigation }) {
   };
   // ON LOAD
   useEffect(() => {
-    console.log("route", route);
-
     if (route.params.regimentId !== undefined) {
       dispatch(getSingleRegiment(route.params.regimentId));
       dispatch(getAllTrainingDays(route.params.regimentId));
+      // fetchImage();
     }
   }, [route]);
 
   const handleDeleteWorkout = (val) => {
-    console.log(val);
+    console.log("val", val);
     dispatch(
       deleteWorkout({
         regimentId: detailInfo._id,
@@ -136,7 +135,7 @@ export default function RegimentDetails({ route, navigation }) {
         id: val.id,
       })
     ).then((val) => {
-      console.log(val);
+      console.log("Val", val);
       if (val.meta.requestStatus === "fulfilled") {
         if (route.params !== undefined) {
           dispatch(getSingleRegiment(route.params));
@@ -151,7 +150,6 @@ export default function RegimentDetails({ route, navigation }) {
   };
 
   const handleTrainingDays = (val) => {
-    console.log("val", val);
     dispatch(
       deleteTrainingDays({
         routineId: val._id,
@@ -159,7 +157,6 @@ export default function RegimentDetails({ route, navigation }) {
         trainingDay: val,
       })
     ).then((val) => {
-      console.log(val);
       if (val.meta.requestStatus === "fulfilled") {
         onToggleSnackBar();
       }
@@ -257,6 +254,7 @@ export default function RegimentDetails({ route, navigation }) {
                             <AntDesign
                               style={{ marginRight: 30 }}
                               onPress={() => {
+                                // Update Workout
                                 navigation.navigate("Create Workout", {
                                   val,
                                   index: idx,
@@ -289,6 +287,7 @@ export default function RegimentDetails({ route, navigation }) {
                         </Text>
                       </View>
                     </TouchableHighlight>
+
                     <Button
                       style={{
                         width: 220,
@@ -314,6 +313,70 @@ export default function RegimentDetails({ route, navigation }) {
                     >
                       Add Workout
                     </Button>
+                    {/* <Image
+                      source={{
+                        uri: image,
+                      }}
+                      style={{
+                        width: "100%",
+                        height: 180,
+                        padding: 10,
+                        resizeMode: "contain",
+                        marginTop: 10,
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        marginBottom: 10,
+                      }}
+                    /> */}
+
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "100%",
+                      }}
+                    >
+                      {val.primaryMuscleGroup.length > 0 &&
+                      val.secondaryMuscleGroup > 0 ? (
+                        <>
+                          <View
+                            style={{ marginHorizontal: 20, marginBottom: 10 }}
+                          >
+                            <Text
+                              style={{ marginBottom: 20, textAlign: "center" }}
+                            >
+                              Primary Muscle Group
+                            </Text>
+                            {val.primaryMuscleGroup.map((value, key) => (
+                              <Text
+                                style={{ textAlign: "center", marginBottom: 3 }}
+                                key={key}
+                              >
+                                {value}
+                              </Text>
+                            ))}
+                          </View>
+
+                          <View
+                            style={{ marginHorizontal: 20, marginBottom: 10 }}
+                          >
+                            <Text
+                              style={{ marginBottom: 20, textAlign: "center" }}
+                            >
+                              Secondary Muscle Group
+                            </Text>
+                            {val.secondaryMuscleGroup.map((value, key) => (
+                              <Text
+                                style={{ textAlign: "center", marginBottom: 3 }}
+                                key={key}
+                              >
+                                {value}
+                              </Text>
+                            ))}
+                          </View>
+                        </>
+                      ) : null}
+                    </View>
 
                     <View style={{ marginHorizontal: 20, marginBottom: 70 }}>
                       {val.workouts.map((value, idx) => (
@@ -323,9 +386,10 @@ export default function RegimentDetails({ route, navigation }) {
                             display: "flex",
                             flexDirection: "row-reverse",
                             alignItems: "center",
+                            width: "100%",
                           }}
                         >
-                          <TouchableHighlight
+                          <TouchableWithoutFeedback
                             onPress={() =>
                               navigation.navigate("WorkoutsDetails", {
                                 workoutId: value._id,
@@ -345,7 +409,6 @@ export default function RegimentDetails({ route, navigation }) {
                                       restTime: route.params.restTime,
                                     })
                                   ).then((value) => {
-                                    console.log("value", value);
                                     if (
                                       value.meta.requestStatus === "fulfilled"
                                     ) {
@@ -362,6 +425,10 @@ export default function RegimentDetails({ route, navigation }) {
                                 },
                               })
                             }
+                            onLongPress={() => {
+                              setVisible(!visible);
+                              setselectValue({ ...val, id: value.id });
+                            }}
                           >
                             <View
                               style={{
@@ -371,6 +438,7 @@ export default function RegimentDetails({ route, navigation }) {
                                 justifyContent: "space-between",
                                 margin: 10,
                                 padding: 0,
+                                width: "100%",
                               }}
                             >
                               <View
@@ -441,8 +509,8 @@ export default function RegimentDetails({ route, navigation }) {
                                       padding: 10,
                                       backgroundColor: "black",
                                       flexDirection: "row",
-                                      borderEndEndRadius: 15,
                                       borderBottomLeftRadius: 15,
+                                      borderBottomRightRadius: 15,
                                       justifyContent: "space-evenly",
                                       width: "100%",
                                     }}
@@ -453,14 +521,21 @@ export default function RegimentDetails({ route, navigation }) {
                                     <Text style={{ color: "white" }}>
                                       Reps {value.reps}
                                     </Text>
-                                    <Text style={{ color: "white" }}>
-                                      Kg {value.weight}
-                                    </Text>
+                                    {currentUser.existingUser?.settings
+                                      ?.weight === "kg" ? (
+                                      <Text style={{ color: "white" }}>
+                                        Kg {value.weight}
+                                      </Text>
+                                    ) : (
+                                      <Text style={{ color: "white" }}>
+                                        Ibs {value.weight}
+                                      </Text>
+                                    )}
                                   </View>
                                 ))}
                               </View>
                             </View>
-                          </TouchableHighlight>
+                          </TouchableWithoutFeedback>
                         </View>
                       ))}
                     </View>
@@ -482,7 +557,6 @@ export default function RegimentDetails({ route, navigation }) {
           setRefreshing(false);
         }
         if (val.meta.requestStatus === "rejected") {
-          console.log(val);
           setRefreshing(false);
         }
       });
@@ -491,13 +565,11 @@ export default function RegimentDetails({ route, navigation }) {
   }, [refreshing]);
 
   useEffect(() => {
-    console.log("isFocused", isFocused);
     dispatch(getAllTrainingDays(detailInfo._id)).then((val) => {
       if (val.meta.requestStatus === "fulfilled") {
         setRefreshing(false);
       }
       if (val.meta.requestStatus === "rejected") {
-        console.log(val);
         setRefreshing(false);
       }
     });
@@ -531,8 +603,8 @@ export default function RegimentDetails({ route, navigation }) {
             <Text
               style={{
                 textAlign: "left",
-                fontSize: 30,
-                fontWeight: "600",
+                fontSize: 10,
+                fontWeight: "200",
                 color: "white",
               }}
             >
@@ -568,10 +640,6 @@ export default function RegimentDetails({ route, navigation }) {
     );
   }
 
-  if (isLoading) {
-    return <Loading color={"black"} />;
-  }
-
   return (
     <>
       <View
@@ -600,38 +668,37 @@ export default function RegimentDetails({ route, navigation }) {
           <Text
             style={{
               textAlign: "left",
-              fontSize: 30,
-              fontWeight: "600",
+              fontSize: 20,
+              fontWeight: "200",
               color: "white",
             }}
           >
             {detailInfo.name}
           </Text>
-          {days.length === 7 ? null : (
-            <Button
-              mode="outlined"
-              textColor="white"
-              onPress={() =>
-                navigation.navigate("Create Workout", detailInfo._id)
-              }
-              style={{
-                padding: 5,
-                backgroundColor: "#211a23",
-                borderColor: "black",
-                marginLeft: "auto",
-              }}
-              icon={"plus"}
-            >
-              Create Training Day
-            </Button>
-          )}
+          <Text style={{ color: "white", textAlign: "left" }}>
+            {detailInfo.description}
+          </Text>
         </View>
-
-        <Text style={{ width: "100%", color: "white", textAlign: "left" }}>
-          {detailInfo.description}
-        </Text>
+        {days.length === 7 ? null : (
+          <Button
+            mode="outlined"
+            textColor="white"
+            onPress={() =>
+              navigation.navigate("Create Workout", detailInfo._id)
+            }
+            style={{
+              padding: 5,
+              backgroundColor: "#211a23",
+              borderColor: "black",
+              marginLeft: "auto",
+            }}
+            icon={"plus"}
+          >
+            Create Training Day
+          </Button>
+        )}
       </View>
-
+      {/* Tabs */}
       <Tab.Navigator>
         <Tab.Group>
           {days?.map((val, idx) => (
@@ -650,9 +717,49 @@ export default function RegimentDetails({ route, navigation }) {
           ))}
         </Tab.Group>
       </Tab.Navigator>
-      <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
+
+      {/* <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
         Removed Training Day
-      </Snackbar>
+      </Snackbar> */}
+
+      <Portal>
+        <Modal
+          visible={visible}
+          contentContainerStyle={{ backgroundColor: "white", padding: 20 }}
+          onDismiss={() => setVisible(!visible)}
+        >
+          <Text style={{ padding: 10 }}>Delete Workout?</Text>
+          <Button
+            style={{
+              width: 220,
+              marginBottom: 20,
+              marginTop: 20,
+              backgroundColor: "#211a23",
+              borderRadius: 15,
+              marginLeft: "auto",
+              marginRight: "auto",
+              height: 40,
+              justifyContent: "center",
+            }}
+            onPress={() => {
+              setVisible(!visible);
+              handleDeleteWorkout(selectValue);
+            }}
+            mode="elevated"
+            textColor="white"
+          >
+            Delete
+          </Button>
+          <Text
+            onPress={() => {
+              setVisible(!visible);
+            }}
+            style={{ textAlign: "center" }}
+          >
+            Cancel
+          </Text>
+        </Modal>
+      </Portal>
     </>
   );
 }
