@@ -78,9 +78,12 @@ export default function RegimentDetails({ route, navigation }) {
   const [image, setImage] = useState<any>();
   const [visible, setVisible] = useState(false);
   const [selectValue, setselectValue] = useState();
-  const onToggleSnackBar = () => setVisible(!visible);
 
-  const onDismissSnackBar = () => setVisible(false);
+  const [trainingDayDelete, settrainingDayDelete] = useState(false);
+
+  const onToggleSnackBarDelete = () => settrainingDayDelete(!trainingDayDelete);
+  const onDismissTrainingSnackBar = () => settrainingDayDelete(false);
+
   const fetchImage = async () => {
     try {
       const response = await axios.get(
@@ -127,7 +130,7 @@ export default function RegimentDetails({ route, navigation }) {
   }, [route]);
 
   const handleDeleteWorkout = (val) => {
-    console.log("val", val);
+    console.log("val", detailInfo._id, val._id, val.id);
     dispatch(
       deleteWorkout({
         regimentId: detailInfo._id,
@@ -140,6 +143,7 @@ export default function RegimentDetails({ route, navigation }) {
         if (route.params !== undefined) {
           dispatch(getSingleRegiment(route.params));
           dispatch(getAllTrainingDays(route.params));
+          onToggleSnackBarDelete();
         }
         if (route.params.regimentId !== undefined) {
           dispatch(getSingleRegiment(route.params.regimentId));
@@ -158,7 +162,6 @@ export default function RegimentDetails({ route, navigation }) {
       })
     ).then((val) => {
       if (val.meta.requestStatus === "fulfilled") {
-        onToggleSnackBar();
       }
       if (val.meta.requestStatus === "rejected") {
         alert("not working");
@@ -718,9 +721,12 @@ export default function RegimentDetails({ route, navigation }) {
         </Tab.Group>
       </Tab.Navigator>
 
-      {/* <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
+      <Snackbar
+        visible={trainingDayDelete}
+        onDismiss={onDismissTrainingSnackBar}
+      >
         Removed Training Day
-      </Snackbar> */}
+      </Snackbar>
 
       <Portal>
         <Modal
