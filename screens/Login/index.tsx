@@ -30,34 +30,37 @@ export default function Login({ navigation }) {
   });
 
   const handleLoginUser = () => {
-    dispatch(LoginUser({ email: login.email, password: login.password })).then(
-      (val) => {
-        console.log(val);
-        if (val.meta.requestStatus === "fulfilled") {
-          navigation.navigate("Home");
-          setlogin({ email: "", password: "" });
+    dispatch(
+      LoginUser({
+        email: login.email.trim().toLowerCase(),
+        password: login.password,
+      })
+    ).then((val) => {
+      console.log(val);
+      if (val.meta.requestStatus === "fulfilled") {
+        navigation.navigate("Home");
+        setlogin({ email: "", password: "" });
 
-          dispatch(setCurrentUser(val.payload));
+        dispatch(setCurrentUser(val.payload));
 
-          dispatch(
-            getAllWorkouts({
-              token: val.payload.userToken,
-              page: 1,
-              limit: 100,
-            })
-          );
+        dispatch(
+          getAllWorkouts({
+            token: val.payload.userToken,
+            page: 1,
+            limit: 100,
+          })
+        );
 
-          dispatch(getAllEquipment({ token: val.payload.userToken }));
-          dispatch(getAllBodyTargets({ token: val.payload.userToken }));
-          dispatch(getAllMuscleTargets({ token: val.payload.userToken }));
-          navigation.reset({ index: 0, routes: [{ name: "Home" }] });
-        }
-        if (val.meta.requestStatus === "rejected") {
-          navigation.navigate("Login");
-          alert("Invalid Credentials email or password is incorrect");
-        }
+        dispatch(getAllEquipment({ token: val.payload.userToken }));
+        dispatch(getAllBodyTargets({ token: val.payload.userToken }));
+        dispatch(getAllMuscleTargets({ token: val.payload.userToken }));
+        navigation.reset({ index: 0, routes: [{ name: "Home" }] });
       }
-    );
+      if (val.meta.requestStatus === "rejected") {
+        navigation.navigate("Login");
+        alert("Invalid Credentials email or password is incorrect");
+      }
+    });
   };
 
   return (
@@ -134,7 +137,7 @@ export default function Login({ navigation }) {
                 />
               }
               secureTextEntry={!showPassword ? true : false}
-              keyboardType={"email-address"}
+              keyboardType={"default"}
             />
           </View>
 

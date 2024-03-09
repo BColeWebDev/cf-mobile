@@ -33,7 +33,7 @@ const SignUpEmail = ({ navigation }) => {
       }
       // error message
       if (val.meta.requestStatus === "rejected") {
-        console.log(val.payload.response.data.errors);
+        console.log("VAL", val.payload);
         setvisible(true);
       }
     });
@@ -114,12 +114,13 @@ const SignUpEmail = ({ navigation }) => {
             placeholder="Email"
             textColor="black"
             mode={"outlined"}
-          style={{
-                marginBottom: 25,
-                marginHorizontal: 20,
-                backgroundColor: "white",
-                width:"100%"
-              }}
+            style={{
+              marginBottom: 25,
+              marginHorizontal: 20,
+              backgroundColor: "white",
+              width: "100%",
+            }}
+            activeOutlineColor="black"
             selectionColor={"black"}
             cursorColor={"black"}
             onChangeText={(text) => {
@@ -133,12 +134,13 @@ const SignUpEmail = ({ navigation }) => {
             placeholder="Password"
             textColor="black"
             mode={"outlined"}
-          style={{
-                marginBottom: 25,
-                marginHorizontal: 20,
-                backgroundColor: "white",
-                width:10
-              }}
+            style={{
+              marginBottom: 25,
+              marginHorizontal: 20,
+              backgroundColor: "white",
+              width: "100%",
+            }}
+            activeOutlineColor="black"
             selectionColor={"black"}
             cursorColor={"black"}
             onChangeText={(text) => {
@@ -151,9 +153,8 @@ const SignUpEmail = ({ navigation }) => {
                 onPress={() => setshowPassword(!showPassword)}
               />
             }
-            multiline={true}
-            secureTextEntry={true}
-            keyboardType={"visible-password"}
+            secureTextEntry={!showPassword ? true : false}
+            keyboardType={"default"}
           />
         </View>
         {register.email !== "" && register.password !== "" ? (
@@ -202,9 +203,7 @@ const SignUpEmail = ({ navigation }) => {
         style={{ backgroundColor: "red" }}
         onDismiss={() => setvisible(!visible)}
       >
-        {messages.map((val) => (
-          <Text style={{ color: "white" }}>{val}</Text>
-        ))}
+        Testing
       </Snackbar>
       {isSuccess ? (
         <Snackbar
