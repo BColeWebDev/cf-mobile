@@ -1,12 +1,19 @@
 import axios from "axios";
 import { EXPO_PUBLIC_APP_URL } from "@env";
 import tokenBearer from "../helpers/tokenHeader";
+import { IFilters } from "../interfaces/IFilter";
 
-const getAlWorkouts = async (token, page: string, limit: string) => {
-  const response = await axios.get(
-    `${EXPO_PUBLIC_APP_URL}api/workouts/exercises?page=${page}&limit=${limit}`,
-    tokenBearer(token)
-  );
+const getAlWorkouts = async (
+  token,
+  page: string,
+  limit: string,
+  filters: string
+) => {
+  let urlString = `http://localhost:8000/api/workouts/exercises?page=${page}&limit=${limit}${
+    filters !== "" || filters !== undefined ? filters : ""
+  }`;
+  console.log("fills", urlString);
+  const response = await axios.get(urlString, tokenBearer(token));
   console.log("response", response);
 
   return response.data;

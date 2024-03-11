@@ -47,7 +47,8 @@ export default function Login({ navigation }) {
           getAllWorkouts({
             token: val.payload.userToken,
             page: 1,
-            limit: 100,
+            limit: 10,
+            filters: "",
           })
         );
 

@@ -106,8 +106,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
             marginBottom: 25,
             marginHorizontal: 20,
             backgroundColor: "white",
-            width: "85%",
-            marginLeft: "auto",
+            width: "75%",
             marginRight: "auto",
           }}
           textColor="black"
@@ -127,8 +126,25 @@ const WorkoutsScreen = ({ route, navigation }) => {
           color="black"
           onPress={() => navigation.navigate("WorkoutsFilters")}
         />
+        {/* <FontAwesome
+          name="sort-amount-asc"
+          style={{ marginRight: 20, marginBottom: 20, textAlign: "right" }}
+          color="black"
+        /> */}
       </View>
       {/* Workouts */}
+      <Text
+        style={{
+          width: "100%",
+          paddingHorizontal: 20,
+          marginBottom: 20,
+          color: "black",
+          fontWeight: "400",
+          textAlign: "right",
+        }}
+      >
+        Workouts:{workouts?.items.length}
+      </Text>
       <ScrollView>
         {workouts?.items
           ?.filter((val) => {

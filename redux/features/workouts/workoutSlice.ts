@@ -18,12 +18,13 @@ export const getAllWorkouts = createAsyncThunk<any, any, { state: RootState }>(
   `workouts/AllWorkouts`,
   async (obj: any, thunkAPI) => {
     try {
-      const { token, page, limit } = obj;
+      const { token, page, limit, filters } = obj;
       const { currentUser } = thunkAPI.getState().auth;
       const response = await workoutServices.getAlWorkouts(
         currentUser.userToken,
         page,
-        limit
+        limit,
+        filters
       );
       return response;
     } catch (error) {

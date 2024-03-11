@@ -1,21 +1,29 @@
 import { ScrollView, View } from "react-native";
 import React, { useState } from "react";
 import { Text, Button, Chip } from "react-native-paper";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/app/store";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../../redux/app/store";
+import { getAllTrainingDays } from "../../../redux/features/trainingDays/trainingDaysSlice";
+import {
+  getAllBodyTargets,
+  getAllEquipment,
+  getAllMuscleTargets,
+  getAllWorkouts,
+} from "../../../redux/features/workouts/workoutSlice";
 
 const WorkoutsModal = ({ navigation }) => {
   const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
     (state: RootState) => state.workouts
   );
+  const { currentUser } = useSelector((state: RootState) => state.auth);
   const [toggle, settoggle] = useState(true);
-
-  const [filters, setfilter] = useState({
-    equipments: [],
-    bodyTargets: [],
-    muscles: [],
-  });
-
+  const initialState = {
+    equipment: [],
+    bodyTarget: [],
+    muscle: [],
+  };
+  const [filters, setfilter] = useState(initialState);
+  const dispatch = useDispatch<AppDispatch>();
   const handleAddFilters = (val: string, key: string) => {
     setfilter((prevState) => {
       let arr = prevState[key];
@@ -30,12 +38,43 @@ const WorkoutsModal = ({ navigation }) => {
     setfilter((prevState) => {
       return {
         ...prevState,
-        [key]: prevState.muscles.filter((v) => v !== val),
+        [key]: prevState.muscle.filter((v) => v !== val),
       };
     });
   };
+  const handleWorkoutFilter = () => {
+    let filterArr: string[] = [];
 
-  console.log("fill", filters);
+    if (
+      filters.bodyTarget.length > 0 ||
+      filters.equipment.length > 0 ||
+      filters.muscle.length > 0
+    ) {
+      let filter = Object.keys(filters);
+      console.log("filter", filter.length);
+      for (let index = 0; index < filter.length; index++) {
+        const element = filter[index];
+        console.log("element", element);
+        filters[element].length > 0
+          ? filterArr.push(`${element}=${filters[element].join(",")}`)
+          : null;
+      }
+      filterArr.join("&");
+    }
+    console.log("filterArr", filterArr);
+    dispatch(
+      getAllWorkouts({
+        token: currentUser.userToken,
+        page: 1,
+        limit: 10,
+        filters:
+          filterArr.length > 0 ? `&${filterArr.join("&")}&filters=true` : "",
+      })
+    );
+    setfilter(initialState);
+    navigation.goBack();
+  };
+
   return (
     <View
       style={{ flex: 1, alignItems: "center", justifyContent: "space-between" }}
@@ -74,7 +113,7 @@ const WorkoutsModal = ({ navigation }) => {
         {<Text>{toggle}</Text>}
         {/* Equipments */}
         <Text style={{ fontSize: 18, color: "black", padding: 10 }}>
-          Equipments {filters.equipments.length}
+          Equipments {filters.equipment.length}
         </Text>
         <View
           style={{
@@ -89,13 +128,13 @@ const WorkoutsModal = ({ navigation }) => {
             <Chip
               style={{ margin: 5, borderColor: "black" }}
               selectedColor="black"
-              selected={filters.equipments.includes(val) ? true : false}
+              selected={filters.equipment.includes(val) ? true : false}
               onPress={() => {
-                if (filters.equipments.includes(val)) {
-                  handleRemoveFilter(val, "equipments");
+                if (filters.equipment.includes(val)) {
+                  handleRemoveFilter(val, "equipment");
                   settoggle(!toggle);
-                } else if (!filters.equipments.includes(val)) {
-                  handleAddFilters(val, "equipments");
+                } else if (!filters.equipment.includes(val)) {
+                  handleAddFilters(val, "equipment");
                   settoggle(!toggle);
                 }
               }}
@@ -103,7 +142,7 @@ const WorkoutsModal = ({ navigation }) => {
               elevated={true}
               key={idx}
               showSelectedOverlay={
-                filters.equipments.includes(val) ? true : false
+                filters.equipment.includes(val) ? true : false
               }
             >
               {val}
@@ -112,7 +151,7 @@ const WorkoutsModal = ({ navigation }) => {
         </View>
         {/* Targets */}
         <Text style={{ fontSize: 18, color: "black", padding: 10 }}>
-          Muscle Targets {filters.bodyTargets.length}
+          Muscle Targets {filters.bodyTarget.length}
         </Text>
         <View
           style={{
@@ -127,13 +166,13 @@ const WorkoutsModal = ({ navigation }) => {
             <Chip
               style={{ margin: 5, borderColor: "black" }}
               selectedColor="black"
-              selected={filters.bodyTargets.includes(val) ? true : false}
+              selected={filters.bodyTarget.includes(val) ? true : false}
               onPress={() => {
-                if (filters.bodyTargets.includes(val)) {
-                  handleRemoveFilter(val, "bodyTargets");
+                if (filters.bodyTarget.includes(val)) {
+                  handleRemoveFilter(val, "bodyTarget");
                   settoggle(!toggle);
-                } else if (!filters.bodyTargets.includes(val)) {
-                  handleAddFilters(val, "bodyTargets");
+                } else if (!filters.bodyTarget.includes(val)) {
+                  handleAddFilters(val, "bodyTarget");
                   settoggle(!toggle);
                 }
               }}
@@ -141,7 +180,7 @@ const WorkoutsModal = ({ navigation }) => {
               elevated={true}
               key={idx}
               showSelectedOverlay={
-                filters.bodyTargets.includes(val) ? true : false
+                filters.bodyTarget.includes(val) ? true : false
               }
             >
               {val}
@@ -150,7 +189,7 @@ const WorkoutsModal = ({ navigation }) => {
         </View>
         {/* Muscle Targets */}
         <Text style={{ fontSize: 18, color: "black", padding: 10 }}>
-          Muscle Targets {filters.muscles.length}
+          Muscle Targets {filters.muscle.length}
         </Text>
         <View
           style={{
@@ -165,27 +204,42 @@ const WorkoutsModal = ({ navigation }) => {
             <Chip
               style={{ margin: 5, borderColor: "black" }}
               selectedColor="black"
-              selected={filters.muscles.includes(val) ? true : false}
+              selected={filters.muscle.includes(val) ? true : false}
               onPress={() => {
-                if (filters.muscles.includes(val)) {
-                  handleRemoveFilter(val, "muscles");
+                if (filters.muscle.includes(val)) {
+                  handleRemoveFilter(val, "muscle");
                   settoggle(!toggle);
-                } else if (!filters.muscles.includes(val)) {
-                  handleAddFilters(val, "muscles");
+                } else if (!filters.muscle.includes(val)) {
+                  handleAddFilters(val, "muscle");
                   settoggle(!toggle);
                 }
               }}
               mode={"outlined"}
               elevated={true}
               key={idx}
-              showSelectedOverlay={filters.muscles.includes(val) ? true : false}
+              showSelectedOverlay={filters.muscle.includes(val) ? true : false}
             >
               {val}
             </Chip>
           ))}
         </View>
       </ScrollView>
-      <View style={{ padding: 15 }}></View>
+      <View style={{ padding: 15 }}>
+        <Button
+          mode="elevated"
+          buttonColor="black"
+          textColor="white"
+          onPress={() => handleWorkoutFilter()}
+          style={{
+            width: 110,
+            borderRadius: 15,
+            height: 40,
+            justifyContent: "center",
+          }}
+        >
+          Filter
+        </Button>
+      </View>
     </View>
   );
 };
