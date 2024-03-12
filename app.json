@@ -3,17 +3,20 @@
     "name": "Crown Fitness",
     "slug": "crown-fitness",
     "orientation":"portrait",
-    
+    "icon":"./assets/images/icon.png",
     "splash":{
-      "image":"./assets/images/icon.png",
-    
+      "image":"./assets/images/splash.png",
+  
       "backgroundColor":"#FFFFFF"
     },
     "ios": {
       "bundleIdentifier": "com.bcolewebdev.crownfitness"
     },
     "android": {
-      "adaptiveIcon": {},
+      "adaptiveIcon": {
+        "foregroundImage":"./assets/images/adaptive-icon.png",
+        "backgroundColor":"#FFFFFF"
+      },
       "package": "com.bcolewebdev.crownfitness"
     },
     "extra": {

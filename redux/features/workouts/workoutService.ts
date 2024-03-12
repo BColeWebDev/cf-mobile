@@ -9,7 +9,7 @@ const getAlWorkouts = async (
   limit: string,
   filters: string
 ) => {
-  let urlString = `http://localhost:8000/api/workouts/exercises?page=${page}&limit=${limit}${
+  let urlString = `${EXPO_PUBLIC_APP_URL}api/workouts/exercises?page=${page}&limit=${limit}${
     filters !== "" || filters !== undefined ? filters : ""
   }`;
   console.log("fills", urlString);
