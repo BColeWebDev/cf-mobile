@@ -489,7 +489,7 @@ export default function RegimentDetails({ route, navigation }) {
                                     source={{
                                       uri: workouts?.items.filter(
                                         (workout) => workout.id == value.id
-                                      )[0].gifUrl,
+                                      )[0]?.gifUrl,
                                     }}
                                     style={{
                                       width: 75,
