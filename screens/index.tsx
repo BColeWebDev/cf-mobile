@@ -17,12 +17,15 @@ import CreateWorkout from "./Home/tabs/Regiments/screens/Create Workout";
 import WorkoutDetails from "./Home/tabs/Regiments/screens/RegimentDetails/screens/WorkoutsDetails";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { AppDispatch } from "../redux/app/store";
+import { AppDispatch, RootState } from "../redux/app/store";
 import { setCurrentUser } from "../redux/features/auth/authSlice";
+import { View } from "react-native";
+import { Text } from "react-native-paper";
 const Stack = createNativeStackNavigator();
 
 export default function AllScreens() {
-  const { currentUser, isLoggedIn } = useSelector((state: any) => state.auth);
+  const { currentUser, isLoggedIn } = useSelector((state: RootState) => state.auth);
+  const { detailInfo } = useSelector((state: any) => state.regiments);
   console.log("isLoggedId", isLoggedIn, currentUser);
   const dispatch = useDispatch<AppDispatch>();
   const [initRoute, setinitRoute] = useState<string>("Login");
@@ -97,7 +100,19 @@ export default function AllScreens() {
           <Stack.Screen
             name="Regiment Details"
             component={RegimentDetails}
-            options={{ headerTitle: "" }}
+            options={{ headerTitle:()=><View><Text style={{
+              fontSize: 15,
+              fontWeight: "200",
+              color: "white",
+            }}> {detailInfo.name}</Text>
+            </View>, 
+           
+            headerTintColor: '#fff',
+            headerStyle: {
+              backgroundColor: '#110c11',
+            
+            },
+         }}
           />
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen

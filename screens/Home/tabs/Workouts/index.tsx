@@ -5,6 +5,7 @@ import {
   ScrollView,
   Image,
   TouchableHighlight,
+  FlatList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -145,103 +146,98 @@ const WorkoutsScreen = ({ route, navigation }) => {
       >
         Workouts:{workouts?.items.length}
       </Text>
-      <ScrollView>
-        {workouts?.items
-          ?.filter((val) => {
+      <FlatList data={workouts?.items.filter((val) => {
             if (input === "") {
               return val;
             }
             return val.name.toLowerCase().includes(input.toLowerCase());
-          })
-          .map((val, idx) => (
-            <TouchableHighlight
-              key={idx}
+          })}
+        renderItem={({item})=>     <TouchableHighlight
+        style={{
+          display: "flex",
+          flexDirection: "row-reverse",
+          marginBottom: 20,
+          backgroundColor: "black",
+          borderRadius: 10,
+          padding: 10,
+          justifyContent: "space-around",
+          alignItems: "center",
+          marginHorizontal: 20,
+        }}
+        onPress={() => {
+          if (route.params === undefined) {
+            return;
+          }
+          handleCreateWorkout(item);
+        }}
+      >
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row-reverse",
+            alignItems: "flex-start",
+          }}
+        >
+          <Image
+            source={{ uri: item.gifUrl }}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 150 / 2,
+              overflow: "hidden",
+              borderWidth: 3,
+              borderColor: "black",
+            }}
+          />
+          <View style={{ flex: 1 }}>
+            <Text
               style={{
-                display: "flex",
-                flexDirection: "row-reverse",
-                marginBottom: 20,
-                backgroundColor: "black",
-                borderRadius: 10,
-                padding: 10,
-                justifyContent: "space-around",
-                alignItems: "center",
-                marginHorizontal: 20,
-              }}
-              onPress={() => {
-                if (route.params === undefined) {
-                  return;
-                }
-                handleCreateWorkout(val);
+                fontSize: 20,
+                flex: 1,
+                color: "white",
+                marginTop: 10,
+                marginBottom: 10,
               }}
             >
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row-reverse",
-                  alignItems: "flex-start",
-                }}
-              >
-                <Image
-                  source={{ uri: val.gifUrl }}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    borderRadius: 150 / 2,
-                    overflow: "hidden",
-                    borderWidth: 3,
-                    borderColor: "black",
-                  }}
-                />
-                <View style={{ flex: 1 }}>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      flex: 1,
-                      color: "white",
-                      marginTop: 10,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {val.name}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 10,
-                      flex: 1,
-                      color: "white",
-                      marginTop: 10,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {val.target}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 10,
-                      flex: 1,
-                      color: "white",
-                      marginTop: 10,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {val.bodyPart}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 10,
-                      flex: 1,
-                      color: "white",
-                      marginTop: 10,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {val.equipment}
-                  </Text>
-                </View>
-              </View>
-            </TouchableHighlight>
-          ))}
-      </ScrollView>
+              {item.name}
+            </Text>
+            <Text
+              style={{
+                fontSize: 10,
+                flex: 1,
+                color: "white",
+                marginTop: 10,
+                marginBottom: 10,
+              }}
+            >
+              {item.target}
+            </Text>
+            <Text
+              style={{
+                fontSize: 10,
+                flex: 1,
+                color: "white",
+                marginTop: 10,
+                marginBottom: 10,
+              }}
+            >
+              {item.bodyPart}
+            </Text>
+            <Text
+              style={{
+                fontSize: 10,
+                flex: 1,
+                color: "white",
+                marginTop: 10,
+                marginBottom: 10,
+              }}
+            >
+              {item.equipment}
+            </Text>
+          </View>
+        </View>
+      </TouchableHighlight>}
+        />
     </SafeAreaView>
   );
 };

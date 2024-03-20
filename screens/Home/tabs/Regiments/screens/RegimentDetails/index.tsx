@@ -578,6 +578,7 @@ export default function RegimentDetails({ route, navigation }) {
     });
   }, [isFocused]);
 
+  // No Days created
   if (days.length === 0) {
     return (
       <View>
@@ -611,10 +612,10 @@ export default function RegimentDetails({ route, navigation }) {
                 color: "white",
               }}
             >
-              {detailInfo.name}
+              {detailInfo.description}
             </Text>
 
-            <Button
+            {/* <Button
               mode="outlined"
               textColor="white"
               onPress={() =>
@@ -629,12 +630,9 @@ export default function RegimentDetails({ route, navigation }) {
               icon={"plus"}
             >
               Create Training Day
-            </Button>
+            </Button> */}
           </View>
 
-          <Text style={{ width: "100%", color: "white", textAlign: "left" }}>
-            {detailInfo.description}
-          </Text>
         </View>
         <Text style={{ textAlign: "center", marginTop: 50 }}>
           No Training Days
@@ -676,30 +674,24 @@ export default function RegimentDetails({ route, navigation }) {
               color: "white",
             }}
           >
-            {detailInfo.name}
-          </Text>
-          <Text style={{ color: "white", textAlign: "left" }}>
             {detailInfo.description}
           </Text>
+          {days.length === 7 ? null : (
+            <View style={{display:"flex",flexDirection:"row", marginRight:10}}>
+            <AntDesign
+              name="pluscircleo"
+              size={24}
+              color="white"
+              style={{marginRight:20}}
+              onPress={() =>
+                navigation.navigate("Create Workout", detailInfo._id)
+              }
+            />
+            <FontAwesome  style={{marginRight:20}} name="share-alt-square" size={24} color="white" />
+            <FontAwesome  name="trash" size={24} color="white" />
+            </View>
+          )}
         </View>
-        {days.length === 7 ? null : (
-          <Button
-            mode="outlined"
-            textColor="white"
-            onPress={() =>
-              navigation.navigate("Create Workout", detailInfo._id)
-            }
-            style={{
-              padding: 5,
-              backgroundColor: "#211a23",
-              borderColor: "black",
-              marginLeft: "auto",
-            }}
-            icon={"plus"}
-          >
-            Create Training Day
-          </Button>
-        )}
       </View>
       {/* Tabs */}
       <Tab.Navigator>
