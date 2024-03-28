@@ -50,11 +50,7 @@ const RegimentScreen = ({ navigation }) => {
   const style = StyleSheet.create({
     container: {
       flex: 1,
-      padding: 3,
-      justifyContent: "flex-start",
       backgroundColor: "#f9f6fd",
-      alignItems: "center",
-      display: "flex",
     },
   });
 
@@ -67,7 +63,7 @@ const RegimentScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={style.container}>
       <ScrollView
-        style={{ width: "100%" }}
+        style={{ width: "100%", height: "100%" }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -80,11 +76,13 @@ const RegimentScreen = ({ navigation }) => {
             fontWeight: "500",
             textAlign: "left",
             marginVertical: 20,
+            marginHorizontal: 16,
           }}
         >
           Regiments
         </Text>
-        <Button
+
+        {/* <Button
           mode="outlined"
           textColor="white"
           onPress={() => navigation.navigate("Create Regiment")}
@@ -100,7 +98,7 @@ const RegimentScreen = ({ navigation }) => {
           icon={"plus"}
         >
           Create Regiment
-        </Button>
+        </Button> */}
         <View style={{ width: "100%" }}>
           <ScrollView style={{ height: "100%" }}>
             {data?.length === 0 ? (
@@ -291,7 +289,7 @@ const RegimentScreen = ({ navigation }) => {
           </ScrollView>
         </View>
       </ScrollView>
-      {/*  */}
+
       <Portal>
         <Modal
           visible={visible}
@@ -337,6 +335,19 @@ const RegimentScreen = ({ navigation }) => {
           </Text>
         </Modal>
       </Portal>
+      <FAB
+        icon="plus"
+        label="New Regiment"
+        color="white"
+        style={{
+          position: "absolute",
+
+          backgroundColor: "black",
+          right: 10,
+          bottom: 90,
+        }}
+        onPress={() => navigation.navigate("Create Regiment")}
+      />
     </SafeAreaView>
   );
 };

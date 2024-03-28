@@ -3,9 +3,11 @@ import authReducer from "../features/auth/authSlice";
 import workoutReducer from "../features/workouts/workoutSlice";
 import regimentReducer from "../features/regiments/regimentsSlice";
 import trainingDaysReducer from "../features/trainingDays/trainingDaysSlice";
+import sharableReducer from "../features/sharables/sharableSlice";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    sharables: sharableReducer,
     workouts: workoutReducer,
     regiments: regimentReducer,
     trainingDays: trainingDaysReducer,

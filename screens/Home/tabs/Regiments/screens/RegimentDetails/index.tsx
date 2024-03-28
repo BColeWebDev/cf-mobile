@@ -632,7 +632,6 @@ export default function RegimentDetails({ route, navigation }) {
               Create Training Day
             </Button> */}
           </View>
-
         </View>
         <Text style={{ textAlign: "center", marginTop: 50 }}>
           No Training Days
@@ -676,21 +675,29 @@ export default function RegimentDetails({ route, navigation }) {
           >
             {detailInfo.description}
           </Text>
-          {days.length === 7 ? null : (
-            <View style={{display:"flex",flexDirection:"row", marginRight:10}}>
-            <AntDesign
-              name="pluscircleo"
+          <View
+            style={{ display: "flex", flexDirection: "row", marginRight: 10 }}
+          >
+            {days.length === 7 ? null : (
+              <AntDesign
+                name="pluscircleo"
+                size={24}
+                color="white"
+                style={{ marginRight: 20 }}
+                onPress={() =>
+                  navigation.navigate("Create Workout", detailInfo._id)
+                }
+              />
+            )}
+            <FontAwesome
+              style={{ marginRight: 20 }}
+              name="share-alt-square"
               size={24}
               color="white"
-              style={{marginRight:20}}
-              onPress={() =>
-                navigation.navigate("Create Workout", detailInfo._id)
-              }
+              onPress={() => navigation.navigate("Community Workouts")}
             />
-            <FontAwesome  style={{marginRight:20}} name="share-alt-square" size={24} color="white" />
-            <FontAwesome  name="trash" size={24} color="white" />
-            </View>
-          )}
+            <FontAwesome name="trash" size={24} color="white" />
+          </View>
         </View>
       </View>
       {/* Tabs */}

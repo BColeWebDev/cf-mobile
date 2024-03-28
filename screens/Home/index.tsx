@@ -13,6 +13,7 @@ import NutritionScreen from "./tabs/Nutritions";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SharableScreen from "./tabs/Sharable";
+import { AntDesign } from "@expo/vector-icons";
 export default function Home({ navigation }) {
   const { isError, isLoading, isLoggedIn, currentUser } = useSelector(
     (state: any) => state.auth
@@ -104,23 +105,27 @@ export default function Home({ navigation }) {
           ),
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Community Workouts"
         component={SharableScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size, focused }) => (
-            <ChadIcon width={size} fill={focused ? "white" : color} />
+            <AntDesign
+              name="sharealt"
+              size={size}
+              color={focused ? "white" : color}
+            />
           ),
           tabBarLabel: ({ color, focused }) => (
             <View>
               <Text style={{ color: focused ? "white" : color, fontSize: 10 }}>
-                Community Workouts
+                Shareable
               </Text>
             </View>
           ),
         }}
-      /> */}
+      />
     </Tab.Navigator>
   );
 }
