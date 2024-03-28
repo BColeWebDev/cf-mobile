@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../redux/app/store";
@@ -32,7 +32,12 @@ const Sharable = () => {
           <Text>Coming Soon!</Text>
         </>
       ) : (
-        data.map((val, idx) => <Text key={idx}>{val.sharable_name}</Text>)
+        <FlatList
+          data={data}
+          renderItem={({ item, index, separators }) => (
+            <Text key={index}>{item.sharable_name}</Text>
+          )}
+        />
       )}
     </SafeAreaView>
   );

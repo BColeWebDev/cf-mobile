@@ -103,6 +103,7 @@ export default function Login({ navigation }) {
                 marginBottom: 25,
                 marginHorizontal: 20,
                 backgroundColor: "white",
+                color: "black",
               }}
               activeOutlineColor="black"
               selectionColor={"black"}
@@ -122,6 +123,7 @@ export default function Login({ navigation }) {
                 marginBottom: 25,
                 marginHorizontal: 20,
                 backgroundColor: "white",
+                color: "black",
               }}
               activeOutlineColor="black"
               selectionColor={"black"}

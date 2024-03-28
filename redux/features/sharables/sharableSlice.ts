@@ -8,7 +8,7 @@ const initialState = {
   data: [],
 };
 export const getAllSharable = createAsyncThunk(
-  `regiments`,
+  `sharables-all`,
   async (_, thunkAPI) => {
     try {
       const { auth }: any = thunkAPI.getState();

@@ -82,23 +82,6 @@ const RegimentScreen = ({ navigation }) => {
           Regiments
         </Text>
 
-        {/* <Button
-          mode="outlined"
-          textColor="white"
-          onPress={() => navigation.navigate("Create Regiment")}
-          style={{
-            marginVertical: 15,
-            width: 180,
-            padding: 5,
-            marginRight: 15,
-            backgroundColor: "black",
-            borderColor: "black",
-            marginLeft: "auto",
-          }}
-          icon={"plus"}
-        >
-          Create Regiment
-        </Button> */}
         <View style={{ width: "100%" }}>
           <ScrollView style={{ height: "100%" }}>
             {data?.length === 0 ? (

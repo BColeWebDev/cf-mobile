@@ -24,22 +24,14 @@ import { Text } from "react-native-paper";
 const Stack = createNativeStackNavigator();
 
 export default function AllScreens() {
-  const { currentUser, isLoggedIn } = useSelector((state: RootState) => state.auth);
+  const { currentUser, isLoggedIn } = useSelector(
+    (state: RootState) => state.auth
+  );
   const { detailInfo } = useSelector((state: any) => state.regiments);
   console.log("isLoggedId", isLoggedIn, currentUser);
   const dispatch = useDispatch<AppDispatch>();
   const [initRoute, setinitRoute] = useState<string>("Login");
-  useEffect(() => {
-    // AsyncStorage.getItem("currentUser", (err, results) => {
-    //   if (Object.keys(results).length === 0) {
-    //     return;
-    //   }
-    //   dispatch(setCurrentUser(JSON.parse(results)));
-    // });
-    // AsyncStorage.getItem("isLoggedIn", (err, results) => {
-    //   JSON.parse(results) ? setinitRoute("Home") : setinitRoute("Login");
-    // });
-  }, []);
+
   console.log("in", initRoute);
 
   if (initRoute !== "") {
@@ -100,19 +92,27 @@ export default function AllScreens() {
           <Stack.Screen
             name="Regiment Details"
             component={RegimentDetails}
-            options={{ headerTitle:()=><View><Text style={{
-              fontSize: 15,
-              fontWeight: "200",
-              color: "white",
-            }}> {detailInfo.name}</Text>
-            </View>, 
-           
-            headerTintColor: '#fff',
-            headerStyle: {
-              backgroundColor: '#110c11',
-            
-            },
-         }}
+            options={{
+              headerTitle: () => (
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "200",
+                      color: "white",
+                    }}
+                  >
+                    {" "}
+                    {detailInfo.name}
+                  </Text>
+                </View>
+              ),
+
+              headerTintColor: "#fff",
+              headerStyle: {
+                backgroundColor: "#110c11",
+              },
+            }}
           />
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen
