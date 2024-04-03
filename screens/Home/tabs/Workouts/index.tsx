@@ -5,9 +5,10 @@ import {
   ScrollView,
   Image,
   TouchableHighlight,
+  RefreshControl,
   FlatList,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput } from "react-native-paper";
 import { useDispatch } from "react-redux";
@@ -49,7 +50,28 @@ const WorkoutsScreen = ({ route, navigation }) => {
       display: "flex",
     },
   });
-
+  const [refreshing, setRefreshing] = useState(false);
+  useCallback
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      dispatch(
+        getAllWorkouts({
+          token: currentUser.userToken,
+          page: 1,
+          limit: 10,
+        })
+      ).then((val) => {
+        if (val.meta.requestStatus === "fulfilled") {
+          setRefreshing(false);
+        }
+        if (val.meta.requestStatus === "rejected") {
+          setRefreshing(false);
+        }
+      });
+      // fetchImage();
+    }, 2000);
+  }, [refreshing]);
   if (isLoading) {
     return <Loading color={"red"} />;
   }
@@ -146,7 +168,11 @@ const WorkoutsScreen = ({ route, navigation }) => {
       >
         Workouts:{workouts?.items.length}
       </Text>
-      <FlatList data={workouts?.items.filter((val) => {
+      
+      <FlatList 
+         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+         refreshing={true}
+      data={workouts?.items.filter((val) => {
             if (input === "") {
               return val;
             }
