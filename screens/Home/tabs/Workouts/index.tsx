@@ -171,14 +171,14 @@ const WorkoutsScreen = ({ route, navigation }) => {
       
       <FlatList 
          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-         refreshing={true}
+       
       data={workouts?.items.filter((val) => {
             if (input === "") {
               return val;
             }
             return val.name.toLowerCase().includes(input.toLowerCase());
           })}
-        renderItem={({item})=>     <TouchableHighlight
+        renderItem={({item})=><TouchableHighlight
         style={{
           display: "flex",
           flexDirection: "row-reverse",

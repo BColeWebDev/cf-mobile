@@ -615,22 +615,22 @@ export default function RegimentDetails({ route, navigation }) {
               {detailInfo.description}
             </Text>
 
-            {/* <Button
-              mode="outlined"
-              textColor="white"
-              onPress={() =>
-                navigation.navigate("Create Workout", detailInfo._id)
-              }
-              style={{
-                padding: 5,
-                backgroundColor: "#211a23",
-                borderColor: "black",
-                marginLeft: "auto",
-              }}
-              icon={"plus"}
-            >
-              Create Training Day
-            </Button> */}
+            <View
+            style={{ display: "flex", flexDirection: "row", marginRight: 10 }}
+          >
+         
+              <AntDesign
+                name="pluscircleo"
+                size={24}
+                color="white"
+                style={{ marginRight: 20 }}
+                onPress={() =>
+                  navigation.navigate("Create Workout", detailInfo._id)
+                }
+              />
+        
+           
+          </View>
           </View>
         </View>
         <Text style={{ textAlign: "center", marginTop: 50 }}>
