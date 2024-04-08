@@ -616,9 +616,8 @@ export default function RegimentDetails({ route, navigation }) {
             </Text>
 
             <View
-            style={{ display: "flex", flexDirection: "row", marginRight: 10 }}
-          >
-         
+              style={{ display: "flex", flexDirection: "row", marginRight: 10 }}
+            >
               <AntDesign
                 name="pluscircleo"
                 size={24}
@@ -628,9 +627,7 @@ export default function RegimentDetails({ route, navigation }) {
                   navigation.navigate("Create Workout", detailInfo._id)
                 }
               />
-        
-           
-          </View>
+            </View>
           </View>
         </View>
         <Text style={{ textAlign: "center", marginTop: 50 }}>
@@ -734,6 +731,45 @@ export default function RegimentDetails({ route, navigation }) {
           onDismiss={() => setVisible(!visible)}
         >
           <Text style={{ padding: 10 }}>Delete Workout?</Text>
+          <Button
+            style={{
+              width: 220,
+              marginBottom: 20,
+              marginTop: 20,
+              backgroundColor: "#211a23",
+              borderRadius: 15,
+              marginLeft: "auto",
+              marginRight: "auto",
+              height: 40,
+              justifyContent: "center",
+            }}
+            onPress={() => {
+              setVisible(!visible);
+              handleDeleteWorkout(selectValue);
+            }}
+            mode="elevated"
+            textColor="white"
+          >
+            Delete
+          </Button>
+          <Text
+            onPress={() => {
+              setVisible(!visible);
+            }}
+            style={{ textAlign: "center" }}
+          >
+            Cancel
+          </Text>
+        </Modal>
+      </Portal>
+
+      <Portal>
+        <Modal
+          visible={visible}
+          contentContainerStyle={{ backgroundColor: "white", padding: 20 }}
+          onDismiss={() => setVisible(!visible)}
+        >
+          <Text style={{ padding: 10 }}>Share Workout?</Text>
           <Button
             style={{
               width: 220,

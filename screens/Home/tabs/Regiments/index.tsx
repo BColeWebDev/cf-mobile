@@ -294,6 +294,7 @@ const RegimentScreen = ({ navigation }) => {
               height: 40,
               justifyContent: "center",
             }}
+            textColor="white"
             mode="contained"
             onPress={() => {
               dispatch(deleteRegiment(selected?._id)).then((val) => {

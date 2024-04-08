@@ -51,7 +51,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
     },
   });
   const [refreshing, setRefreshing] = useState(false);
-  useCallback
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -168,102 +168,105 @@ const WorkoutsScreen = ({ route, navigation }) => {
       >
         Workouts:{workouts?.items.length}
       </Text>
-      
-      <FlatList 
-         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-       
-      data={workouts?.items.filter((val) => {
-            if (input === "") {
-              return val;
-            }
-            return val.name.toLowerCase().includes(input.toLowerCase());
-          })}
-        renderItem={({item})=><TouchableHighlight
-        style={{
-          display: "flex",
-          flexDirection: "row-reverse",
-          marginBottom: 20,
-          backgroundColor: "black",
-          borderRadius: 10,
-          padding: 10,
-          justifyContent: "space-around",
-          alignItems: "center",
-          marginHorizontal: 20,
-        }}
-        onPress={() => {
-          if (route.params === undefined) {
-            return;
+
+      <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        data={workouts?.items.filter((val) => {
+          if (input === "") {
+            return val;
           }
-          handleCreateWorkout(item);
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row-reverse",
-            alignItems: "flex-start",
-          }}
-        >
-          <Image
-            source={{ uri: item.gifUrl }}
+          return val.name.toLowerCase().includes(input.toLowerCase());
+        })}
+        renderItem={({ item }) => (
+          <TouchableHighlight
             style={{
-              width: 100,
-              height: 100,
-              borderRadius: 150 / 2,
-              overflow: "hidden",
-              borderWidth: 3,
-              borderColor: "black",
+              display: "flex",
+              flexDirection: "row-reverse",
+              marginBottom: 20,
+              backgroundColor: "black",
+              borderRadius: 10,
+              padding: 10,
+              justifyContent: "space-around",
+              alignItems: "center",
+              marginHorizontal: 20,
             }}
-          />
-          <View style={{ flex: 1 }}>
-            <Text
+            onPress={() => {
+              if (route.params === undefined) {
+                return;
+              }
+              handleCreateWorkout(item);
+            }}
+          >
+            <View
               style={{
-                fontSize: 20,
-                flex: 1,
-                color: "white",
-                marginTop: 10,
-                marginBottom: 10,
+                display: "flex",
+                flexDirection: "row-reverse",
+                alignItems: "flex-start",
               }}
             >
-              {item.name}
-            </Text>
-            <Text
-              style={{
-                fontSize: 10,
-                flex: 1,
-                color: "white",
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-            >
-              {item.target}
-            </Text>
-            <Text
-              style={{
-                fontSize: 10,
-                flex: 1,
-                color: "white",
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-            >
-              {item.bodyPart}
-            </Text>
-            <Text
-              style={{
-                fontSize: 10,
-                flex: 1,
-                color: "white",
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-            >
-              {item.equipment}
-            </Text>
-          </View>
-        </View>
-      </TouchableHighlight>}
-        />
+              <Image
+                source={{ uri: item.gifUrl }}
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 150 / 2,
+                  overflow: "hidden",
+                  borderWidth: 3,
+                  borderColor: "black",
+                }}
+              />
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    flex: 1,
+                    color: "white",
+                    marginTop: 10,
+                    marginBottom: 10,
+                  }}
+                >
+                  {item.name}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    flex: 1,
+                    color: "white",
+                    marginTop: 10,
+                    marginBottom: 10,
+                  }}
+                >
+                  {item.target}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    flex: 1,
+                    color: "white",
+                    marginTop: 10,
+                    marginBottom: 10,
+                  }}
+                >
+                  {item.bodyPart}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    flex: 1,
+                    color: "white",
+                    marginTop: 10,
+                    marginBottom: 10,
+                  }}
+                >
+                  {item.equipment}
+                </Text>
+              </View>
+            </View>
+          </TouchableHighlight>
+        )}
+      />
     </SafeAreaView>
   );
 };
