@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState, useCallback } from "react";
 import {
+  ActivityIndicator,
   Button,
   Chip,
   List,
@@ -36,6 +37,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Loading from "../../../../../Loading";
+import { createSharable } from "../../../../../../redux/features/sharables/sharableSlice";
 let names = {
   monday: "Mon",
   tuesday: "Tues",
@@ -73,17 +75,20 @@ export default function RegimentDetails({ route, navigation }) {
   const { detailInfo } = useSelector((state: any) => state.regiments);
   const { workouts } = useSelector((state: any) => state.workouts);
   const { currentUser } = useSelector((state: RootState) => state.auth);
+  const { sharableIsLoading, sharableIsSuccess } = useSelector(
+    (state: RootState) => state.sharables
+  );
 
   const [refreshing, setRefreshing] = React.useState(false);
   const [image, setImage] = useState<any>();
   const [visible, setVisible] = useState(false);
+  const [sharableVisible, setsharableVisible] = useState(false);
   const [selectValue, setselectValue] = useState();
 
   const [trainingDayDelete, settrainingDayDelete] = useState(false);
 
   const onToggleSnackBarDelete = () => settrainingDayDelete(!trainingDayDelete);
   const onDismissTrainingSnackBar = () => settrainingDayDelete(false);
-
   const fetchImage = async () => {
     try {
       const response = await axios.get(
@@ -686,13 +691,18 @@ export default function RegimentDetails({ route, navigation }) {
                 }
               />
             )}
-            <FontAwesome
-              style={{ marginRight: 20 }}
-              name="share-alt-square"
-              size={24}
-              color="white"
-              onPress={() => navigation.navigate("Community Workouts")}
-            />
+            {detailInfo?.sharables ? (
+              <FontAwesome
+                style={{ marginRight: 20 }}
+                name="share-alt-square"
+                size={24}
+                color="white"
+                onPress={() => {
+                  setsharableVisible(!sharableVisible);
+                }}
+              />
+            ) : null}
+
             <FontAwesome name="trash" size={24} color="white" />
           </View>
         </View>
@@ -765,11 +775,11 @@ export default function RegimentDetails({ route, navigation }) {
 
       <Portal>
         <Modal
-          visible={visible}
+          visible={sharableVisible}
           contentContainerStyle={{ backgroundColor: "white", padding: 20 }}
-          onDismiss={() => setVisible(!visible)}
+          onDismiss={() => setsharableVisible(!sharableVisible)}
         >
-          <Text style={{ padding: 10 }}>Share Workout?</Text>
+          <Text style={{ padding: 10, fontWeight: "500" }}>Share Workout?</Text>
           <Button
             style={{
               width: 220,
@@ -782,18 +792,37 @@ export default function RegimentDetails({ route, navigation }) {
               height: 40,
               justifyContent: "center",
             }}
+            disabled={sharableIsLoading}
             onPress={() => {
-              setVisible(!visible);
-              handleDeleteWorkout(selectValue);
+              dispatch(
+                createSharable({
+                  sharable_name: detailInfo.name,
+                  created_by: currentUser?.existingUser?._id,
+                  regiment_difficulty: "beginner",
+                  regiment_id: detailInfo._id,
+                })
+              ).then((val) => {
+                if (val.meta.requestStatus === "fulfilled") {
+                  setsharableVisible(!sharableVisible);
+                }
+                if (val.meta.requestStatus === "rejected") {
+                  console.log("val", val);
+                  alert("Error Could not share workout! Please try again");
+                }
+              });
             }}
             mode="elevated"
             textColor="white"
           >
-            Delete
+            {sharableIsLoading ? (
+              <ActivityIndicator size="small" color={"white"} />
+            ) : (
+              "Sharable"
+            )}
           </Button>
           <Text
             onPress={() => {
-              setVisible(!visible);
+              setsharableVisible(!sharableVisible);
             }}
             style={{ textAlign: "center" }}
           >
