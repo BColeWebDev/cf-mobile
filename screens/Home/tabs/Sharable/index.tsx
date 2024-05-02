@@ -102,7 +102,9 @@ const Sharable = () => {
                 width: "100%",
                 marginBottom: 15,
               }}
+              underlayColor="white"
               key={index}
+              onPress={() => alert("Testing")}
             >
               <View
                 style={{
@@ -117,16 +119,25 @@ const Sharable = () => {
                     fontWeight: "600",
                     fontSize: 14,
                     paddingHorizontal: 10,
+                    paddingVertical: 10,
                   }}
                   variant="labelLarge"
                 >
                   {item.sharable_name}
                 </Text>
-                <View
-                  style={{ backgroundColor: "black", paddingVertical: 100 }}
+                <Text
+                  style={{
+                    color: "black",
+                    fontWeight: "300",
+                    fontSize: 14,
+                    paddingHorizontal: 10,
+                    paddingVertical: 10,
+                  }}
+                  variant="labelLarge"
                 >
-                  <Text style={{ color: "white" }}>Testing</Text>
-                </View>
+                  By {item.created_by}
+                </Text>
+
                 <View
                   style={{
                     display: "flex",

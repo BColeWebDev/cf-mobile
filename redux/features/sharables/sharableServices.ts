@@ -12,10 +12,11 @@ const getSharables = async (token: string) => {
   console.log("RES", response);
   return response.data;
 };
-const createSharable = async (obj: ISharables) => {
+const createSharable = async (obj: ISharables, token: string) => {
   const response = await axios.post(
     `${EXPO_PUBLIC_APP_URL}api/sharables/create`,
-    obj
+    obj,
+    tokenBearer(token)
   );
   console.log("response", response);
   return response;

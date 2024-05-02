@@ -27,7 +27,11 @@ export const createSharable = createAsyncThunk(
   `create-sharables`,
   async (obj: ISharables, thunkAPI) => {
     try {
-      const response = sharableServices.createSharable(obj);
+      const { auth }: any = thunkAPI.getState();
+      const response = sharableServices.createSharable(
+        obj,
+        auth.currentUser.userToken
+      );
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -61,7 +65,7 @@ export const sharableSlice = createSlice({
       .addCase(createSharable.fulfilled, (state, action) => {
         state.sharableIsLoading = false;
         state.sharableIsSuccess = true;
-        state.data = action.payload;
+        // state.data = action.payload;
       })
       .addCase(createSharable.rejected, (state, action) => {
         state.sharableIsLoading = false;

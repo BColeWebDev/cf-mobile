@@ -84,9 +84,8 @@ export default function RegimentDetails({ route, navigation }) {
   const [visible, setVisible] = useState(false);
   const [sharableVisible, setsharableVisible] = useState(false);
   const [selectValue, setselectValue] = useState();
-
   const [trainingDayDelete, settrainingDayDelete] = useState(false);
-
+  const [IsSharable, setIsSharable] = useState(false);
   const onToggleSnackBarDelete = () => settrainingDayDelete(!trainingDayDelete);
   const onDismissTrainingSnackBar = () => settrainingDayDelete(false);
   const fetchImage = async () => {
@@ -691,7 +690,7 @@ export default function RegimentDetails({ route, navigation }) {
                 }
               />
             )}
-            {detailInfo?.sharables ? (
+            {!detailInfo?.sharables ? (
               <FontAwesome
                 style={{ marginRight: 20 }}
                 name="share-alt-square"
@@ -732,6 +731,9 @@ export default function RegimentDetails({ route, navigation }) {
         onDismiss={onDismissTrainingSnackBar}
       >
         Removed Training Day
+      </Snackbar>
+      <Snackbar visible={IsSharable} onDismiss={() => setIsSharable(false)}>
+        Workout Shared!
       </Snackbar>
 
       <Portal>
@@ -803,11 +805,16 @@ export default function RegimentDetails({ route, navigation }) {
                 })
               ).then((val) => {
                 if (val.meta.requestStatus === "fulfilled") {
+                  setIsSharable(true);
                   setsharableVisible(!sharableVisible);
+                  dispatch(getSingleRegiment(route.params.regimentId));
+                  dispatch(getAllTrainingDays(route.params.regimentId));
                 }
                 if (val.meta.requestStatus === "rejected") {
                   console.log("val", val);
-                  alert("Error Could not share workout! Please try again");
+                  alert(
+                    "Error! workout could not be shared. Please try again!"
+                  );
                 }
               });
             }}
