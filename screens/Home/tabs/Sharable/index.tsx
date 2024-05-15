@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from "../../../../redux/app/store";
 import { getAllSharable } from "../../../../redux/features/sharables/sharableSlice";
 import { Searchbar, Text } from "react-native-paper";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
-const Sharable = () => {
+const Sharable = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { data } = useSelector((state: RootState) => state.sharables);
   console.log("DATA", data);
@@ -104,7 +104,12 @@ const Sharable = () => {
               }}
               underlayColor="white"
               key={index}
-              onPress={() => alert("Testing")}
+              onPress={() =>
+                navigation.navigate("SharableDetails", {
+                  sharableId: item._id,
+                  item: item,
+                })
+              }
             >
               <View
                 style={{

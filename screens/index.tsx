@@ -21,6 +21,7 @@ import { AppDispatch, RootState } from "../redux/app/store";
 import { setCurrentUser } from "../redux/features/auth/authSlice";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
+import SharableDetails from "./Home/tabs/Sharable/screens/SharableDetails";
 const Stack = createNativeStackNavigator();
 
 export default function AllScreens() {
@@ -114,6 +115,11 @@ export default function AllScreens() {
               },
             }}
           />
+          <Stack.Screen
+            name="SharableDetails"
+            component={SharableDetails}
+            options={{ headerTitle: "" }}
+          ></Stack.Screen>
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen
               name="WorkoutsFilters"
