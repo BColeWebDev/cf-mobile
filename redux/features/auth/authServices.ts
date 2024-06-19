@@ -1,6 +1,7 @@
 import axios from "axios";
 import { IAuth, IRegister } from "../interfaces/IAuth";
 import { EXPO_PUBLIC_APP_URL } from "@env";
+import tokenBearer from "../helpers/tokenHeader";
 
 // Login User
 const Login = async (data: IAuth) => {
@@ -21,13 +22,14 @@ const Register = async (userData: IRegister) => {
 };
 
 export const Logout = async () => {
-  const response = await axios.get(`${EXPO_PUBLIC_APP_URL}/api/auth/logout`);
+  const response = await axios.get(`${EXPO_PUBLIC_APP_URL}api/auth/logout`);
   return response.data;
 };
-const Settings = async (obj) => {
+const Settings = async (obj, token) => {
   const response = await axios.post(
-    `${EXPO_PUBLIC_APP_URL}api/auth/settings`,
-    obj
+    `${EXPO_PUBLIC_APP_URL}api/auth/${obj.id}/settings`,
+    obj,
+    tokenBearer(token)
   );
   return response.data;
 };

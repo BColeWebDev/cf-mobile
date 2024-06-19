@@ -48,12 +48,16 @@ const Sharable = ({ navigation }) => {
       >
         Sharable
       </Text>
-      <View></View>
       <Searchbar
         value={query}
         placeholder="Search Workout"
         onChangeText={setquery}
-        style={{ width: "100%", color: "black", backgroundColor: "#f1f1f2" }}
+        style={{
+          width: "90%",
+          color: "black",
+          backgroundColor: "#f1f1f2",
+          margin: 20,
+        }}
       />
       <View
         style={{
@@ -108,6 +112,7 @@ const Sharable = ({ navigation }) => {
                 navigation.navigate("SharableDetails", {
                   sharableId: item._id,
                   item: item,
+                  regimentId: item.regiment_id,
                 })
               }
             >

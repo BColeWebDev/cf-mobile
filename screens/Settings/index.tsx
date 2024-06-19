@@ -22,10 +22,10 @@ const Settings = ({ navigation }) => {
       UserSettings({
         id: currentUser?.existingUser?._id,
         settings: {
-          theme: theme ? "light" : "dark",
-          weight: metric ? "kg" : "ibs",
-          distance: distance ? "km" : "miles",
-          size: inches ? "inches" : "cm",
+          theme: theme ? "dark" : "light",
+          weight: metric ? "ibs" : "kg",
+          distance: distance ? "miles" : "km",
+          size: inches ? "cm" : "inches",
         },
       })
     ).then((val) => {
@@ -33,21 +33,12 @@ const Settings = ({ navigation }) => {
         dispatch(
           updateCurrentUser({
             existingUser: {
-              first_name: val.payload.first_name,
-              last_name: val.payload.last_name,
-              email: val.payload.email,
-              bio: val.payload.bio,
-              _id: val.payload._id,
-              age: val.payload.age,
-              sex: val.payload.sex,
-              crown_member: val.payload.crown_member,
-              experience: val.payload.experience,
-              isVerified: val.payload.isVerified,
+              ...val.payload.existingUser,
               settings: {
-                theme: val.payload.settings.theme,
-                weight: val.payload.settings.weight,
-                distance: val.payload.settings.distance,
-                size: val.payload.settings.size,
+                theme: theme ? "dark" : "light",
+                weight: metric ? "ibs" : "kg",
+                distance: distance ? "miles" : "km",
+                size: inches ? "cm" : "inches",
               },
             },
             userToken: currentUser.userToken,
@@ -63,16 +54,16 @@ const Settings = ({ navigation }) => {
   useEffect(() => {
     if (currentUser !== undefined || currentUser !== null) {
       setMetricChecked(
-        currentUser.existingUser?.settings?.weight === "kg" ? true : false
+        currentUser.existingUser?.settings?.weight === "ibs" ? true : false
       );
       setThemeChecked(
-        currentUser.existingUser?.settings?.theme === "light" ? true : false
+        currentUser.existingUser?.settings?.theme === "dark" ? true : false
       );
       setInchesChecked(
-        currentUser.existingUser?.settings?.size === "inches" ? true : false
+        currentUser.existingUser?.settings?.size === "cm" ? true : false
       );
       setDistanceChecked(
-        currentUser.existingUser?.settings?.distance === "km" ? true : false
+        currentUser.existingUser?.settings?.distance === "miles" ? true : false
       );
     }
   }, [currentUser]);
@@ -153,6 +144,8 @@ const Settings = ({ navigation }) => {
       </Box>
 
       <Button
+        color="black"
+        tintColor="white"
         title="Submit"
         style={{ width: 200, marginLeft: "auto", marginRight: "auto" }}
         onPress={() => handleSubmit()}

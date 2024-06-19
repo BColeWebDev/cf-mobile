@@ -45,7 +45,10 @@ const WorkoutsScreen = ({ route, navigation }) => {
       flex: 1,
       padding: 1,
       justifyContent: "flex-start",
-      backgroundColor: "white",
+      backgroundColor:
+        currentUser.existingUser?.settings?.theme === "dark"
+          ? "#171a1d"
+          : "#f9fafa",
       alignItems: "center",
       display: "flex",
     },
@@ -146,7 +149,11 @@ const WorkoutsScreen = ({ route, navigation }) => {
           name="filter"
           size={24}
           style={{ marginRight: 20, marginBottom: 20, textAlign: "right" }}
-          color="black"
+          color={
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#f9fafa"
+              : "#33373d"
+          }
           onPress={() => navigation.navigate("WorkoutsFilters")}
         />
         {/* <FontAwesome
@@ -161,7 +168,10 @@ const WorkoutsScreen = ({ route, navigation }) => {
           width: "100%",
           paddingHorizontal: 20,
           marginBottom: 20,
-          color: "black",
+          color:
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#f9fafa"
+              : "#33373d",
           fontWeight: "400",
           textAlign: "right",
         }}
@@ -185,7 +195,10 @@ const WorkoutsScreen = ({ route, navigation }) => {
               display: "flex",
               flexDirection: "row-reverse",
               marginBottom: 20,
-              backgroundColor: "black",
+              backgroundColor:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#33373d"
+                  : "#f1f1f2",
               borderRadius: 10,
               padding: 10,
               justifyContent: "space-around",
@@ -222,7 +235,10 @@ const WorkoutsScreen = ({ route, navigation }) => {
                   style={{
                     fontSize: 20,
                     flex: 1,
-                    color: "white",
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d",
                     marginTop: 10,
                     marginBottom: 10,
                   }}
@@ -233,9 +249,12 @@ const WorkoutsScreen = ({ route, navigation }) => {
                   style={{
                     fontSize: 10,
                     flex: 1,
-                    color: "white",
-                    marginTop: 10,
-                    marginBottom: 10,
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d",
+                    marginTop: 3,
+                    marginBottom: 3,
                   }}
                 >
                   {item.target}
@@ -244,9 +263,12 @@ const WorkoutsScreen = ({ route, navigation }) => {
                   style={{
                     fontSize: 10,
                     flex: 1,
-                    color: "white",
-                    marginTop: 10,
-                    marginBottom: 10,
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d",
+                    marginTop: 3,
+                    marginBottom: 3,
                   }}
                 >
                   {item.bodyPart}
@@ -255,7 +277,10 @@ const WorkoutsScreen = ({ route, navigation }) => {
                   style={{
                     fontSize: 10,
                     flex: 1,
-                    color: "white",
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d",
                     marginTop: 10,
                     marginBottom: 10,
                   }}

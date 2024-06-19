@@ -50,7 +50,10 @@ const RegimentScreen = ({ navigation }) => {
   const style = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#f9f6fd",
+      backgroundColor:
+        currentUser.existingUser?.settings?.theme === "dark"
+          ? "#171a1d"
+          : "#f9fafa",
     },
   });
 
@@ -71,9 +74,11 @@ const RegimentScreen = ({ navigation }) => {
         <Text
           style={{
             fontSize: 28,
-            color: "black",
+            color:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#1d2025",
             marginTop: 30,
-            fontWeight: "500",
             textAlign: "left",
             marginVertical: 20,
             marginHorizontal: 16,
@@ -116,9 +121,18 @@ const RegimentScreen = ({ navigation }) => {
                   <Surface
                     elevation={1}
                     style={{
-                      backgroundColor: "black",
-                      borderColor: "white",
-                      borderWidth: 2,
+                      backgroundColor:
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? "#33373d"
+                          : "#f1f1f2",
+                      borderColor:
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? "black"
+                          : "#f9fafa",
+                      borderWidth:
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? 0
+                          : 2,
                       borderRadius: 10,
                       padding: 10,
                     }}
@@ -133,11 +147,13 @@ const RegimentScreen = ({ navigation }) => {
                     >
                       <Text
                         style={{
-                          fontSize: 22,
-                          fontWeight: "500",
-                          color: "white",
-                          marginBottom: 10,
-                          marginLeft: 5,
+                          color:
+                            currentUser.existingUser?.settings?.theme === "dark"
+                              ? "#f9fafa"
+                              : "#1d2025",
+                          fontSize: 20,
+                          textTransform: "capitalize",
+                          textAlign: "center",
                         }}
                       >
                         {val.name}
@@ -150,7 +166,15 @@ const RegimentScreen = ({ navigation }) => {
                         }}
                       ></Badge>
                     </View>
-                    <Text style={{ textAlign: "center", color: "white" }}>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        color:
+                          currentUser.existingUser?.settings?.theme === "dark"
+                            ? "#f9fafa"
+                            : "#33373d",
+                      }}
+                    >
                       {val.description}
                     </Text>
                     <View
@@ -167,7 +191,7 @@ const RegimentScreen = ({ navigation }) => {
                         style={{
                           marginHorizontal: 3,
                           color: val?.days?.includes("sunday")
-                            ? "white"
+                            ? "#f9fafa"
                             : "#1d2025",
                           padding: 4,
                           backgroundColor:

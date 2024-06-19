@@ -1,5 +1,5 @@
 import { View, StyleSheet, Platform, Image } from "react-native";
-import { Text, Surface } from "react-native-paper";
+import { Text, Surface, Button } from "react-native-paper";
 import React, { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -11,11 +11,17 @@ import { RootState } from "../../../../redux/app/store";
 
 export default function ProfileScreen({ navigation }) {
   const { currentUser } = useSelector((state: RootState) => state.auth);
+
+  console.log("current", currentUser);
+
   const style = StyleSheet.create({
     container: {
       height: "100%",
       justifyContent: "flex-start",
-      backgroundColor: "white",
+      backgroundColor:
+        currentUser.existingUser?.settings?.theme === "dark"
+          ? "#171a1d"
+          : "#f9fafa",
       alignItems: "center",
     },
   });
@@ -35,27 +41,36 @@ export default function ProfileScreen({ navigation }) {
         <View
           style={{
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: "space-between",
+            alignItems: "center",
             flexDirection: "row",
             width: "100%",
             marginTop: 25,
           }}
         >
+          <Text
+            style={{
+              fontSize: 36,
+              textAlign: "center",
+              color:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#33373d",
+            }}
+          >
+            Profile
+          </Text>
           <Feather
             name="settings"
             size={24}
-            color="black"
+            color={
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#33373d"
+            }
             style={{ alignItems: "flex-end", marginRight: 10 }}
             onPress={() => navigation.navigate("Settings")}
           />
-          {!currentUser?.crown_member ? (
-            <FontAwesome5
-              name="crown"
-              size={24}
-              color="orange"
-              onPress={() => alert("Crown Member")}
-            />
-          ) : null}
         </View>
         <View
           style={{
@@ -76,30 +91,6 @@ export default function ProfileScreen({ navigation }) {
             }}
           >
             {/* Memory Issue */}
-            {/* {currentUser?.existingUser?.avatarProfile === "" ? (
-              <Ionicons
-                name="person-circle-sharp"
-                size={50}
-                color="#4f1d9e"
-                onPress={() => console.log("testing")}
-              />
-            ) : (
-              //  Profile Image
-
-              <Image
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 150 / 2,
-                  overflow: "hidden",
-                  borderWidth: 3,
-                  borderColor: "black",
-                }}
-                source={{
-                  uri: `data:image/png;base64,${currentUser?.existingUser?.avatarProfile}`,
-                }}
-              />
-            )} */}
           </View>
           <View
             style={{
@@ -127,70 +118,125 @@ export default function ProfileScreen({ navigation }) {
             </Text>
           </View>
         </View>
+
+        {/*  Profile */}
         <View
           style={{
             flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: "space-between",
+            alignItems: "center",
             width: "100%",
+            height: "70%",
             marginTop: 25,
           }}
         >
-          <Text
-            style={{
-              color: "black",
-              marginRight: 10,
-              fontSize: 16,
-            }}
-          >
-            {currentUser.existingUser?.first_name}{" "}
-            {currentUser.existingUser?.last_name}
-          </Text>
-          <Text
-            style={{
-              color: "black",
-              marginBottom: 20,
-              marginRight: 20,
-              textAlign: "left",
-              fontSize: 25,
-            }}
-          >
-            Dashboard:
-          </Text>
-          {/* Completed Workouts */}
           <View
             style={{
-              backgroundColor: "white",
-              borderColor: "black",
-              borderWidth: 2,
+              backgroundColor:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#33373d"
+                  : "#f1f1f2",
+              borderColor:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "black"
+                  : "#f9fafa",
+              borderWidth:
+                currentUser.existingUser?.settings?.theme === "dark" ? 0 : 2,
               display: "flex",
-              paddingRight: 15,
+              padding: 15,
               flexDirection: "column",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
+              alignItems: "center",
+              justifyContent: "center",
               borderRadius: 10,
+              width: "85%",
+              marginLeft: "auto",
+              marginRight: "auto",
             }}
           >
-            <View
+            {!currentUser?.crown_member ? (
+              <FontAwesome5
+                name="crown"
+                size={24}
+                color="orange"
+                onPress={() => alert("Crown Member")}
+              />
+            ) : null}
+            {currentUser?.existingUser?.avatarProfile === "" ? (
+              <Ionicons
+                name="person-circle-sharp"
+                size={50}
+                color="#4f1d9e"
+                onPress={() => console.log("testing")}
+              />
+            ) : (
+              //  Profile Image
+
+              <Image
+                style={{
+                  width: 95,
+                  height: 95,
+                  borderRadius: 150 / 2,
+                  overflow: "hidden",
+                  borderWidth: 3,
+                  backgroundColor: "black",
+                  borderColor: "orange",
+                  marginBottom: 20,
+                }}
+                source={{
+                  uri: `data:image/png;base64,${currentUser?.existingUser?.avatarProfile}`,
+                }}
+              />
+            )}
+            <Text
               style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                width: "100%",
-                height: 100,
-                alignItems: "flex-start",
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+                fontSize: 20,
+                textTransform: "capitalize",
+                textAlign: "center",
               }}
             >
+              {`${currentUser.existingUser?.first_name} ${currentUser.existingUser?.last_name}`}
+            </Text>
+            <View>
               <Text
                 style={{
-                  padding: 20,
-                  fontWeight: "800",
-                  color: "black",
+                  color:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#33373d",
                 }}
               >
-                Completed Workouts ✅
+                Regiments: {currentUser.regimentsCount}
               </Text>
             </View>
           </View>
+          <Button
+            style={{
+              marginBottom: 20,
+              marginTop: 20,
+              backgroundColor: "black",
+              borderRadius: 15,
+              marginLeft: "auto",
+              marginRight: "auto",
+              justifyContent: "flex-end",
+            }}
+            mode="elevated"
+            textColor="white"
+            onPress={() => alert("Testing")}
+          >
+            <Text style={{ color: "white", marginTop: 2, marginRight: 2 }}>
+              Upgrade to Crown Pro
+            </Text>
+            <FontAwesome5
+              name="crown"
+              size={12}
+              color="orange"
+              onPress={() => alert("Crown Member")}
+            />
+          </Button>
         </View>
       </View>
     </SafeAreaView>

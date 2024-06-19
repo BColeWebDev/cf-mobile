@@ -98,9 +98,12 @@ export default function AllScreens() {
                 <View>
                   <Text
                     style={{
-                      fontSize: 15,
+                      fontSize: 20,
                       fontWeight: "200",
-                      color: "white",
+                      color:
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? "#f9fafa"
+                          : "#33373d",
                     }}
                   >
                     {" "}
@@ -109,9 +112,15 @@ export default function AllScreens() {
                 </View>
               ),
 
-              headerTintColor: "#fff",
+              headerTintColor:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#33373d",
               headerStyle: {
-                backgroundColor: "#110c11",
+                backgroundColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#171a1d"
+                    : "#f9fafa",
               },
             }}
           />

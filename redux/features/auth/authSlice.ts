@@ -18,7 +18,6 @@ const getData = async () => {
   }
 };
 const setData = async (str, value) => {
-  console.log(str, value);
   const jsonValue = JSON.stringify(value);
   await AsyncStorage.setItem(str, jsonValue);
 };
@@ -82,7 +81,11 @@ export const UserSettings = createAsyncThunk(
   `auth/UserSettings`,
   async (obj: Object, thunkAPI) => {
     try {
-      const response = await authService.Settings(obj);
+      const { auth }: any = thunkAPI.getState();
+      const response = await authService.Settings(
+        obj,
+        auth.currentUser.userToken
+      );
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -118,7 +121,6 @@ export const authSlice = createSlice({
       }
     },
     setRegister: (state, action) => {
-      console.log("action", action.payload);
       state.register = {
         ...state.register,
         [action.payload.name]: action.payload.value,
@@ -128,12 +130,20 @@ export const authSlice = createSlice({
       state.register = initialState.register;
     },
     updateCurrentUser: (state, action) => {
-      console.log(action.payload);
       if (state.isLoggedIn) {
-        state.currentUser = action.payload;
+        state.currentUser = {
+          existingUser: action.payload.existingUser,
+          userToken: action.payload.userToken,
+        };
+        console.log("NEW STATE", state.currentUser);
         if (Platform.OS === "ios" || Platform.OS === "android") {
+          console.log("CurrentUser", currentUser);
           setData("isLoggedIn", state.isLoggedIn);
-          setData("currentUser", state.currentUser);
+
+          setData("currentUser", {
+            existingUser: action.payload.existingUser,
+            userToken: action.payload.userToken,
+          });
         }
         if (Platform.OS === "web") {
           localStorage.setItem(
