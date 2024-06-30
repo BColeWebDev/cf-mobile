@@ -1,10 +1,11 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider } from "react-redux";
-import { store } from "./redux/app/store";
+import { RootState, store } from "./redux/app/store";
 import AllScreens from "./screens";
 import { Animated, StatusBar } from "react-native";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
+import { useSelector } from "react-redux";
 
 export default function App() {
   let animatedValue = new Animated.Value(0);
@@ -17,9 +18,28 @@ export default function App() {
   return (
     <Provider store={store}>
       <PaperProvider>
-        <StatusBar />
+        <Wrapper />
+        {/* <StatusBar /> */}
         <AllScreens />
       </PaperProvider>
     </Provider>
   );
 }
+const Wrapper = () => {
+  const { currentUser } = useSelector((state: RootState) => state.auth);
+  return (
+    <StatusBar
+      translucent={true}
+      backgroundColor={
+        currentUser.existingUser?.settings?.theme === "dark"
+          ? "#171a1d"
+          : "#f9fafa"
+      }
+      barStyle={
+        currentUser.existingUser?.settings?.theme === "dark"
+          ? "light-content"
+          : "default"
+      }
+    />
+  );
+};

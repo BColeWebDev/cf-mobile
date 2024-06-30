@@ -61,16 +61,7 @@ export default function RegimentDetails({ route, navigation }) {
 
   /* 2. Get the param */
   const dispatch = useDispatch<AppDispatch>();
-  const style = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "flex-start",
-      padding: 10,
-      backgroundColor: "#3D4663",
-      alignItems: "center",
-      display: "flex",
-    },
-  });
+
   const { data, days } = useSelector((state: RootState) => state.trainingDays);
   const { detailInfo } = useSelector((state: any) => state.regiments);
   const { workouts } = useSelector((state: any) => state.workouts);
@@ -78,7 +69,19 @@ export default function RegimentDetails({ route, navigation }) {
   const { sharableIsLoading, sharableIsSuccess } = useSelector(
     (state: RootState) => state.sharables
   );
-
+  const style = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "flex-start",
+      padding: 10,
+      backgroundColor:
+        currentUser.existingUser?.settings?.theme === "dark"
+          ? "#171a1d"
+          : "#f9fafa",
+      alignItems: "center",
+      display: "flex",
+    },
+  });
   const [refreshing, setRefreshing] = React.useState(false);
   const [image, setImage] = useState<any>();
   const [visible, setVisible] = useState(false);
@@ -199,7 +202,21 @@ export default function RegimentDetails({ route, navigation }) {
                 return (
                   <View
                     key={idx}
-                    style={{ backgroundColor: "white", borderRadius: 10 }}
+                    style={{
+                      backgroundColor:
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? "#33373d"
+                          : "#f1f1f2",
+                      borderColor:
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? "black"
+                          : "#f9fafa",
+                      borderWidth:
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? 0
+                          : 2,
+                      borderRadius: 10,
+                    }}
                   >
                     <TouchableHighlight
                       key={idx}
@@ -211,7 +228,6 @@ export default function RegimentDetails({ route, navigation }) {
                         width: "95%",
                         marginLeft: "auto",
                         marginRight: "auto",
-                        backgroundColor: "white",
                       }}
                     >
                       <View>
@@ -234,7 +250,11 @@ export default function RegimentDetails({ route, navigation }) {
                             <Text
                               style={{
                                 textTransform: "capitalize",
-                                color: "black",
+                                color:
+                                  currentUser.existingUser?.settings?.theme ===
+                                  "dark"
+                                    ? "#f9fafa"
+                                    : "#33373d",
                                 fontSize: 15,
                                 fontWeight: "500",
                                 marginBottom: 10,
@@ -270,12 +290,22 @@ export default function RegimentDetails({ route, navigation }) {
                               }}
                               name="edit"
                               size={24}
-                              color="black"
+                              color={
+                                currentUser.existingUser?.settings?.theme ===
+                                "dark"
+                                  ? "#f9fafa"
+                                  : "#33373d"
+                              }
                             />
                             <AntDesign
                               name="delete"
                               size={24}
-                              color="black"
+                              color={
+                                currentUser.existingUser?.settings?.theme ===
+                                "dark"
+                                  ? "#f9fafa"
+                                  : "#33373d"
+                              }
                               onPress={() => handleTrainingDays(val)}
                             />
                           </View>
@@ -284,7 +314,11 @@ export default function RegimentDetails({ route, navigation }) {
                         <Text
                           style={{
                             textTransform: "capitalize",
-                            color: "black",
+                            color:
+                              currentUser.existingUser?.settings?.theme ===
+                              "dark"
+                                ? "#f9fafa"
+                                : "#33373d",
                             fontWeight: "200",
                             textAlign: "center",
                             marginVertical: 15,
@@ -613,7 +647,10 @@ export default function RegimentDetails({ route, navigation }) {
                 textAlign: "left",
                 fontSize: 10,
                 fontWeight: "200",
-                color: "white",
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#1d2025",
               }}
             >
               {detailInfo.description}
@@ -625,7 +662,11 @@ export default function RegimentDetails({ route, navigation }) {
               <AntDesign
                 name="pluscircleo"
                 size={24}
-                color="white"
+                color={
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d"
+                }
                 style={{ marginRight: 20 }}
                 onPress={() =>
                   navigation.navigate("Create Workout", detailInfo._id)
@@ -649,8 +690,10 @@ export default function RegimentDetails({ route, navigation }) {
           display: "flex",
           padding: 10,
           width: "100%",
-
-          backgroundColor: "#110c11",
+          backgroundColor:
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#171a1d"
+              : "#f9fafa",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
@@ -663,7 +706,6 @@ export default function RegimentDetails({ route, navigation }) {
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
-            marginBottom: 20,
           }}
         >
           <Text
@@ -671,7 +713,10 @@ export default function RegimentDetails({ route, navigation }) {
               textAlign: "left",
               fontSize: 20,
               fontWeight: "200",
-              color: "white",
+              color:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#1d2025",
             }}
           >
             {detailInfo.description}
@@ -683,7 +728,11 @@ export default function RegimentDetails({ route, navigation }) {
               <AntDesign
                 name="pluscircleo"
                 size={24}
-                color="white"
+                color={
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d"
+                }
                 style={{ marginRight: 20 }}
                 onPress={() =>
                   navigation.navigate("Create Workout", detailInfo._id)
@@ -695,19 +744,40 @@ export default function RegimentDetails({ route, navigation }) {
                 style={{ marginRight: 20 }}
                 name="share-alt-square"
                 size={24}
-                color="white"
+                color={
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d"
+                }
                 onPress={() => {
                   setsharableVisible(!sharableVisible);
                 }}
               />
             ) : null}
 
-            <FontAwesome name="trash" size={24} color="white" />
+            <FontAwesome
+              name="trash"
+              size={24}
+              color={
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#33373d"
+              }
+            />
           </View>
         </View>
       </View>
       {/* Tabs */}
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarStyle: {
+            backgroundColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#171a1d"
+                : "#f9fafa",
+          },
+        }}
+      >
         <Tab.Group>
           {days?.map((val, idx) => (
             <Tab.Screen
@@ -716,6 +786,10 @@ export default function RegimentDetails({ route, navigation }) {
               options={{
                 tabBarLabelStyle: {
                   fontSize: 9,
+                  color:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#33373d",
                   fontWeight: "600",
                 },
               }}

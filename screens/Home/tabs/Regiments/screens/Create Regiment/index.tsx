@@ -35,34 +35,23 @@ export default function CreateRegiment({ navigation }) {
       style={{
         flex: 1,
         padding: 20,
-        justifyContent: "flex-start",
-        backgroundColor: "white",
+        justifyContent: "space-evenly",
+        backgroundColor:
+          currentUser.existingUser?.settings?.theme === "dark"
+            ? "#171a1d"
+            : "#f9fafa",
         alignItems: "center",
         display: "flex",
       }}
     >
-      <View style={{ display: "flex", justifyContent: "flex-start" }}>
-        <Text
-          style={{
-            fontSize: 28,
-            color: "black",
-
-            marginTop: 30,
-            marginBottom: 100,
-            fontWeight: "500",
-            textAlign: "center",
-            marginVertical: 5,
-          }}
-        >
-          Create Regiment
-        </Text>
-      </View>
       <View
         style={{
           width: "100%",
+          height: "100%",
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-start",
+          flex: 1,
         }}
       >
         <TextInput
@@ -99,24 +88,23 @@ export default function CreateRegiment({ navigation }) {
             setformData((prevState) => ({ ...prevState, description: text }))
           }
         />
-
-        <Button
-          style={{
-            width: 220,
-            marginBottom: 20,
-            borderRadius: 15,
-            height: 40,
-            marginTop: 20,
-            justifyContent: "center",
-          }}
-          mode="elevated"
-          buttonColor="black"
-          textColor="white"
-          onPress={() => handleCreateRegiment()}
-        >
-          CREATE REGIMENT
-        </Button>
       </View>
+      <Button
+        style={{
+          width: 220,
+          marginBottom: 20,
+          borderRadius: 15,
+          height: 40,
+          marginTop: 20,
+          justifyContent: "center",
+        }}
+        mode="elevated"
+        buttonColor="black"
+        textColor="white"
+        onPress={() => handleCreateRegiment()}
+      >
+        CREATE REGIMENT
+      </Button>
     </View>
   );
 }

@@ -78,17 +78,62 @@ export default function AllScreens() {
           <Stack.Screen
             name="Settings"
             component={Settings}
-            options={{ headerTitle: "" }}
+            options={{
+              headerTitle: "Settings",
+              headerStyle: {
+                backgroundColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#171a1d"
+                    : "#f9fafa",
+              },
+              headerTitleStyle: {
+                fontSize: 25,
+              },
+              headerTintColor:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#33373d",
+            }}
           />
           <Stack.Screen
             name="Create Regiment"
             component={CreateRegiment}
-            options={{ headerTitle: "" }}
+            options={{
+              headerTitle: "Create Regiment",
+              headerStyle: {
+                backgroundColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#171a1d"
+                    : "#f9fafa",
+              },
+              headerTitleStyle: {
+                fontSize: 25,
+              },
+              headerTintColor:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#33373d",
+            }}
           />
           <Stack.Screen
             name="Create Workout"
             component={CreateWorkout}
-            options={{ headerTitle: "" }}
+            options={{
+              headerTitle: "Create Workout",
+              headerStyle: {
+                backgroundColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#171a1d"
+                    : "#f9fafa",
+              },
+              headerTitleStyle: {
+                fontSize: 25,
+              },
+              headerTintColor:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#33373d",
+            }}
           />
           <Stack.Screen
             name="Regiment Details"
@@ -99,7 +144,7 @@ export default function AllScreens() {
                   <Text
                     style={{
                       fontSize: 20,
-                      fontWeight: "200",
+                      fontWeight: "600",
                       color:
                         currentUser.existingUser?.settings?.theme === "dark"
                           ? "#f9fafa"
@@ -135,12 +180,40 @@ export default function AllScreens() {
               options={{ headerShown: false }}
               component={WorkoutsModal}
             />
-            <Stack.Screen name="WorkoutsDetails" component={WorkoutDetails} />
+            <Stack.Screen
+              name="WorkoutsDetails"
+              component={WorkoutDetails}
+              options={{
+                headerTitle: "Workouts Details",
+                headerTintColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+                headerStyle: {
+                  backgroundColor:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#171a1d"
+                      : "#f9fafa",
+                },
+              }}
+            />
 
             <Stack.Screen
               name="Workouts"
               component={WorkoutsScreen}
-              options={{ headerTitle: "All Workouts" }}
+              options={{
+                headerTitle: "All Workouts",
+                headerTintColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+                headerStyle: {
+                  backgroundColor:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#171a1d"
+                      : "#f9fafa",
+                },
+              }}
             />
           </Stack.Group>
         </Stack.Navigator>

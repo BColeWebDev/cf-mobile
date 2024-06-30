@@ -26,6 +26,7 @@ const WorkoutDetails = ({ route, navigation }) => {
       justifyContent: "space-between",
       alignItems: "center",
       marginBottom: 10,
+
       marginHorizontal: 30,
     },
   });
@@ -64,6 +65,10 @@ const WorkoutDetails = ({ route, navigation }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          backgroundColor:
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#171a1d"
+              : "#f9fafa",
         }}
       >
         <Image
@@ -77,14 +82,53 @@ const WorkoutDetails = ({ route, navigation }) => {
             borderRadius: 50,
           }}
         />
-        <Text>{workoutsDetails?.name}</Text>
-        <Text>{workoutsDetails?.bodyPart}</Text>
+        <Text
+          style={{
+            color:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#1d2025",
+            marginTop: 30,
+          }}
+        >
+          {workoutsDetails?.name}
+        </Text>
+        <Text
+          style={{
+            color:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#1d2025",
+            marginTop: 30,
+          }}
+        >
+          {workoutsDetails?.bodyPart}
+        </Text>
         <View style={{ marginVertical: 20, marginHorizontal: 10 }}>
-          <Text style={{ fontSize: 18, marginBottom: 10, fontWeight: "600" }}>
+          <Text
+            style={{
+              fontSize: 18,
+              marginBottom: 10,
+              fontWeight: "600",
+              color:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#1d2025",
+            }}
+          >
             Instructions
           </Text>
           {workoutsDetails?.instructions.map((val, idx) => (
-            <Text style={{ marginVertical: 5 }} key={idx}>
+            <Text
+              style={{
+                marginVertical: 5,
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#1d2025",
+              }}
+              key={idx}
+            >
               {`${idx + 1}.)`}
               {val}
             </Text>
@@ -97,12 +141,26 @@ const WorkoutDetails = ({ route, navigation }) => {
               marginBottom: 10,
               marginHorizontal: 10,
               fontWeight: "600",
+              color:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#1d2025",
             }}
           >
             Secondary Muscles
           </Text>
           {workoutsDetails?.secondaryMuscles.map((val, idx) => (
-            <Text style={{ marginVertical: 5, marginHorizontal: 10 }} key={idx}>
+            <Text
+              style={{
+                marginVertical: 5,
+                marginHorizontal: 10,
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#1d2025",
+              }}
+              key={idx}
+            >
               {`${idx + 1}.)`}
               {val}
             </Text>
@@ -111,7 +169,16 @@ const WorkoutDetails = ({ route, navigation }) => {
           {/* Sets, Reps & Weights/Kg */}
           <View>
             <View style={style.setsContainer}>
-              <Text>Sets: </Text>
+              <Text
+                style={{
+                  color:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#1d2025",
+                }}
+              >
+                Sets:{" "}
+              </Text>
               <TextInput
                 textColor="black"
                 mode={"outlined"}
@@ -126,7 +193,16 @@ const WorkoutDetails = ({ route, navigation }) => {
               />
             </View>
             <View style={style.setsContainer}>
-              <Text>Reps: </Text>
+              <Text
+                style={{
+                  color:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#1d2025",
+                }}
+              >
+                Reps:{" "}
+              </Text>
               <TextInput
                 textColor="black"
                 mode={"outlined"}
@@ -141,7 +217,16 @@ const WorkoutDetails = ({ route, navigation }) => {
               />
             </View>
             <View style={style.setsContainer}>
-              <Text>Weight: </Text>
+              <Text
+                style={{
+                  color:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#1d2025",
+                }}
+              >
+                Weight:{" "}
+              </Text>
               <View
                 style={{
                   display: "flex",
@@ -166,7 +251,16 @@ const WorkoutDetails = ({ route, navigation }) => {
                   }
                   keyboardType={"number-pad"}
                 />
-                <Text>{currentUser?.existingUser?.settings.weight}</Text>
+                <Text
+                  style={{
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#1d2025",
+                  }}
+                >
+                  {currentUser?.existingUser?.settings.weight}
+                </Text>
               </View>
             </View>
           </View>

@@ -66,7 +66,7 @@ export default function Login({ navigation }) {
 
   return (
     <>
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={style.container}>
           <View
             style={{

@@ -98,9 +98,13 @@ const RegimentScreen = ({ navigation }) => {
                     fontWeight: "700",
                     textAlign: "center",
                     fontSize: 35,
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#1d2025",
                   }}
                 >
-                  No Data
+                  No Regiments
                 </Text>
               </View>
             ) : (

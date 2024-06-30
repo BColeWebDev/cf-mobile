@@ -134,13 +134,14 @@ const WorkoutsScreen = ({ route, navigation }) => {
             backgroundColor: "white",
             width: "75%",
             marginRight: "auto",
+            borderRadius: 30,
           }}
           textColor="black"
           mode={"outlined"}
           activeOutlineColor="black"
           selectionColor={"black"}
           cursorColor={"black"}
-          placeholder="Search Workout"
+          placeholder="Search"
           right={<AntDesign name="search1" size={24} color="black" />}
           onChangeText={(text) => setinput(text)}
         ></TextInput>
