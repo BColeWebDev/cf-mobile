@@ -9,7 +9,6 @@ const getSharables = async (token: string) => {
     `${EXPO_PUBLIC_APP_URL}api/sharables/`,
     tokenBearer(token)
   );
-  console.log("RES", response);
   return response.data;
 };
 const createSharable = async (obj: ISharables, token: string) => {
@@ -18,7 +17,6 @@ const createSharable = async (obj: ISharables, token: string) => {
     obj,
     tokenBearer(token)
   );
-  console.log("response", response);
   return response;
 };
 

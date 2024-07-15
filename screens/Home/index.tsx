@@ -23,17 +23,6 @@ export default function Home({ navigation }) {
     (state: RootState) => state.auth
   );
   const dispatch = useDispatch<AppDispatch>();
-
-  // useEffect(() => {
-  //   AsyncStorage.getItem("currentUser", (err, results) => {
-  //     if (Object.keys(results).length === 0) {
-  //       return;
-  //     }
-  //     dispatch(setCurrentUser(JSON.parse(results)));
-  //     console.log("***results***", results, currentUser);
-  //   });
-  // }, []);
-
   const Tab = createBottomTabNavigator();
 
   return (

@@ -13,7 +13,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../../../redux/app/store";
 import Loading from "../../../../../Loading";
 const CreateWorkout = ({ route, navigation }) => {
-  console.log("route", route);
   const dispatch = useDispatch<AppDispatch>();
 
   const { days, isLoading } = useSelector(
@@ -34,7 +33,6 @@ const CreateWorkout = ({ route, navigation }) => {
     "saturday",
   ];
   useEffect(() => {
-    console.log(route?.params?.val?.name);
     if (route?.params?.val?.name !== undefined) {
       setformData({
         name: route?.params?.val?.name,
@@ -44,7 +42,6 @@ const CreateWorkout = ({ route, navigation }) => {
     }
   }, [route]);
   const [formData, setformData] = useState(initialState);
-  console.log(formData);
   const style = StyleSheet.create({
     textInput: {
       width: "90%",
@@ -66,7 +63,6 @@ const CreateWorkout = ({ route, navigation }) => {
   });
 
   const handleCreateWorkout = () => {
-    console.log("route", route.params);
     dispatch(
       createTrainingDays({ ...formData, regimentId: route.params })
     ).then((val) => {

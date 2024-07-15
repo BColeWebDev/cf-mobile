@@ -12,9 +12,7 @@ const getAlWorkouts = async (
   let urlString = `${EXPO_PUBLIC_APP_URL}api/workouts/exercises?page=${page}&limit=${limit}${
     filters !== "" || filters !== undefined ? filters : ""
   }`;
-  console.log("fills", urlString);
   const response = await axios.get(urlString, tokenBearer(token));
-  console.log("response", response);
 
   return response.data;
 };

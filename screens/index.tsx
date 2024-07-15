@@ -29,11 +29,8 @@ export default function AllScreens() {
     (state: RootState) => state.auth
   );
   const { detailInfo } = useSelector((state: any) => state.regiments);
-  console.log("isLoggedId", isLoggedIn, currentUser);
   const dispatch = useDispatch<AppDispatch>();
   const [initRoute, setinitRoute] = useState<string>("Login");
-
-  console.log("in", initRoute);
 
   if (initRoute !== "") {
     return (
@@ -151,12 +148,10 @@ export default function AllScreens() {
                           : "#33373d",
                     }}
                   >
-                    {" "}
                     {detailInfo.name}
                   </Text>
                 </View>
               ),
-
               headerTintColor:
                 currentUser.existingUser?.settings?.theme === "dark"
                   ? "#f9fafa"
@@ -177,7 +172,34 @@ export default function AllScreens() {
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen
               name="WorkoutsFilters"
-              options={{ headerShown: false }}
+              options={{
+                headerTitle: () => (
+                  <View style={{ width: "100%", justifyContent: "flex-start" }}>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: "600",
+                        color:
+                          currentUser.existingUser?.settings?.theme === "dark"
+                            ? "#f9fafa"
+                            : "#33373d",
+                      }}
+                    >
+                      Filters
+                    </Text>
+                  </View>
+                ),
+                headerTintColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+                headerStyle: {
+                  backgroundColor:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#171a1d"
+                      : "#f9fafa",
+                },
+              }}
               component={WorkoutsModal}
             />
             <Stack.Screen

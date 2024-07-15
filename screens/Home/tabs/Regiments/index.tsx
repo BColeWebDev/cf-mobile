@@ -41,7 +41,6 @@ const RegimentScreen = ({ navigation }) => {
           setRefreshing(false);
         }
         if (val.meta.requestStatus === "rejected") {
-          console.log("val", val);
         }
       });
     }, 2000);
@@ -158,17 +157,18 @@ const RegimentScreen = ({ navigation }) => {
                           fontSize: 20,
                           textTransform: "capitalize",
                           textAlign: "center",
+                          marginBottom: 15,
                         }}
                       >
                         {val.name}
                       </Text>
-                      <Badge
+                      {/* <Badge
                         style={{
                           marginRight: 5,
                           marginBottom: 15,
                           backgroundColor: val.isCompleted ? "white" : "red",
                         }}
-                      ></Badge>
+                      ></Badge> */}
                     </View>
                     <Text
                       style={{

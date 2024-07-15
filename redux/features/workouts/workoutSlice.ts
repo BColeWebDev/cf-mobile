@@ -28,7 +28,6 @@ export const getAllWorkouts = createAsyncThunk<any, any, { state: RootState }>(
       );
       return response;
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -103,7 +102,6 @@ export const deleteWorkout = createAsyncThunk<any, any, { state: RootState }>(
   async (obj: any, thunkAPI) => {
     try {
       const { currentUser } = thunkAPI.getState().auth;
-      console.log("OBJ", obj);
       const response = await workoutServices.deleteWorkout(
         obj,
         currentUser.userToken
@@ -122,7 +120,6 @@ export const updateWorkout = createAsyncThunk<
 >(`workouts/updateWorkout`, async (obj: IUpdateTrainingDaysForm, thunkAPI) => {
   try {
     const { currentUser } = thunkAPI.getState().auth;
-    console.log("OBJ", obj);
     const response = await workoutServices.updateWorkout(
       obj,
       currentUser.userToken

@@ -17,9 +17,7 @@ export default function CreateRegiment({ navigation }) {
 
   const handleCreateRegiment = () => {
     formData.userid = currentUser?.existingUser?._id;
-    console.log("userid", currentUser?.existingUser?._id);
     dispatch(createRegiment(formData)).then((val) => {
-      console.log("RETURN VAL***", val);
       if (val.meta.requestStatus === "fulfilled") {
         navigation.navigate("Home");
         dispatch(getRegiments(formData.userid));

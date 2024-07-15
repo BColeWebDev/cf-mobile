@@ -40,6 +40,7 @@ const getSingleRegiment = async (id: string) => {
   );
   return response.data;
 };
+
 export default {
   GetAllRegiments,
   getSingleRegiment,

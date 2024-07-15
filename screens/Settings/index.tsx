@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
-import { Box, Button, Stack, Switch } from "@react-native-material/core";
+import { Box, Button } from "@react-native-material/core";
+import { Switch } from "react-native-paper";
 import { useSelector } from "react-redux";
 import {
   UserSettings,
@@ -42,6 +43,7 @@ const Settings = ({ navigation }) => {
                 size: inches ? "cm" : "inches",
               },
             },
+            regimentsCount: currentUser.regimentCount,
             userToken: currentUser.userToken,
           })
         );
@@ -88,144 +90,291 @@ const Settings = ({ navigation }) => {
           flex: 0.9,
         }}
       >
+        {/* Settings */}
         <Box
           style={{
+            backgroundColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#33373d"
+                : "#f1f1f2",
+            borderColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "black"
+                : "#f9fafa",
+            borderWidth:
+              currentUser.existingUser?.settings?.theme === "dark" ? 0 : 2,
+            padding: 15,
+            borderRadius: 10,
+            width: "85%",
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
             marginBottom: 20,
+            justifyContent: "space-between",
           }}
         >
           <Text
             style={{
-              marginRight: 10,
               color:
                 currentUser.existingUser?.settings?.theme === "dark"
                   ? "#f9fafa"
                   : "#33373d",
+              fontSize: 18,
             }}
           >
-            Kg
+            Weight
           </Text>
-          <Switch
-            value={metric}
-            onValueChange={() => setMetricChecked(!metric)}
-          />
-          <Text
+          <View
             style={{
-              marginLeft: 10,
-              color:
-                currentUser.existingUser?.settings?.theme === "dark"
-                  ? "#f9fafa"
-                  : "#33373d",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            Ibs
-          </Text>
+            <Text
+              style={{
+                marginRight: 10,
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+                fontSize: 16,
+              }}
+            >
+              Kg
+            </Text>
+            <Switch
+              value={metric}
+              onValueChange={() => setMetricChecked(!metric)}
+            />
+            <Text
+              style={{
+                marginLeft: 10,
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+                fontSize: 16,
+              }}
+            >
+              Ibs
+            </Text>
+          </View>
         </Box>
 
+        {/* Theme */}
         <Box
           style={{
+            backgroundColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#33373d"
+                : "#f1f1f2",
+            borderColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "black"
+                : "#f9fafa",
+            borderWidth:
+              currentUser.existingUser?.settings?.theme === "dark" ? 0 : 2,
+            padding: 15,
+            borderRadius: 10,
+            width: "85%",
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
             marginBottom: 20,
+            justifyContent: "space-between",
           }}
         >
           <Text
             style={{
-              marginRight: 10,
               color:
                 currentUser.existingUser?.settings?.theme === "dark"
                   ? "#f9fafa"
                   : "#33373d",
+              fontSize: 18,
             }}
           >
-            Light
+            Theme
           </Text>
-          <Switch value={theme} onValueChange={() => setThemeChecked(!theme)} />
-          <Text
+          <View
             style={{
-              marginLeft: 10,
-              color:
-                currentUser.existingUser?.settings?.theme === "dark"
-                  ? "#f9fafa"
-                  : "#33373d",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            Dark
-          </Text>
-        </Box>
-        <Box
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            marginBottom: 20,
-          }}
-        >
-          <Text
-            style={{
-              marginRight: 10,
-              color:
-                currentUser.existingUser?.settings?.theme === "dark"
-                  ? "#f9fafa"
-                  : "#33373d",
-            }}
-          >
-            Inches
-          </Text>
-          <Switch
-            value={inches}
-            onValueChange={() => setInchesChecked(!inches)}
-          />
-          <Text
-            style={{
-              marginLeft: 10,
-              color:
-                currentUser.existingUser?.settings?.theme === "dark"
-                  ? "#f9fafa"
-                  : "#33373d",
-            }}
-          >
-            cm.
-          </Text>
+            <Text
+              style={{
+                marginRight: 10,
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+                fontSize: 16,
+              }}
+            >
+              Light
+            </Text>
+            <Switch
+              value={theme}
+              onValueChange={() => setThemeChecked(!theme)}
+            />
+            <Text
+              style={{
+                marginLeft: 10,
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+                fontSize: 16,
+              }}
+            >
+              Dark
+            </Text>
+          </View>
         </Box>
 
+        {/* Inches */}
         <Box
           style={{
+            backgroundColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#33373d"
+                : "#f1f1f2",
+            borderColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "black"
+                : "#f9fafa",
+            borderWidth:
+              currentUser.existingUser?.settings?.theme === "dark" ? 0 : 2,
+            padding: 15,
+            borderRadius: 10,
+            width: "85%",
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
             marginBottom: 20,
+            justifyContent: "space-between",
           }}
         >
           <Text
             style={{
-              marginRight: 10,
               color:
                 currentUser.existingUser?.settings?.theme === "dark"
                   ? "#f9fafa"
                   : "#33373d",
+              fontSize: 18,
             }}
           >
-            Km
+            Measurement
           </Text>
-          <Switch
-            value={distance}
-            onValueChange={() => setDistanceChecked(!distance)}
-          />
+          <View
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                marginRight: 10,
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+              }}
+            >
+              Inches
+            </Text>
+            <Switch
+              value={inches}
+              onValueChange={() => setInchesChecked(!inches)}
+            />
+            <Text
+              style={{
+                marginLeft: 10,
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+              }}
+            >
+              cm.
+            </Text>
+          </View>
+        </Box>
+        {/* Distance */}
+        <Box
+          style={{
+            backgroundColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#33373d"
+                : "#f1f1f2",
+            borderColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "black"
+                : "#f9fafa",
+            borderWidth:
+              currentUser.existingUser?.settings?.theme === "dark" ? 0 : 2,
+            padding: 15,
+            borderRadius: 10,
+            width: "85%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            marginBottom: 20,
+            justifyContent: "space-between",
+          }}
+        >
           <Text
             style={{
-              marginLeft: 10,
               color:
                 currentUser.existingUser?.settings?.theme === "dark"
                   ? "#f9fafa"
                   : "#33373d",
+              fontSize: 18,
             }}
           >
-            Miles
+            Distance
           </Text>
+          <View
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                marginRight: 10,
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+              }}
+            >
+              Km
+            </Text>
+            <Switch
+              value={distance}
+              onValueChange={() => setDistanceChecked(!distance)}
+            />
+            <Text
+              style={{
+                marginLeft: 10,
+                color:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+              }}
+            >
+              Miles
+            </Text>
+          </View>
         </Box>
       </Box>
 

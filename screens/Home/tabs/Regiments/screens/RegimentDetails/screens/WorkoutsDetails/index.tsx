@@ -17,7 +17,6 @@ const WorkoutDetails = ({ route, navigation }) => {
   let workoutsDetails = workouts?.items?.filter(
     (value) => value.id === route.params.wId
   )[0];
-  console.log("workoutDetails", Data);
 
   const style = StyleSheet.create({
     setsContainer: {

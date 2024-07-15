@@ -19,7 +19,6 @@ const SignUpEmail = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { register, isLoading, isError, isSuccess, messages, message } =
     useSelector((state: RootState) => state.auth);
-  console.log("register", register);
   const [showPassword, setshowPassword] = useState(false);
   const [visible, setvisible] = useState(false);
   const [successvisible, setSuccessVisible] = useState(false);
@@ -33,7 +32,6 @@ const SignUpEmail = ({ navigation }) => {
       }
       // error message
       if (val.meta.requestStatus === "rejected") {
-        console.log("VAL", val.payload);
         setvisible(true);
       }
     });
@@ -124,7 +122,6 @@ const SignUpEmail = ({ navigation }) => {
             selectionColor={"black"}
             cursorColor={"black"}
             onChangeText={(text) => {
-              console.log("text", text);
               // setregister(prevState => ({...prevState,first_name:text}))
               dispatch(setRegister({ value: text, name: "email" }));
             }}

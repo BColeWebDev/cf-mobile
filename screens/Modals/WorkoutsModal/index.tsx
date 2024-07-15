@@ -4,15 +4,10 @@ import { Text, Button, Chip } from "react-native-paper";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/app/store";
 import { getAllTrainingDays } from "../../../redux/features/trainingDays/trainingDaysSlice";
-import {
-  getAllBodyTargets,
-  getAllEquipment,
-  getAllMuscleTargets,
-  getAllWorkouts,
-} from "../../../redux/features/workouts/workoutSlice";
+import { getAllWorkouts } from "../../../redux/features/workouts/workoutSlice";
 
 const WorkoutsModal = ({ navigation }) => {
-  const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
+  const { equipments, bodyTargets, muscles } = useSelector(
     (state: RootState) => state.workouts
   );
   const { currentUser } = useSelector((state: RootState) => state.auth);
@@ -24,6 +19,7 @@ const WorkoutsModal = ({ navigation }) => {
   };
   const [filters, setfilter] = useState(initialState);
   const dispatch = useDispatch<AppDispatch>();
+
   const handleAddFilters = (val: string, key: string) => {
     setfilter((prevState) => {
       let arr = prevState[key];
@@ -38,7 +34,7 @@ const WorkoutsModal = ({ navigation }) => {
     setfilter((prevState) => {
       return {
         ...prevState,
-        [key]: prevState.muscle.filter((v) => v !== val),
+        [key]: prevState[key].filter((v) => v !== val),
       };
     });
   };
@@ -51,27 +47,28 @@ const WorkoutsModal = ({ navigation }) => {
       filters.muscle.length > 0
     ) {
       let filter = Object.keys(filters);
-      console.log("filter", filter.length);
+
       for (let index = 0; index < filter.length; index++) {
         const element = filter[index];
-        console.log("element", element);
         filters[element].length > 0
           ? filterArr.push(`${element}=${filters[element].join(",")}`)
           : null;
       }
       filterArr.join("&");
     }
-    console.log("filterArr", filterArr);
+
+    // Filter workouts
     dispatch(
       getAllWorkouts({
         token: currentUser.userToken,
         page: 1,
-        limit: 10,
+        limit: 1500,
         filters:
           filterArr.length > 0 ? `&${filterArr.join("&")}&filters=true` : "",
       })
     );
-    setfilter(initialState);
+    //
+    // setfilter(initialState);
     navigation.goBack();
   };
 
@@ -79,36 +76,6 @@ const WorkoutsModal = ({ navigation }) => {
     <View
       style={{ flex: 1, alignItems: "center", justifyContent: "space-between" }}
     >
-      <View
-        style={{
-          display: "flex",
-          backgroundColor: "gray",
-          flexDirection: "row-reverse",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
-          padding: 10,
-        }}
-      >
-        <Button
-          mode="elevated"
-          buttonColor="black"
-          textColor="white"
-          onPress={() => navigation.goBack()}
-          style={{
-            width: 110,
-            borderRadius: 15,
-            height: 40,
-            justifyContent: "center",
-          }}
-        >
-          Close
-        </Button>
-        <Text style={{ fontSize: 30, color: "white", fontWeight: "600" }}>
-          Filters
-        </Text>
-      </View>
-
       <ScrollView style={{ width: "100%", maxHeight: "90%" }}>
         {<Text>{toggle}</Text>}
         {/* Equipments */}
@@ -126,7 +93,11 @@ const WorkoutsModal = ({ navigation }) => {
         >
           {equipments.map((val, idx) => (
             <Chip
-              style={{ margin: 5, borderColor: "black" }}
+              style={{
+                margin: 5,
+                borderColor: "black",
+                backgroundColor: "white",
+              }}
               selectedColor="black"
               selected={filters.equipment.includes(val) ? true : false}
               onPress={() => {
@@ -164,7 +135,11 @@ const WorkoutsModal = ({ navigation }) => {
         >
           {bodyTargets.map((val, idx) => (
             <Chip
-              style={{ margin: 5, borderColor: "black" }}
+              style={{
+                margin: 5,
+                borderColor: "black",
+                backgroundColor: "white",
+              }}
               selectedColor="black"
               selected={filters.bodyTarget.includes(val) ? true : false}
               onPress={() => {
@@ -202,7 +177,11 @@ const WorkoutsModal = ({ navigation }) => {
         >
           {muscles?.map((val, idx) => (
             <Chip
-              style={{ margin: 5, borderColor: "black" }}
+              style={{
+                margin: 5,
+                borderColor: "black",
+                backgroundColor: "white",
+              }}
               selectedColor="black"
               selected={filters.muscle.includes(val) ? true : false}
               onPress={() => {
@@ -225,20 +204,32 @@ const WorkoutsModal = ({ navigation }) => {
         </View>
       </ScrollView>
       <View style={{ padding: 15 }}>
-        <Button
-          mode="elevated"
-          buttonColor="black"
-          textColor="white"
-          onPress={() => handleWorkoutFilter()}
-          style={{
-            width: 110,
-            borderRadius: 15,
-            height: 40,
-            justifyContent: "center",
-          }}
-        >
-          Filter
-        </Button>
+        {filters.bodyTarget.length > 0 ||
+        filters.equipment.length > 0 ||
+        filters.muscle.length > 0 ? (
+          <Button
+            mode="elevated"
+            buttonColor={
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#171a1d"
+                : "#f9fafa"
+            }
+            textColor={
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#33373d"
+            }
+            onPress={() => handleWorkoutFilter()}
+            style={{
+              width: 110,
+              borderRadius: 15,
+              height: 40,
+              justifyContent: "center",
+            }}
+          >
+            Filter
+          </Button>
+        ) : null}
       </View>
     </View>
   );

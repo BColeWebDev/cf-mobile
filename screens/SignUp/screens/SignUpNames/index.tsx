@@ -11,7 +11,6 @@ import {
 const SignUpNamesScreens = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { register } = useSelector((state: RootState) => state.auth);
-  console.log("register", register);
   const style = StyleSheet.create({
     textInput: {
       width: "100%",
@@ -83,7 +82,6 @@ const SignUpNamesScreens = ({ navigation }) => {
             cursorColor={"black"}
             defaultValue={register.first_name}
             onChangeText={(text) => {
-              console.log("text", text);
               dispatch(setRegister({ value: text, name: "first_name" }));
             }}
           />

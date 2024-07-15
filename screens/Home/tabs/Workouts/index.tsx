@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TextInput } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
@@ -29,16 +29,12 @@ import { Snackbar } from "react-native-paper";
 // TODO: Infinite Scrolling
 // Rename workouts to exercises for less confusion
 const WorkoutsScreen = ({ route, navigation }) => {
-  console.log("routes", route, navigation);
   const [input, setinput] = useState("");
   const [selectedWorkouts, setselectedWorkouts] = useState<IWorkouts>();
   const dispatch = useDispatch<AppDispatch>();
   const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
     (state: any) => state.workouts
   );
-  const [view, setview] = useState("");
-
-  // console.log("workouts", workouts,equipments,bodyTargets,muscles);
   const { currentUser } = useSelector((state: any) => state.auth);
   const style = StyleSheet.create({
     container: {
@@ -75,8 +71,23 @@ const WorkoutsScreen = ({ route, navigation }) => {
       // fetchImage();
     }, 2000);
   }, [refreshing]);
+
+  // Loading Screen
   if (isLoading) {
-    return <Loading color={"red"} />;
+    return (
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          flex: 1,
+          width: "100%",
+        }}
+      >
+        <Loading color={"black"} />
+      </View>
+    );
   }
 
   const handleCreateWorkout = (val) => {
@@ -98,14 +109,12 @@ const WorkoutsScreen = ({ route, navigation }) => {
             sets: value.sets,
           })
         ).then((val) => {
-          console.log("VAL", val);
           if (val.meta.requestStatus === "fulfilled") {
             dispatch(getAllTrainingDays(route.params.regimentId));
             navigation.navigate("Regiment Details", { route });
             setselectedWorkouts(undefined);
           }
           if (val.meta.requestStatus === "rejected") {
-            setview(val.payload.response.data.message);
             setselectedWorkouts(undefined);
           }
         });
@@ -113,6 +122,17 @@ const WorkoutsScreen = ({ route, navigation }) => {
     });
   };
 
+  // Clear all existing filters
+  const clearFilters = () => {
+    dispatch(
+      getAllWorkouts({
+        token: currentUser.userToken,
+        page: 1,
+        limit: 1500,
+        filters: "",
+      })
+    );
+  };
   return (
     <SafeAreaView style={style.container}>
       <View
@@ -120,24 +140,19 @@ const WorkoutsScreen = ({ route, navigation }) => {
           width: "100%",
           display: "flex",
           flexDirection: "row",
-          margin: 20,
-          marginHorizontal: 20,
-
           alignItems: "center",
         }}
       >
         {/* Search */}
         <TextInput
           style={{
-            marginBottom: 25,
-            marginHorizontal: 20,
+            margin: 15,
             backgroundColor: "white",
-            width: "75%",
+            width: "90%",
             marginRight: "auto",
-            borderRadius: 30,
           }}
           textColor="black"
-          mode={"outlined"}
+          mode={"flat"}
           activeOutlineColor="black"
           selectionColor={"black"}
           cursorColor={"black"}
@@ -145,11 +160,20 @@ const WorkoutsScreen = ({ route, navigation }) => {
           right={<AntDesign name="search1" size={24} color="black" />}
           onChangeText={(text) => setinput(text)}
         ></TextInput>
-
+      </View>
+      {/* Workouts */}
+      <View
+        style={{
+          flexDirection: "row-reverse",
+          justifyContent: "space-between",
+          padding: 20,
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
         <FontAwesome
           name="filter"
           size={24}
-          style={{ marginRight: 20, marginBottom: 20, textAlign: "right" }}
           color={
             currentUser.existingUser?.settings?.theme === "dark"
               ? "#f9fafa"
@@ -157,28 +181,50 @@ const WorkoutsScreen = ({ route, navigation }) => {
           }
           onPress={() => navigation.navigate("WorkoutsFilters")}
         />
-        {/* <FontAwesome
-          name="sort-amount-asc"
-          style={{ marginRight: 20, marginBottom: 20, textAlign: "right" }}
-          color="black"
-        /> */}
+        <Text
+          style={{
+            color:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#33373d",
+            fontWeight: "400",
+            textAlign: "right",
+          }}
+        >
+          Workouts:{workouts?.items.length}
+        </Text>
       </View>
-      {/* Workouts */}
-      <Text
+
+      {/* Clear Filter */}
+      <View
         style={{
+          flexDirection: "row-reverse",
+          justifyContent: "space-between",
+          padding: 20,
+          alignItems: "center",
           width: "100%",
-          paddingHorizontal: 20,
-          marginBottom: 20,
-          color:
-            currentUser.existingUser?.settings?.theme === "dark"
-              ? "#f9fafa"
-              : "#33373d",
-          fontWeight: "400",
-          textAlign: "right",
         }}
       >
-        Workouts:{workouts?.items.length}
-      </Text>
+        {/* Show filter if less than all workouts */}
+        {workouts?.items.length < 1324 ? (
+          <Button
+            style={{
+              width: "100%",
+              backgroundColor: "#211a23",
+              borderRadius: 15,
+              marginLeft: "auto",
+              marginRight: "auto",
+              height: 40,
+              justifyContent: "center",
+            }}
+            mode="elevated"
+            textColor="white"
+            onPress={() => clearFilters()}
+          >
+            Clear Filters
+          </Button>
+        ) : null}
+      </View>
 
       <FlatList
         refreshControl={

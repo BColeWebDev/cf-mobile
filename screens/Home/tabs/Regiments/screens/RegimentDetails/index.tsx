@@ -49,11 +49,11 @@ let names = {
 };
 
 /* TODO:
-Delete Regiment
-Delete Workouts
-Update Regiment (Name & Description)
-Update Workout (Replace)
-*/
+  Delete Regiment
+  Delete Workouts
+  Update Regiment (Name & Description)
+  Update Workout (Replace)
+  */
 const Tab = createMaterialTopTabNavigator();
 
 export default function RegimentDetails({ route, navigation }) {
@@ -66,7 +66,7 @@ export default function RegimentDetails({ route, navigation }) {
   const { detailInfo } = useSelector((state: any) => state.regiments);
   const { workouts } = useSelector((state: any) => state.workouts);
   const { currentUser } = useSelector((state: RootState) => state.auth);
-  const { sharableIsLoading, sharableIsSuccess } = useSelector(
+  const { sharableIsLoading } = useSelector(
     (state: RootState) => state.sharables
   );
   const style = StyleSheet.create({
@@ -83,6 +83,7 @@ export default function RegimentDetails({ route, navigation }) {
     },
   });
   const [refreshing, setRefreshing] = React.useState(false);
+  const [isLoading, setisLoading] = useState<boolean>(false);
   const [image, setImage] = useState<any>();
   const [visible, setVisible] = useState(false);
   const [sharableVisible, setsharableVisible] = useState(false);
@@ -91,53 +92,19 @@ export default function RegimentDetails({ route, navigation }) {
   const [IsSharable, setIsSharable] = useState(false);
   const onToggleSnackBarDelete = () => settrainingDayDelete(!trainingDayDelete);
   const onDismissTrainingSnackBar = () => settrainingDayDelete(false);
-  const fetchImage = async () => {
-    try {
-      const response = await axios.get(
-        `https://muscle-group-image-generator.p.rapidapi.com/getMulticolorImage`,
-        {
-          headers: {
-            "X-RapidAPI-Key":
-              "ac819a08e2msh6beaecd882152c1p1188e5jsnf15223ffb4db",
-            "X-RapidAPI-Host": "muscle-group-image-generator.p.rapidapi.com",
-            "Content-Type": "multipart/form-data",
-          },
-          params: {
-            primaryColor: "255,60,80",
-            secondaryColor: "200,30,0",
-            primaryMuscleGroups: "all_lower",
-            secondaryMuscleGroups: "chest,shoulders",
-            transparentBackground: "0",
-          },
-          responseType: "blob",
-        }
-      );
-      if (Platform.OS === "ios") {
-        setImage(URL.createObjectURL(response.data));
-      }
-      let blob = new Blob([response.data], {
-        type: "text/vtt; charset=utf-8",
-      });
-      const fileReaderInstance = new FileReader();
-      fileReaderInstance.readAsDataURL(blob);
-      fileReaderInstance.onload = (res) => {
-        setImage(fileReaderInstance.result);
-      };
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
   // ON LOAD
   useEffect(() => {
+    setisLoading(true);
     if (route.params.regimentId !== undefined) {
       dispatch(getSingleRegiment(route.params.regimentId));
       dispatch(getAllTrainingDays(route.params.regimentId));
       // fetchImage();
     }
+    setisLoading(false);
   }, [route]);
 
   const handleDeleteWorkout = (val) => {
-    console.log("val", detailInfo._id, val._id, val.id);
     dispatch(
       deleteWorkout({
         regimentId: detailInfo._id,
@@ -145,7 +112,6 @@ export default function RegimentDetails({ route, navigation }) {
         id: val.id,
       })
     ).then((val) => {
-      console.log("Val", val);
       if (val.meta.requestStatus === "fulfilled") {
         if (route.params !== undefined) {
           dispatch(getSingleRegiment(route.params));
@@ -355,20 +321,20 @@ export default function RegimentDetails({ route, navigation }) {
                       Add Workout
                     </Button>
                     {/* <Image
-                      source={{
-                        uri: image,
-                      }}
-                      style={{
-                        width: "100%",
-                        height: 180,
-                        padding: 10,
-                        resizeMode: "contain",
-                        marginTop: 10,
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        marginBottom: 10,
-                      }}
-                    /> */}
+                        source={{
+                          uri: image,
+                        }}
+                        style={{
+                          width: "100%",
+                          height: 180,
+                          padding: 10,
+                          resizeMode: "contain",
+                          marginTop: 10,
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                          marginBottom: 10,
+                        }}
+                      /> */}
 
                     <View
                       style={{
@@ -681,236 +647,162 @@ export default function RegimentDetails({ route, navigation }) {
       </View>
     );
   }
-
+  // Days Created
   return (
     <>
-      <View
-        style={{
-          marginHorizontal: "auto",
-          display: "flex",
-          padding: 10,
-          width: "100%",
-          backgroundColor:
-            currentUser.existingUser?.settings?.theme === "dark"
-              ? "#171a1d"
-              : "#f9fafa",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          <Text
-            style={{
-              textAlign: "left",
-              fontSize: 20,
-              fontWeight: "200",
-              color:
-                currentUser.existingUser?.settings?.theme === "dark"
-                  ? "#f9fafa"
-                  : "#1d2025",
+      {isLoading ? (
+        <View style={{ flex: 1 }}>
+          <Loading color={"red"} />
+        </View>
+      ) : (
+        <View style={{ flex: 1 }}>
+          {/* Tabs */}
+          <Tab.Navigator
+            screenOptions={{
+              tabBarStyle: {
+                backgroundColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#171a1d"
+                    : "#f9fafa",
+              },
             }}
           >
-            {detailInfo.description}
-          </Text>
-          <View
-            style={{ display: "flex", flexDirection: "row", marginRight: 10 }}
+            {/* Workout Tabs */}
+            <Tab.Group>
+              {days?.map((val, idx) => (
+                <Tab.Screen
+                  key={idx}
+                  name={names[val]}
+                  options={{
+                    tabBarLabelStyle: {
+                      fontSize: 9,
+                      color:
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? "#f9fafa"
+                          : "#33373d",
+                      fontWeight: "600",
+                    },
+                  }}
+                >
+                  {(prop) => <WorkoutTab name={val} />}
+                </Tab.Screen>
+              ))}
+            </Tab.Group>
+          </Tab.Navigator>
+          <Snackbar
+            visible={trainingDayDelete}
+            onDismiss={onDismissTrainingSnackBar}
           >
-            {days.length === 7 ? null : (
-              <AntDesign
-                name="pluscircleo"
-                size={24}
-                color={
-                  currentUser.existingUser?.settings?.theme === "dark"
-                    ? "#f9fafa"
-                    : "#33373d"
-                }
-                style={{ marginRight: 20 }}
-                onPress={() =>
-                  navigation.navigate("Create Workout", detailInfo._id)
-                }
-              />
-            )}
-            {!detailInfo?.sharables ? (
-              <FontAwesome
-                style={{ marginRight: 20 }}
-                name="share-alt-square"
-                size={24}
-                color={
-                  currentUser.existingUser?.settings?.theme === "dark"
-                    ? "#f9fafa"
-                    : "#33373d"
-                }
+            Removed Training Day
+          </Snackbar>
+          <Snackbar visible={IsSharable} onDismiss={() => setIsSharable(false)}>
+            Workout Shared!
+          </Snackbar>
+          {/* Delete Workout Portal*/}
+          <Portal>
+            <Modal
+              visible={visible}
+              contentContainerStyle={{ backgroundColor: "white", padding: 20 }}
+              onDismiss={() => setVisible(!visible)}
+            >
+              <Text style={{ padding: 10 }}>Delete Workout?</Text>
+              <Button
+                style={{
+                  width: 220,
+                  marginBottom: 20,
+                  marginTop: 20,
+                  backgroundColor: "#211a23",
+                  borderRadius: 15,
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  height: 40,
+                  justifyContent: "center",
+                }}
+                onPress={() => {
+                  setVisible(!visible);
+                  handleDeleteWorkout(selectValue);
+                }}
+                mode="elevated"
+                textColor="white"
+              >
+                Delete
+              </Button>
+              <Text
+                onPress={() => {
+                  setVisible(!visible);
+                }}
+                style={{ textAlign: "center" }}
+              >
+                Cancel
+              </Text>
+            </Modal>
+          </Portal>
+          {/* Share Workout Portal*/}
+          <Portal>
+            <Modal
+              visible={sharableVisible}
+              contentContainerStyle={{ backgroundColor: "white", padding: 20 }}
+              onDismiss={() => setsharableVisible(!sharableVisible)}
+            >
+              <Text style={{ padding: 10, fontWeight: "500" }}>
+                Share Workout?
+              </Text>
+              <Button
+                style={{
+                  width: 220,
+                  marginBottom: 20,
+                  marginTop: 20,
+                  backgroundColor: "#211a23",
+                  borderRadius: 15,
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  height: 40,
+                  justifyContent: "center",
+                }}
+                disabled={sharableIsLoading}
+                onPress={() => {
+                  dispatch(
+                    createSharable({
+                      sharable_name: detailInfo.name,
+                      created_by: currentUser?.existingUser?._id,
+                      regiment_difficulty: "beginner",
+                      regiment_id: detailInfo._id,
+                    })
+                  ).then((val) => {
+                    if (val.meta.requestStatus === "fulfilled") {
+                      setIsSharable(true);
+                      setsharableVisible(!sharableVisible);
+                      dispatch(getSingleRegiment(route.params.regimentId));
+                      dispatch(getAllTrainingDays(route.params.regimentId));
+                    }
+                    if (val.meta.requestStatus === "rejected") {
+                      alert(
+                        "Error! workout could not be shared. Please try again!"
+                      );
+                    }
+                  });
+                }}
+                mode="elevated"
+                textColor="white"
+              >
+                {sharableIsLoading ? (
+                  <ActivityIndicator size="small" color={"white"} />
+                ) : (
+                  "Sharable"
+                )}
+              </Button>
+              <Text
                 onPress={() => {
                   setsharableVisible(!sharableVisible);
                 }}
-              />
-            ) : null}
-
-            <FontAwesome
-              name="trash"
-              size={24}
-              color={
-                currentUser.existingUser?.settings?.theme === "dark"
-                  ? "#f9fafa"
-                  : "#33373d"
-              }
-            />
-          </View>
+                style={{ textAlign: "center" }}
+              >
+                Cancel
+              </Text>
+            </Modal>
+          </Portal>
         </View>
-      </View>
-      {/* Tabs */}
-      <Tab.Navigator
-        screenOptions={{
-          tabBarStyle: {
-            backgroundColor:
-              currentUser.existingUser?.settings?.theme === "dark"
-                ? "#171a1d"
-                : "#f9fafa",
-          },
-        }}
-      >
-        <Tab.Group>
-          {days?.map((val, idx) => (
-            <Tab.Screen
-              key={idx}
-              name={names[val]}
-              options={{
-                tabBarLabelStyle: {
-                  fontSize: 9,
-                  color:
-                    currentUser.existingUser?.settings?.theme === "dark"
-                      ? "#f9fafa"
-                      : "#33373d",
-                  fontWeight: "600",
-                },
-              }}
-            >
-              {(prop) => <WorkoutTab name={val} />}
-            </Tab.Screen>
-          ))}
-        </Tab.Group>
-      </Tab.Navigator>
-
-      <Snackbar
-        visible={trainingDayDelete}
-        onDismiss={onDismissTrainingSnackBar}
-      >
-        Removed Training Day
-      </Snackbar>
-      <Snackbar visible={IsSharable} onDismiss={() => setIsSharable(false)}>
-        Workout Shared!
-      </Snackbar>
-
-      <Portal>
-        <Modal
-          visible={visible}
-          contentContainerStyle={{ backgroundColor: "white", padding: 20 }}
-          onDismiss={() => setVisible(!visible)}
-        >
-          <Text style={{ padding: 10 }}>Delete Workout?</Text>
-          <Button
-            style={{
-              width: 220,
-              marginBottom: 20,
-              marginTop: 20,
-              backgroundColor: "#211a23",
-              borderRadius: 15,
-              marginLeft: "auto",
-              marginRight: "auto",
-              height: 40,
-              justifyContent: "center",
-            }}
-            onPress={() => {
-              setVisible(!visible);
-              handleDeleteWorkout(selectValue);
-            }}
-            mode="elevated"
-            textColor="white"
-          >
-            Delete
-          </Button>
-          <Text
-            onPress={() => {
-              setVisible(!visible);
-            }}
-            style={{ textAlign: "center" }}
-          >
-            Cancel
-          </Text>
-        </Modal>
-      </Portal>
-
-      <Portal>
-        <Modal
-          visible={sharableVisible}
-          contentContainerStyle={{ backgroundColor: "white", padding: 20 }}
-          onDismiss={() => setsharableVisible(!sharableVisible)}
-        >
-          <Text style={{ padding: 10, fontWeight: "500" }}>Share Workout?</Text>
-          <Button
-            style={{
-              width: 220,
-              marginBottom: 20,
-              marginTop: 20,
-              backgroundColor: "#211a23",
-              borderRadius: 15,
-              marginLeft: "auto",
-              marginRight: "auto",
-              height: 40,
-              justifyContent: "center",
-            }}
-            disabled={sharableIsLoading}
-            onPress={() => {
-              dispatch(
-                createSharable({
-                  sharable_name: detailInfo.name,
-                  created_by: currentUser?.existingUser?._id,
-                  regiment_difficulty: "beginner",
-                  regiment_id: detailInfo._id,
-                })
-              ).then((val) => {
-                if (val.meta.requestStatus === "fulfilled") {
-                  setIsSharable(true);
-                  setsharableVisible(!sharableVisible);
-                  dispatch(getSingleRegiment(route.params.regimentId));
-                  dispatch(getAllTrainingDays(route.params.regimentId));
-                }
-                if (val.meta.requestStatus === "rejected") {
-                  console.log("val", val);
-                  alert(
-                    "Error! workout could not be shared. Please try again!"
-                  );
-                }
-              });
-            }}
-            mode="elevated"
-            textColor="white"
-          >
-            {sharableIsLoading ? (
-              <ActivityIndicator size="small" color={"white"} />
-            ) : (
-              "Sharable"
-            )}
-          </Button>
-          <Text
-            onPress={() => {
-              setsharableVisible(!sharableVisible);
-            }}
-            style={{ textAlign: "center" }}
-          >
-            Cancel
-          </Text>
-        </Modal>
-      </Portal>
+      )}
     </>
   );
 }

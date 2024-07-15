@@ -135,9 +135,7 @@ export const authSlice = createSlice({
           existingUser: action.payload.existingUser,
           userToken: action.payload.userToken,
         };
-        console.log("NEW STATE", state.currentUser);
         if (Platform.OS === "ios" || Platform.OS === "android") {
-          console.log("CurrentUser", currentUser);
           setData("isLoggedIn", state.isLoggedIn);
 
           setData("currentUser", {
@@ -180,7 +178,6 @@ export const authSlice = createSlice({
       .addCase(RegisterUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        console.log(action.payload);
         state.message = action.payload.message;
       })
       .addCase(RegisterUser.rejected, (state, action: any) => {

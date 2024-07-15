@@ -13,7 +13,6 @@ const getAllTrainingDays = async (regimentId: string, token: string) => {
 };
 
 const createTrainingDays = async (obj, token: string) => {
-  console.log("token", token);
   const response = await axios.post(
     `${EXPO_PUBLIC_APP_URL}api/workouts/trainingdays/${obj.regimentId}`,
     obj,
@@ -32,7 +31,6 @@ const updateTrainingDays = async (obj, token: string) => {
 };
 
 const deleteTrainingDays = async (obj: any, token: string) => {
-  console.log("data", obj, token);
   const response = await axios.put(
     `${EXPO_PUBLIC_APP_URL}api/workouts/trainingdays/${obj.regimentId}/delete`,
     obj,

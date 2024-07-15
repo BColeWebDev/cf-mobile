@@ -15,7 +15,6 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 const Sharable = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { data } = useSelector((state: RootState) => state.sharables);
-  console.log("DATA", data);
   const [query, setquery] = useState("");
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {

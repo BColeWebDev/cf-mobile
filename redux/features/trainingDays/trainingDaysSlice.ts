@@ -23,7 +23,6 @@ export const createTrainingDays = createAsyncThunk<
 >(`training_days/create`, async (obj: ITrainingDaysForm, thunkAPI) => {
   try {
     const { currentUser } = thunkAPI.getState().auth;
-    console.log("cU", currentUser);
     const response = await trainingDaysServices.createTrainingDays(
       obj,
       currentUser.userToken
@@ -58,7 +57,6 @@ export const updateTrainingDays = createAsyncThunk<
 >(`training_days/update`, async (obj: ITrainingDays, thunkAPI) => {
   try {
     const { currentUser } = thunkAPI.getState().auth;
-    console.log("obj", obj);
     const response = await trainingDaysServices.updateTrainingDays(
       obj,
       currentUser.userToken
@@ -133,7 +131,6 @@ export const trainingDaysSlice = createSlice({
       })
       // when data hase been received
       .addCase(deleteTrainingDays.fulfilled, (state, action) => {
-        console.log("payload", action.payload.routines);
         state.isLoading = false;
         state.isSuccess = true;
         state.data = action.payload;

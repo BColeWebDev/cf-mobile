@@ -12,7 +12,7 @@ import { RootState } from "../../../../redux/app/store";
 export default function ProfileScreen({ navigation }) {
   const { currentUser } = useSelector((state: RootState) => state.auth);
 
-  console.log("current", currentUser);
+  console.log("current", currentUser.existingUser?.avatarProfile);
 
   const style = StyleSheet.create({
     container: {
@@ -72,6 +72,7 @@ export default function ProfileScreen({ navigation }) {
             onPress={() => navigation.navigate("Settings")}
           />
         </View>
+
         <View
           style={{
             display: "flex",
@@ -119,7 +120,7 @@ export default function ProfileScreen({ navigation }) {
           </View>
         </View>
 
-        {/*  Profile */}
+        {/* Profile */}
         <View
           style={{
             flexDirection: "column",
@@ -153,7 +154,7 @@ export default function ProfileScreen({ navigation }) {
               marginRight: "auto",
             }}
           >
-            {!currentUser?.crown_member ? (
+            {currentUser?.crown_member ? (
               <FontAwesome5
                 name="crown"
                 size={24}
@@ -161,12 +162,16 @@ export default function ProfileScreen({ navigation }) {
                 onPress={() => alert("Crown Member")}
               />
             ) : null}
+
             {currentUser?.existingUser?.avatarProfile === "" ? (
               <Ionicons
                 name="person-circle-sharp"
-                size={50}
-                color="#4f1d9e"
-                onPress={() => console.log("testing")}
+                size={95}
+                color={
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d"
+                }
               />
             ) : (
               //  Profile Image
@@ -213,30 +218,32 @@ export default function ProfileScreen({ navigation }) {
               </Text>
             </View>
           </View>
-          <Button
-            style={{
-              marginBottom: 20,
-              marginTop: 20,
-              backgroundColor: "black",
-              borderRadius: 15,
-              marginLeft: "auto",
-              marginRight: "auto",
-              justifyContent: "flex-end",
-            }}
-            mode="elevated"
-            textColor="white"
-            onPress={() => alert("Testing")}
-          >
-            <Text style={{ color: "white", marginTop: 2, marginRight: 2 }}>
-              Upgrade to Crown Pro
-            </Text>
-            <FontAwesome5
-              name="crown"
-              size={12}
-              color="orange"
-              onPress={() => alert("Crown Member")}
-            />
-          </Button>
+          {/* {currentUser?.crown_member ? (
+            <Button
+              style={{
+                marginBottom: 20,
+                marginTop: 20,
+                backgroundColor: "black",
+                borderRadius: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+                justifyContent: "flex-end",
+              }}
+              mode="elevated"
+              textColor="white"
+              onPress={() => alert("Testing")}
+            >
+              <Text style={{ color: "white", marginTop: 2, marginRight: 2 }}>
+                Upgrade to Crown Pro
+              </Text>
+              <FontAwesome5
+                name="crown"
+                size={12}
+                color="orange"
+                onPress={() => alert("Crown Member")}
+              />
+            </Button>
+          ) : null} */}
         </View>
       </View>
     </SafeAreaView>
