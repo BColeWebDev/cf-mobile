@@ -2,7 +2,6 @@ import { View, StyleSheet, TouchableHighlight } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Button, RadioButton, TextInput, Text } from "react-native-paper";
 import { useDispatch } from "react-redux";
-import { createNewWorkout } from "../../../../../../redux/features/workouts/workoutSlice";
 import {
   createTrainingDays,
   getAllTrainingDays,
@@ -18,6 +17,7 @@ const CreateWorkout = ({ route, navigation }) => {
   const { days, isLoading } = useSelector(
     (state: RootState) => state.trainingDays
   );
+  const { currentUser } = useSelector((state: RootState) => state.auth);
   const initialState = {
     name: "",
     description: "",
@@ -42,25 +42,6 @@ const CreateWorkout = ({ route, navigation }) => {
     }
   }, [route]);
   const [formData, setformData] = useState(initialState);
-  const style = StyleSheet.create({
-    textInput: {
-      width: "90%",
-      backgroundColor: "",
-      paddingLeft: 10,
-      marginVertical: 10,
-      marginLeft: "auto",
-      marginRight: "auto",
-      borderRadius: 1000,
-    },
-    container: {
-      flex: 1,
-      padding: 20,
-      backgroundColor: "#121212",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "white",
-    },
-  });
 
   const handleCreateWorkout = () => {
     dispatch(
@@ -103,26 +84,23 @@ const CreateWorkout = ({ route, navigation }) => {
   }
 
   return (
-    <View>
-      <Text
-        style={{
-          marginVertical: 25,
-          textAlign: "center",
-          fontWeight: "600",
-          color: "black",
-        }}
-        variant="headlineMedium"
-      >
-        {route?.params?.val?.name !== undefined
-          ? "Update Workout"
-          : "Create a New Workout"}
-      </Text>
+    <View
+      style={{
+        flex: 1,
+        padding: 20,
+
+        backgroundColor:
+          currentUser.existingUser?.settings?.theme === "dark"
+            ? "#171a1d"
+            : "#f9fafa",
+      }}
+    >
       <TextInput
         placeholder="Name"
         textColor="black"
         mode={"outlined"}
         style={{
-          marginBottom: 25,
+          marginVertical: 25,
           marginHorizontal: 20,
           backgroundColor: "white",
         }}
@@ -184,7 +162,14 @@ const CreateWorkout = ({ route, navigation }) => {
                 justifyContent: "space-between",
               }}
             >
-              <Text style={{ fontSize: 20, color: "black", fontWeight: "500" }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "black",
+                  fontWeight: "500",
+                  textTransform: "capitalize",
+                }}
+              >
                 {val}
               </Text>
               <RadioButton

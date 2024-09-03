@@ -1,11 +1,27 @@
 import { RootState } from "./../../app/store";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import regimentsService from "./regimentsService";
-import { IRegiments } from "../interfaces/IRegiments";
+import { IRegiments, RootRegiment } from "../interfaces/IRegiments";
 
-const initialState = {
+interface Root {
+  data: RootRegiment[];
+  detailInfo: RootRegiment;
+  isError: boolean;
+  isSuccess: boolean;
+  isLoading: boolean;
+}
+const initialState: Root = {
   data: [],
-  detailInfo: {},
+  detailInfo: {
+    _id: "",
+    name: "",
+    description: "",
+    userid: "",
+    routines: [],
+    isCompleted: false,
+    days: [],
+    sharables: false,
+  },
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -74,7 +90,15 @@ export const getSingleRegiment = createAsyncThunk<
 export const regimentsSlice = createSlice({
   name: "regiments",
   initialState,
-  reducers: {},
+  reducers: {
+    resetDetails: (state) => {
+      // Reset to inital state
+      state.detailInfo = initialState.detailInfo;
+      state.isError = initialState.isError;
+      state.isLoading = initialState.isLoading;
+      state.isSuccess = initialState.isSuccess;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getRegiments.pending, (state) => {
@@ -106,5 +130,6 @@ export const regimentsSlice = createSlice({
       });
   },
 });
+export const { resetDetails } = regimentsSlice.actions;
 
 export default regimentsSlice.reducer;

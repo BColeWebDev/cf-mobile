@@ -1,18 +1,14 @@
-import { View, StyleSheet, Platform, Image } from "react-native";
-import { Text, Surface, Button } from "react-native-paper";
-import React, { useEffect } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { View, StyleSheet } from "react-native";
+import { Text } from "react-native-paper";
+import React from "react";
+
 import { Feather } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RootState } from "../../../../redux/app/store";
 
 export default function ProfileScreen({ navigation }) {
   const { currentUser } = useSelector((state: RootState) => state.auth);
-
-  console.log("current", currentUser.existingUser?.avatarProfile);
 
   const style = StyleSheet.create({
     container: {
@@ -50,7 +46,7 @@ export default function ProfileScreen({ navigation }) {
         >
           <Text
             style={{
-              fontSize: 36,
+              fontSize: 28,
               textAlign: "center",
               color:
                 currentUser.existingUser?.settings?.theme === "dark"
@@ -128,7 +124,7 @@ export default function ProfileScreen({ navigation }) {
             alignItems: "center",
             width: "100%",
             height: "70%",
-            marginTop: 25,
+            marginTop: 15,
           }}
         >
           <View
@@ -149,21 +145,21 @@ export default function ProfileScreen({ navigation }) {
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 10,
-              width: "85%",
+              width: "100%",
               marginLeft: "auto",
               marginRight: "auto",
             }}
           >
-            {currentUser?.crown_member ? (
+            {/* {currentUser?.existingUser?.crown_member ? (
               <FontAwesome5
                 name="crown"
                 size={24}
                 color="orange"
                 onPress={() => alert("Crown Member")}
               />
-            ) : null}
-
-            {currentUser?.existingUser?.avatarProfile === "" ? (
+            ) : null} */}
+            {/* Image Profile */}
+            {/* {currentUser?.existingUser?.avatarProfile === "" ? (
               <Ionicons
                 name="person-circle-sharp"
                 size={95}
@@ -174,7 +170,7 @@ export default function ProfileScreen({ navigation }) {
                 }
               />
             ) : (
-              //  Profile Image
+         
 
               <Image
                 style={{
@@ -191,7 +187,7 @@ export default function ProfileScreen({ navigation }) {
                   uri: `data:image/png;base64,${currentUser?.existingUser?.avatarProfile}`,
                 }}
               />
-            )}
+            )} */}
             <Text
               style={{
                 color:

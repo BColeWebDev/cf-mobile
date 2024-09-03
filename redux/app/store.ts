@@ -4,6 +4,7 @@ import workoutReducer from "../features/workouts/workoutSlice";
 import regimentReducer from "../features/regiments/regimentsSlice";
 import trainingDaysReducer from "../features/trainingDays/trainingDaysSlice";
 import sharableReducer from "../features/sharables/sharableSlice";
+import nutritionReducer from "../features/nutritions/nutritionSlice";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -11,6 +12,7 @@ export const store = configureStore({
     workouts: workoutReducer,
     regiments: regimentReducer,
     trainingDays: trainingDaysReducer,
+    nutritions: nutritionReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

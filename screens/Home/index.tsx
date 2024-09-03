@@ -58,7 +58,7 @@ export default function Home({ navigation }) {
             ),
           }}
         />
-        {/* <Tab.Screen
+        <Tab.Screen
           name="Nutritions"
           component={NutritionScreen}
           options={{
@@ -78,7 +78,7 @@ export default function Home({ navigation }) {
               </View>
             ),
           }}
-        /> */}
+        />
         <Tab.Screen
           name="My Regiments"
           component={RegimentScreen}
@@ -118,7 +118,7 @@ export default function Home({ navigation }) {
             ),
           }}
         />
-        {/* <Tab.Screen
+        <Tab.Screen
           name="Community Workouts"
           component={SharableScreen}
           options={{
@@ -140,7 +140,7 @@ export default function Home({ navigation }) {
               </View>
             ),
           }}
-        /> */}
+        />
       </Tab.Navigator>
     </>
   );

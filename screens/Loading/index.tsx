@@ -13,25 +13,17 @@ export default function Loading({ color }) {
       height: "80%",
       backgroundColor:
         currentUser.existingUser?.settings?.theme === "dark"
-          ? "#f9fafa"
-          : "#1d2025",
+          ? "#171a1d"
+          : "#f9fafa",
       alignItems: "center",
       justifyContent: "center",
-      color:
-        currentUser.existingUser?.settings?.theme === "dark"
-          ? "#f9fafa"
-          : "#33373d",
       width: "100%",
     },
   });
 
   return (
     <View style={style.container}>
-      {/* <CfIcon width={150} height={100}/> */}
-      <ActivityIndicator
-        size="large"
-        color={color === undefined ? "black" : color}
-      />
+      <ActivityIndicator size="large" color={color} />
     </View>
   );
 }

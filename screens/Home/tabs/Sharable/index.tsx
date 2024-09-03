@@ -73,7 +73,7 @@ const Sharable = ({ navigation }) => {
           size={24}
           color="black"
         />
-        <FontAwesome name="sort-amount-asc" size={24} color="black" />
+        <FontAwesome name="sort-amount-desc" size={24} color="black" />
       </View>
       {data.length === 0 ? (
         <>

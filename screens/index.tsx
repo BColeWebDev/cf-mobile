@@ -123,6 +123,7 @@ export default function AllScreens() {
                     ? "#171a1d"
                     : "#f9fafa",
               },
+              headerBackTitleVisible: false,
               headerTitleStyle: {
                 fontSize: 25,
               },

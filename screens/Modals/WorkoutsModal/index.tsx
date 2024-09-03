@@ -95,10 +95,20 @@ const WorkoutsModal = ({ navigation }) => {
             <Chip
               style={{
                 margin: 5,
-                borderColor: "black",
-                backgroundColor: "white",
+                borderColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "black"
+                    : "red",
+                backgroundColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "white"
+                    : "red",
               }}
-              selectedColor="black"
+              selectedColor={
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "black"
+                  : "red"
+              }
               selected={filters.equipment.includes(val) ? true : false}
               onPress={() => {
                 if (filters.equipment.includes(val)) {
@@ -137,10 +147,20 @@ const WorkoutsModal = ({ navigation }) => {
             <Chip
               style={{
                 margin: 5,
-                borderColor: "black",
-                backgroundColor: "white",
+                borderColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "black"
+                    : "red",
+                backgroundColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "white"
+                    : "red",
               }}
-              selectedColor="black"
+              selectedColor={
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "black"
+                  : "red"
+              }
               selected={filters.bodyTarget.includes(val) ? true : false}
               onPress={() => {
                 if (filters.bodyTarget.includes(val)) {
@@ -179,8 +199,14 @@ const WorkoutsModal = ({ navigation }) => {
             <Chip
               style={{
                 margin: 5,
-                borderColor: "black",
-                backgroundColor: "white",
+                borderColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "black"
+                    : "red",
+                backgroundColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "white"
+                    : "red",
               }}
               selectedColor="black"
               selected={filters.muscle.includes(val) ? true : false}

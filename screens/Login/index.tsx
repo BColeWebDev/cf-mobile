@@ -105,6 +105,7 @@ export default function Login({ navigation }) {
                 backgroundColor: "white",
                 color: "black",
               }}
+              placeholderTextColor={"black"}
               activeOutlineColor="black"
               selectionColor={"black"}
               cursorColor={"black"}
@@ -117,6 +118,7 @@ export default function Login({ navigation }) {
 
             <TextInput
               placeholder="Password"
+              placeholderTextColor={"black"}
               textColor="black"
               mode={"outlined"}
               style={{

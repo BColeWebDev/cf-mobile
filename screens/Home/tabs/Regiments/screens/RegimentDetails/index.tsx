@@ -6,7 +6,6 @@ import {
   Image,
   RefreshControl,
   TouchableHighlight,
-  Platform,
   TouchableWithoutFeedback,
 } from "react-native";
 import React, { useEffect, useState, useCallback } from "react";
@@ -14,7 +13,6 @@ import {
   ActivityIndicator,
   Button,
   Chip,
-  List,
   Modal,
   Portal,
   Snackbar,
@@ -32,10 +30,8 @@ import {
   deleteWorkout,
   updateWorkout,
 } from "../../../../../../redux/features/workouts/workoutSlice";
-import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 import Loading from "../../../../../Loading";
 import { createSharable } from "../../../../../../redux/features/sharables/sharableSlice";
 let names = {
@@ -48,12 +44,6 @@ let names = {
   sunday: "Sun",
 };
 
-/* TODO:
-  Delete Regiment
-  Delete Workouts
-  Update Regiment (Name & Description)
-  Update Workout (Replace)
-  */
 const Tab = createMaterialTopTabNavigator();
 
 export default function RegimentDetails({ route, navigation }) {
@@ -84,7 +74,6 @@ export default function RegimentDetails({ route, navigation }) {
   });
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setisLoading] = useState<boolean>(false);
-  const [image, setImage] = useState<any>();
   const [visible, setVisible] = useState(false);
   const [sharableVisible, setsharableVisible] = useState(false);
   const [selectValue, setselectValue] = useState();
@@ -99,7 +88,6 @@ export default function RegimentDetails({ route, navigation }) {
     if (route.params.regimentId !== undefined) {
       dispatch(getSingleRegiment(route.params.regimentId));
       dispatch(getAllTrainingDays(route.params.regimentId));
-      // fetchImage();
     }
     setisLoading(false);
   }, [route]);
@@ -152,16 +140,32 @@ export default function RegimentDetails({ route, navigation }) {
           }
         >
           {data.routines.length === 0 ? (
-            <Text
+            <View
               style={{
-                textAlign: "center",
-                marginTop: "50%",
-                color: "white",
-                fontSize: 30,
+                backgroundColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#33373d"
+                    : "#f1f1f2",
+                borderColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "black"
+                    : "#f9fafa",
+                borderWidth:
+                  currentUser.existingUser?.settings?.theme === "dark" ? 0 : 2,
+                borderRadius: 10,
               }}
             >
-              No Training Days
-            </Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  marginTop: "50%",
+                  color: "white",
+                  fontSize: 30,
+                }}
+              >
+                No Training Days
+              </Text>
+            </View>
           ) : (
             data.routines.map((val, idx) => {
               if (val.day === name) {
@@ -169,6 +173,7 @@ export default function RegimentDetails({ route, navigation }) {
                   <View
                     key={idx}
                     style={{
+                      margin: 0,
                       backgroundColor:
                         currentUser.existingUser?.settings?.theme === "dark"
                           ? "#33373d"
@@ -189,9 +194,8 @@ export default function RegimentDetails({ route, navigation }) {
                       underlayColor={"white"}
                       style={{
                         borderRadius: 8,
-                        padding: 10,
-                        marginTop: 20,
-                        width: "95%",
+                        padding: 0,
+                        width: "100%",
                         marginLeft: "auto",
                         marginRight: "auto",
                       }}
@@ -203,14 +207,15 @@ export default function RegimentDetails({ route, navigation }) {
                             flexDirection: "row",
                             justifyContent: "space-between",
                             alignItems: "flex-start",
+                            margin: 10,
                           }}
                         >
                           <View
                             style={{
                               display: "flex",
-                              flexDirection: "column",
+                              flexDirection: "column-reverse",
                               justifyContent: "space-between",
-                              alignItems: "center",
+                              alignItems: "flex-start",
                             }}
                           >
                             <Text
@@ -221,20 +226,43 @@ export default function RegimentDetails({ route, navigation }) {
                                   "dark"
                                     ? "#f9fafa"
                                     : "#33373d",
-                                fontSize: 15,
-                                fontWeight: "500",
-                                marginBottom: 10,
+                                fontWeight: "200",
+                                textAlign: "center",
                               }}
                             >
-                              {val.name}
+                              {val.description}
                             </Text>
-                            <Chip
-                              mode={"flat"}
-                              selectedColor="white"
-                              style={{ backgroundColor: "black" }}
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                              }}
                             >
-                              {val.day}
-                            </Chip>
+                              <Text
+                                style={{
+                                  textTransform: "capitalize",
+                                  color:
+                                    currentUser.existingUser?.settings
+                                      ?.theme === "dark"
+                                      ? "#f9fafa"
+                                      : "#33373d",
+                                  fontSize: 20,
+                                  fontWeight: "500",
+                                  marginVertical: 10,
+                                  marginRight: 10,
+                                }}
+                              >
+                                {val.name}
+                              </Text>
+                              <Chip
+                                mode={"flat"}
+                                selectedColor="white"
+                                style={{ backgroundColor: "black" }}
+                              >
+                                {val.day}
+                              </Chip>
+                            </View>
                           </View>
                           <View
                             style={{
@@ -244,28 +272,31 @@ export default function RegimentDetails({ route, navigation }) {
                               alignItems: "center",
                             }}
                           >
-                            <AntDesign
-                              style={{ marginRight: 30 }}
-                              onPress={() => {
-                                // Update Workout
-                                navigation.navigate("Create Workout", {
-                                  val,
-                                  index: idx,
-                                  regimentId: detailInfo._id,
-                                });
-                              }}
-                              name="edit"
-                              size={24}
-                              color={
-                                currentUser.existingUser?.settings?.theme ===
-                                "dark"
-                                  ? "#f9fafa"
-                                  : "#33373d"
-                              }
-                            />
+                            {days.length < 7 && (
+                              <AntDesign
+                                style={{ marginRight: 30 }}
+                                onPress={() => {
+                                  // Update Workout
+                                  navigation.navigate("Create Workout", {
+                                    val,
+                                    index: idx,
+                                    regimentId: detailInfo._id,
+                                  });
+                                }}
+                                name="edit"
+                                size={20}
+                                color={
+                                  currentUser.existingUser?.settings?.theme ===
+                                  "dark"
+                                    ? "#f9fafa"
+                                    : "#33373d"
+                                }
+                              />
+                            )}
+
                             <AntDesign
                               name="delete"
-                              size={24}
+                              size={20}
                               color={
                                 currentUser.existingUser?.settings?.theme ===
                                 "dark"
@@ -276,34 +307,17 @@ export default function RegimentDetails({ route, navigation }) {
                             />
                           </View>
                         </View>
-
-                        <Text
-                          style={{
-                            textTransform: "capitalize",
-                            color:
-                              currentUser.existingUser?.settings?.theme ===
-                              "dark"
-                                ? "#f9fafa"
-                                : "#33373d",
-                            fontWeight: "200",
-                            textAlign: "center",
-                            marginVertical: 15,
-                          }}
-                        >
-                          {val.description}
-                        </Text>
                       </View>
                     </TouchableHighlight>
 
                     <Button
                       style={{
-                        width: 220,
                         marginBottom: 20,
                         marginTop: 20,
-                        backgroundColor: "#211a23",
+                        backgroundColor: "black",
                         borderRadius: 15,
-                        marginLeft: "auto",
-                        marginRight: "auto",
+                        marginLeft: 20,
+                        marginRight: 20,
                         height: 40,
                         justifyContent: "center",
                       }}
@@ -320,21 +334,6 @@ export default function RegimentDetails({ route, navigation }) {
                     >
                       Add Workout
                     </Button>
-                    {/* <Image
-                        source={{
-                          uri: image,
-                        }}
-                        style={{
-                          width: "100%",
-                          height: 180,
-                          padding: 10,
-                          resizeMode: "contain",
-                          marginTop: 10,
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                          marginBottom: 10,
-                        }}
-                      /> */}
 
                     <View
                       style={{
@@ -385,7 +384,7 @@ export default function RegimentDetails({ route, navigation }) {
                       ) : null}
                     </View>
 
-                    <View style={{ marginHorizontal: 20, marginBottom: 70 }}>
+                    <View style={{ marginHorizontal: 20, marginBottom: 0 }}>
                       {val.workouts.map((value, idx) => (
                         <View
                           key={idx}
@@ -592,7 +591,10 @@ export default function RegimentDetails({ route, navigation }) {
             display: "flex",
             padding: 10,
             width: "100%",
-            backgroundColor: "#110c11",
+            backgroundColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#171a1d"
+                : "#f9fafa",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
@@ -605,13 +607,12 @@ export default function RegimentDetails({ route, navigation }) {
               justifyContent: "space-between",
               alignItems: "center",
               width: "100%",
-              marginBottom: 20,
             }}
           >
             <Text
               style={{
                 textAlign: "left",
-                fontSize: 10,
+                fontSize: 16,
                 fontWeight: "200",
                 color:
                   currentUser.existingUser?.settings?.theme === "dark"
@@ -627,7 +628,7 @@ export default function RegimentDetails({ route, navigation }) {
             >
               <AntDesign
                 name="pluscircleo"
-                size={24}
+                size={20}
                 color={
                   currentUser.existingUser?.settings?.theme === "dark"
                     ? "#f9fafa"
@@ -641,9 +642,33 @@ export default function RegimentDetails({ route, navigation }) {
             </View>
           </View>
         </View>
-        <Text style={{ textAlign: "center", marginTop: 50 }}>
-          No Training Days
-        </Text>
+        <View
+          style={{
+            height: "100%",
+            backgroundColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#171a1d"
+                : "#f9fafa",
+            borderWidth:
+              currentUser.existingUser?.settings?.theme === "dark" ? 0 : 2,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+              marginBottom: 200,
+              color:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#33373d",
+              fontSize: 20,
+            }}
+          >
+            No Training Days
+          </Text>
+        </View>
       </View>
     );
   }
@@ -652,10 +677,92 @@ export default function RegimentDetails({ route, navigation }) {
     <>
       {isLoading ? (
         <View style={{ flex: 1 }}>
-          <Loading color={"red"} />
+          <Loading
+            color={
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#1d2025"
+            }
+          />
         </View>
       ) : (
         <View style={{ flex: 1 }}>
+          <View
+            style={{
+              marginHorizontal: "auto",
+              display: "flex",
+              padding: 10,
+              width: "100%",
+              backgroundColor:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#171a1d"
+                  : "#f9fafa",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "left",
+                  fontSize: 16,
+                  fontWeight: "200",
+                  color:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#1d2025",
+                }}
+              >
+                {detailInfo.description}
+              </Text>
+
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginRight: 10,
+                }}
+              >
+                {/* Add New Workout */}
+                {days.length < 7 && (
+                  <AntDesign
+                    name="pluscircleo"
+                    size={20}
+                    color={
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d"
+                    }
+                    style={{ marginRight: 20 }}
+                    onPress={() =>
+                      navigation.navigate("Create Workout", detailInfo._id)
+                    }
+                  />
+                )}
+                {/* Share Workout Plan */}
+                {days.length === 7 && (
+                  <AntDesign
+                    name="sharealt"
+                    size={20}
+                    color={
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d"
+                    }
+                  />
+                )}
+              </View>
+            </View>
+          </View>
           {/* Tabs */}
           <Tab.Navigator
             screenOptions={{
@@ -689,6 +796,7 @@ export default function RegimentDetails({ route, navigation }) {
               ))}
             </Tab.Group>
           </Tab.Navigator>
+          {/* SnackBars */}
           <Snackbar
             visible={trainingDayDelete}
             onDismiss={onDismissTrainingSnackBar}

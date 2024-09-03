@@ -109,7 +109,7 @@ const RegimentScreen = ({ navigation }) => {
             ) : (
               data?.map((val, idx) => (
                 <TouchableHighlight
-                  style={{ marginBottom: 20, marginHorizontal: 30 }}
+                  style={{ marginBottom: 20, marginHorizontal: 10 }}
                   key={idx}
                   onLongPress={() => {
                     setselected(val);
@@ -137,7 +137,7 @@ const RegimentScreen = ({ navigation }) => {
                           ? 0
                           : 2,
                       borderRadius: 10,
-                      padding: 10,
+                      padding: 15,
                     }}
                   >
                     <View
@@ -170,17 +170,7 @@ const RegimentScreen = ({ navigation }) => {
                         }}
                       ></Badge> */}
                     </View>
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        color:
-                          currentUser.existingUser?.settings?.theme === "dark"
-                            ? "#f9fafa"
-                            : "#33373d",
-                      }}
-                    >
-                      {val.description}
-                    </Text>
+
                     <View
                       style={{
                         display: "flex",

@@ -2,31 +2,22 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   Image,
   TouchableHighlight,
   RefreshControl,
   FlatList,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, TextInput } from "react-native-paper";
+import { Button, Searchbar, TextInput } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {
-  createNewWorkout,
-  getAllBodyTargets,
-  getAllEquipment,
-  getAllWorkouts,
-} from "../../../../redux/features/workouts/workoutSlice";
+import { getAllWorkouts } from "../../../../redux/features/workouts/workoutSlice";
 import Loading from "../../../Loading";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { IWorkouts } from "../../../../redux/features/interfaces/IWorkouts";
-import { getAllTrainingDays } from "../../../../redux/features/trainingDays/trainingDaysSlice";
 import { AppDispatch } from "../../../../redux/app/store";
-import { Snackbar } from "react-native-paper";
 
-// TODO: Infinite Scrolling
 // Rename workouts to exercises for less confusion
 const WorkoutsScreen = ({ route, navigation }) => {
   const [input, setinput] = useState("");
@@ -47,6 +38,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
           : "#f9fafa",
       alignItems: "center",
       display: "flex",
+      width: "100%",
     },
   });
   const [refreshing, setRefreshing] = useState(false);
@@ -90,38 +82,6 @@ const WorkoutsScreen = ({ route, navigation }) => {
     );
   }
 
-  const handleCreateWorkout = (val) => {
-    navigation.navigate("WorkoutsDetails", {
-      workoutId: "",
-      sets: [{ sets: 1, reps: 10, weight: 0 }],
-      restTime: "0",
-      routineId: route.params.routineId,
-      regimentId: route.params.regimentId,
-      wId: val.id,
-      btnName: "Add To Regiment",
-      action: (value) => {
-        dispatch(
-          createNewWorkout({
-            routineId: route.params.routineId,
-            regimentId: route.params.regimentId,
-            ...val,
-            muscle_target: val.target,
-            sets: value.sets,
-          })
-        ).then((val) => {
-          if (val.meta.requestStatus === "fulfilled") {
-            dispatch(getAllTrainingDays(route.params.regimentId));
-            navigation.navigate("Regiment Details", { route });
-            setselectedWorkouts(undefined);
-          }
-          if (val.meta.requestStatus === "rejected") {
-            setselectedWorkouts(undefined);
-          }
-        });
-      },
-    });
-  };
-
   // Clear all existing filters
   const clearFilters = () => {
     dispatch(
@@ -135,6 +95,23 @@ const WorkoutsScreen = ({ route, navigation }) => {
   };
   return (
     <SafeAreaView style={style.container}>
+      <Text
+        style={{
+          fontSize: 28,
+          color:
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#f9fafa"
+              : "#1d2025",
+          marginTop: 30,
+          textAlign: "left",
+          marginVertical: 20,
+          marginLeft: 40,
+
+          width: "100%",
+        }}
+      >
+        Workouts
+      </Text>
       <View
         style={{
           width: "100%",
@@ -144,22 +121,19 @@ const WorkoutsScreen = ({ route, navigation }) => {
         }}
       >
         {/* Search */}
-        <TextInput
+        <Searchbar
           style={{
             margin: 15,
             backgroundColor: "white",
             width: "90%",
             marginRight: "auto",
           }}
-          textColor="black"
-          mode={"flat"}
-          activeOutlineColor="black"
+          value={input}
           selectionColor={"black"}
           cursorColor={"black"}
           placeholder="Search"
-          right={<AntDesign name="search1" size={24} color="black" />}
           onChangeText={(text) => setinput(text)}
-        ></TextInput>
+        />
       </View>
       {/* Workouts */}
       <View
@@ -200,13 +174,12 @@ const WorkoutsScreen = ({ route, navigation }) => {
         style={{
           flexDirection: "row-reverse",
           justifyContent: "space-between",
-          padding: 20,
           alignItems: "center",
           width: "100%",
         }}
       >
         {/* Show filter if less than all workouts */}
-        {workouts?.items.length < 1324 ? (
+        {workouts?.items?.length < 1324 ? (
           <Button
             style={{
               width: "100%",
@@ -253,10 +226,16 @@ const WorkoutsScreen = ({ route, navigation }) => {
               marginHorizontal: 20,
             }}
             onPress={() => {
-              if (route.params === undefined) {
-                return;
-              }
-              handleCreateWorkout(item);
+              navigation.navigate("WorkoutsDetails", {
+                workoutId: "",
+                sets: [{ sets: 1, reps: 10, weight: 0 }],
+                restTime: "0",
+                routineId: "",
+                regimentId: "",
+                wId: item.id,
+                btnName: "",
+                action: (value) => {},
+              });
             }}
           >
             <View

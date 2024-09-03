@@ -1,15 +1,11 @@
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../../../../../redux/app/store";
-import { updateWorkout } from "../../../../../../../../redux/features/workouts/workoutSlice";
 import Loading from "../../../../../../../Loading";
 import { Button, TextInput } from "react-native-paper";
 import { ISets } from "../../../../../../../../redux/features/interfaces/ISets";
 
-const WorkoutDetails = ({ route, navigation }) => {
-  const dispatch = useDispatch<AppDispatch>();
+const WorkoutDetails = ({ route }) => {
   const { workouts, isLoading } = useSelector((state: any) => state.workouts);
   const { currentUser } = useSelector((state: any) => state.auth);
   const [Data, setData] = useState<ISets>({});
@@ -58,10 +54,19 @@ const WorkoutDetails = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView
+      style={{
+        backgroundColor:
+          currentUser.existingUser?.settings?.theme === "dark"
+            ? "#171a1d"
+            : "#f9fafa",
+      }}
+    >
       <View
         style={{
           display: "flex",
+          flex: 1,
+          height: "100%",
           justifyContent: "center",
           alignItems: "center",
           backgroundColor:
@@ -75,14 +80,17 @@ const WorkoutDetails = ({ route, navigation }) => {
             uri: workoutsDetails?.gifUrl,
           }}
           style={{
-            width: 80,
-            height: 80,
-            backgroundColor: "red",
-            borderRadius: 50,
+            width: "100%",
+            height: 350,
+            margin: 10,
+            backgroundColor: "black",
+            borderRadius: 10,
           }}
         />
+
         <Text
           style={{
+            fontSize: 25,
             color:
               currentUser.existingUser?.settings?.theme === "dark"
                 ? "#f9fafa"
@@ -92,8 +100,10 @@ const WorkoutDetails = ({ route, navigation }) => {
         >
           {workoutsDetails?.name}
         </Text>
+
         <Text
           style={{
+            fontSize: 20,
             color:
               currentUser.existingUser?.settings?.theme === "dark"
                 ? "#f9fafa"
@@ -103,6 +113,7 @@ const WorkoutDetails = ({ route, navigation }) => {
         >
           {workoutsDetails?.bodyPart}
         </Text>
+
         <View style={{ marginVertical: 20, marginHorizontal: 10 }}>
           <Text
             style={{
@@ -133,6 +144,7 @@ const WorkoutDetails = ({ route, navigation }) => {
             </Text>
           ))}
         </View>
+
         <View style={{ marginVertical: 30, width: "100%" }}>
           <Text
             style={{
@@ -166,90 +178,9 @@ const WorkoutDetails = ({ route, navigation }) => {
           ))}
 
           {/* Sets, Reps & Weights/Kg */}
-          <View>
-            <View style={style.setsContainer}>
-              <Text
-                style={{
-                  color:
-                    currentUser.existingUser?.settings?.theme === "dark"
-                      ? "#f9fafa"
-                      : "#1d2025",
-                }}
-              >
-                Sets:{" "}
-              </Text>
-              <TextInput
-                textColor="black"
-                mode={"outlined"}
-                style={{ marginHorizontal: 20, backgroundColor: "white" }}
-                selectionColor={"black"}
-                cursorColor={"#F9C000"}
-                value={String(Data?.sets)}
-                onChangeText={(e) =>
-                  setData((prevState) => ({ ...prevState, sets: Number(e) }))
-                }
-                keyboardType={"number-pad"}
-              />
-            </View>
-            <View style={style.setsContainer}>
-              <Text
-                style={{
-                  color:
-                    currentUser.existingUser?.settings?.theme === "dark"
-                      ? "#f9fafa"
-                      : "#1d2025",
-                }}
-              >
-                Reps:{" "}
-              </Text>
-              <TextInput
-                textColor="black"
-                mode={"outlined"}
-                style={{ marginHorizontal: 20, backgroundColor: "white" }}
-                selectionColor={"black"}
-                cursorColor={"#F9C000"}
-                value={String(Data?.reps)}
-                keyboardType={"number-pad"}
-                onChangeText={(e) =>
-                  setData((prevState) => ({ ...prevState, reps: Number(e) }))
-                }
-              />
-            </View>
-            <View style={style.setsContainer}>
-              <Text
-                style={{
-                  color:
-                    currentUser.existingUser?.settings?.theme === "dark"
-                      ? "#f9fafa"
-                      : "#1d2025",
-                }}
-              >
-                Weight:{" "}
-              </Text>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row-reverse",
-                  alignItems: "center",
-                }}
-              >
-                {/* KG or Ibs depending on user setting */}
-                <TextInput
-                  textColor="black"
-                  mode={"outlined"}
-                  style={{ marginHorizontal: 20, backgroundColor: "white" }}
-                  selectionColor={"black"}
-                  cursorColor={"#F9C000"}
-                  textAlign="center"
-                  value={String(Data?.weight)}
-                  onChangeText={(e) =>
-                    setData((prevState) => ({
-                      ...prevState,
-                      weight: Number(e),
-                    }))
-                  }
-                  keyboardType={"number-pad"}
-                />
+          {route.params.regimentId !== "" ? (
+            <View>
+              <View style={style.setsContainer}>
                 <Text
                   style={{
                     color:
@@ -258,31 +189,122 @@ const WorkoutDetails = ({ route, navigation }) => {
                         : "#1d2025",
                   }}
                 >
-                  {currentUser?.existingUser?.settings.weight}
+                  Sets:{" "}
                 </Text>
+                <TextInput
+                  textColor="black"
+                  mode={"outlined"}
+                  style={{ marginHorizontal: 20, backgroundColor: "white" }}
+                  selectionColor={"black"}
+                  cursorColor={"#F9C000"}
+                  value={String(Data?.sets)}
+                  onChangeText={(e) =>
+                    setData((prevState) => ({
+                      ...prevState,
+                      sets: Number(e),
+                    }))
+                  }
+                  keyboardType={"number-pad"}
+                />
+              </View>
+              <View style={style.setsContainer}>
+                <Text
+                  style={{
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#1d2025",
+                  }}
+                >
+                  Reps:{" "}
+                </Text>
+                <TextInput
+                  textColor="black"
+                  mode={"outlined"}
+                  style={{ marginHorizontal: 20, backgroundColor: "white" }}
+                  selectionColor={"black"}
+                  cursorColor={"#F9C000"}
+                  value={String(Data?.reps)}
+                  keyboardType={"number-pad"}
+                  onChangeText={(e) =>
+                    setData((prevState) => ({
+                      ...prevState,
+                      reps: Number(e),
+                    }))
+                  }
+                />
+              </View>
+              <View style={style.setsContainer}>
+                <Text
+                  style={{
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#1d2025",
+                  }}
+                >
+                  Weight:{" "}
+                </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row-reverse",
+                    alignItems: "center",
+                  }}
+                >
+                  {/* KG or Ibs depending on user setting */}
+                  <TextInput
+                    textColor="black"
+                    mode={"outlined"}
+                    style={{ marginHorizontal: 20, backgroundColor: "white" }}
+                    selectionColor={"black"}
+                    cursorColor={"#F9C000"}
+                    textAlign="center"
+                    value={String(Data?.weight)}
+                    onChangeText={(e) =>
+                      setData((prevState) => ({
+                        ...prevState,
+                        weight: Number(e),
+                      }))
+                    }
+                    keyboardType={"number-pad"}
+                  />
+                  <Text
+                    style={{
+                      color:
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? "#f9fafa"
+                          : "#1d2025",
+                    }}
+                  >
+                    {currentUser?.existingUser?.settings.weight}
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
-        </View>
+          ) : null}
 
-        <Button
-          style={{
-            width: 220,
-            marginBottom: 20,
-            marginTop: 20,
-            backgroundColor: "#211a23",
-            borderRadius: 15,
-            marginLeft: "auto",
-            marginRight: "auto",
-            height: 40,
-            justifyContent: "center",
-          }}
-          mode="elevated"
-          textColor="white"
-          onPress={() => handleUpdateWorkout()}
-        >
-          {route.params.btnName}
-        </Button>
+          {route.params.regimentId !== "" ? (
+            <Button
+              style={{
+                width: 220,
+                marginBottom: 20,
+                marginTop: 20,
+                backgroundColor: "#211a23",
+                borderRadius: 15,
+                marginLeft: "auto",
+                marginRight: "auto",
+                height: 40,
+                justifyContent: "center",
+              }}
+              mode="elevated"
+              textColor="white"
+              onPress={() => handleUpdateWorkout()}
+            >
+              {route.params.btnName}
+            </Button>
+          ) : null}
+        </View>
       </View>
     </ScrollView>
   );
