@@ -22,6 +22,7 @@ import { setCurrentUser } from "../redux/features/auth/authSlice";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import SharableDetails from "./Home/tabs/Sharable/screens/SharableDetails";
+import NutritionDetails from "./Home/tabs/Nutritions/screens/NutritionDetails";
 const Stack = createNativeStackNavigator();
 
 export default function AllScreens() {
@@ -236,6 +237,46 @@ export default function AllScreens() {
                       ? "#171a1d"
                       : "#f9fafa",
                 },
+              }}
+            />
+            <Stack.Screen
+              name="NutritionDetails"
+              component={NutritionDetails}
+              options={({ route }) => {
+                return {
+                  headerTitle: () => {
+                    return (
+                      <>
+                        <View>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: "600",
+                              textTransform: "capitalize",
+                              color:
+                                currentUser.existingUser?.settings?.theme ===
+                                "dark"
+                                  ? "#f9fafa"
+                                  : "#33373d",
+                            }}
+                          >
+                            {route.params["name"]}
+                          </Text>
+                        </View>
+                      </>
+                    );
+                  },
+                  headerTintColor:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#33373d",
+                  headerStyle: {
+                    backgroundColor:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#171a1d"
+                        : "#f9fafa",
+                  },
+                };
               }}
             />
           </Stack.Group>
