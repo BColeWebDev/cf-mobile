@@ -23,6 +23,7 @@ import { View } from "react-native";
 import { Text } from "react-native-paper";
 import SharableDetails from "./Home/tabs/Sharable/screens/SharableDetails";
 import NutritionDetails from "./Home/tabs/Nutritions/screens/NutritionDetails";
+import SignUpExperience from "./SignUp/screens/SignUpExperience";
 const Stack = createNativeStackNavigator();
 
 export default function AllScreens() {
@@ -51,6 +52,11 @@ export default function AllScreens() {
           <Stack.Screen
             name="SignUpEmailScreens"
             component={SignUpEmailScreens}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUpExperience"
+            component={SignUpExperience}
             options={{ headerShown: false }}
           />
           <Stack.Screen

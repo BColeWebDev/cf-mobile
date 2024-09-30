@@ -19,7 +19,6 @@ export default function App() {
     <Provider store={store}>
       <PaperProvider>
         <Wrapper />
-        {/* <StatusBar /> */}
         <AllScreens />
       </PaperProvider>
     </Provider>

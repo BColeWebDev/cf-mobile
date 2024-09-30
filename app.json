@@ -6,7 +6,7 @@
     "icon": "./assets/images/icon.png",
     "splash": {
       "image": "./assets/images/splash.png",
-      "backgroundColor": "#FFFFFF"
+      "backgroundColor": "#171a1d"
     },
     "ios": {
       "bundleIdentifier": "com.bcolewebdev.crownfitness"
@@ -14,7 +14,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#171a1d"
       },
       "package": "com.bcolewebdev.crownfitness"
     },

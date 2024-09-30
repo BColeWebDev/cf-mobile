@@ -37,9 +37,11 @@ export default function NutritionDetails({ route }) {
           borderRadius: 10,
         }}
       />
-      <Text>{JSON.stringify(route.params.data)}</Text>
+      <Text style={{ color: "white", marginVertical: 10 }}>
+        {JSON.stringify(route.params.data)}
+      </Text>
 
-      <Text>{JSON.stringify(details)}</Text>
+      <Text style={{ color: "white" }}>{JSON.stringify(details)}</Text>
     </ScrollView>
   );
 }

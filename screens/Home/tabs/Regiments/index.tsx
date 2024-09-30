@@ -48,11 +48,14 @@ const RegimentScreen = ({ navigation }) => {
 
   const style = StyleSheet.create({
     container: {
+      height: "100%",
       flex: 1,
+      justifyContent: "flex-start",
       backgroundColor:
         currentUser.existingUser?.settings?.theme === "dark"
           ? "#171a1d"
           : "#f9fafa",
+      alignItems: "center",
     },
   });
 
@@ -64,28 +67,29 @@ const RegimentScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={style.container}>
+      <Text
+        style={{
+          fontSize: 19,
+          width: "100%",
+          marginLeft: 50,
+          color:
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#f9fafa"
+              : "#33373d",
+          fontWeight: "500",
+          textAlign: "left",
+          marginVertical: 20,
+        }}
+      >
+        Regiments
+      </Text>
+
       <ScrollView
         style={{ width: "100%", height: "100%" }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <Text
-          style={{
-            fontSize: 28,
-            color:
-              currentUser.existingUser?.settings?.theme === "dark"
-                ? "#f9fafa"
-                : "#1d2025",
-            marginTop: 30,
-            textAlign: "left",
-            marginVertical: 20,
-            marginHorizontal: 16,
-          }}
-        >
-          Regiments
-        </Text>
-
         <View style={{ width: "100%" }}>
           <ScrollView style={{ height: "100%" }}>
             {data?.length === 0 ? (
@@ -154,7 +158,7 @@ const RegimentScreen = ({ navigation }) => {
                             currentUser.existingUser?.settings?.theme === "dark"
                               ? "#f9fafa"
                               : "#1d2025",
-                          fontSize: 20,
+                          fontSize: 14,
                           textTransform: "capitalize",
                           textAlign: "center",
                           marginBottom: 15,
@@ -163,12 +167,12 @@ const RegimentScreen = ({ navigation }) => {
                         {val.name}
                       </Text>
                       {/* <Badge
-                        style={{
-                          marginRight: 5,
-                          marginBottom: 15,
-                          backgroundColor: val.isCompleted ? "white" : "red",
-                        }}
-                      ></Badge> */}
+                          style={{
+                            marginRight: 5,
+                            marginBottom: 15,
+                            backgroundColor: val.isCompleted ? "white" : "red",
+                          }}
+                        ></Badge> */}
                     </View>
 
                     <View
@@ -344,7 +348,7 @@ const RegimentScreen = ({ navigation }) => {
         style={{
           position: "absolute",
 
-          backgroundColor: "black",
+          backgroundColor: "#4f1d9e",
           right: 10,
           bottom: 90,
         }}

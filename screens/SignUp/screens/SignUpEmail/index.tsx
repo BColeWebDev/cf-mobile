@@ -1,4 +1,10 @@
-import { View, StyleSheet, ScrollView, PixelRatio } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  PixelRatio,
+  SafeAreaView,
+} from "react-native";
 import {
   Button,
   TextInput,
@@ -50,9 +56,9 @@ const SignUpEmail = ({ navigation }) => {
     container: {
       flex: 1,
       height: "100%",
-      backgroundColor: "white",
-      alignItems: "flex-end",
-      justifyContent: "center",
+      backgroundColor: "#171a1d",
+      alignItems: "center",
+      justifyContent: "space-between",
       color: "white",
     },
   });
@@ -68,152 +74,114 @@ const SignUpEmail = ({ navigation }) => {
     }
   }, [isSuccess]);
   return (
-    <View style={style.container}>
-      <ScrollView
+    <SafeAreaView style={style.container}>
+      <Text
         style={{
-          width: "100%",
-          height: "100%",
+          fontSize: 25,
+          color: "#f9fafa",
+          textAlign: "left",
+          width: "95%",
+          marginVertical: 30,
+        }}
+      >
+        Sign Up - Email
+      </Text>
+      <View
+        style={{
+          width: "95%",
           flex: 1,
+          justifyContent: "flex-start",
+          alignItems: "center",
           marginLeft: "auto",
           marginRight: "auto",
         }}
       >
-        <View
+        <TextInput
+          placeholder="Email"
+          textColor="black"
+          mode={"outlined"}
           style={{
-            display: "flex",
-            alignItems: "flex-start",
-            marginTop: 110,
+            marginBottom: 25,
+            marginHorizontal: 20,
+            backgroundColor: "white",
+            width: "100%",
           }}
-        >
-          {/* <CfIcon/> */}
-          <Text
-            style={{
-              fontSize: 25,
-              marginLeft: 20,
-
-              color: "black",
-            }}
-          >
-            Sign Up - Email
-          </Text>
-        </View>
-        <View
+          activeOutlineColor="black"
+          selectionColor={"black"}
+          cursorColor={"black"}
+          onChangeText={(text) => {
+            dispatch(setRegister({ value: text, name: "email" }));
+          }}
+          keyboardType={"email-address"}
+        />
+        <TextInput
+          placeholder="Password"
+          textColor="black"
+          mode={"outlined"}
           style={{
-            width: "90%",
-            flex: 1,
-            marginTop: "10%",
-            justifyContent: "center",
-            alignItems: "center",
+            marginBottom: 25,
+            marginHorizontal: 20,
+            backgroundColor: "white",
+            width: "100%",
+          }}
+          activeOutlineColor="black"
+          selectionColor={"black"}
+          cursorColor={"black"}
+          onChangeText={(text) => {
+            dispatch(setRegister({ value: text, name: "password" }));
+          }}
+          right={
+            <TextInput.Icon
+              icon={"eye"}
+              onPress={() => setshowPassword(!showPassword)}
+            />
+          }
+          secureTextEntry={!showPassword ? true : false}
+          keyboardType={"default"}
+        />
+      </View>
+      {register.email !== "" && register.password !== "" ? (
+        <Button
+          disabled={isLoading}
+          style={{
+            marginTop: PixelRatio.get() * 5,
+            width: 220,
             marginLeft: "auto",
             marginRight: "auto",
           }}
-        >
-          <TextInput
-            placeholder="Email"
-            textColor="black"
-            mode={"outlined"}
-            style={{
-              marginBottom: 25,
-              marginHorizontal: 20,
-              backgroundColor: "white",
-              width: "100%",
-            }}
-            activeOutlineColor="black"
-            selectionColor={"black"}
-            cursorColor={"black"}
-            onChangeText={(text) => {
-              // setregister(prevState => ({...prevState,first_name:text}))
-              dispatch(setRegister({ value: text, name: "email" }));
-            }}
-            keyboardType={"email-address"}
-          />
-          <TextInput
-            placeholder="Password"
-            textColor="black"
-            mode={"outlined"}
-            style={{
-              marginBottom: 25,
-              marginHorizontal: 20,
-              backgroundColor: "white",
-              width: "100%",
-            }}
-            activeOutlineColor="black"
-            selectionColor={"black"}
-            cursorColor={"black"}
-            onChangeText={(text) => {
-              // setregister(prevState => ({...prevState,first_name:text}))
-              dispatch(setRegister({ value: text, name: "password" }));
-            }}
-            right={
-              <TextInput.Icon
-                icon={"eye"}
-                onPress={() => setshowPassword(!showPassword)}
-              />
+          buttonColor="black"
+          textColor="white"
+          mode={"outlined"}
+          onPress={() => {
+            if (isLoading) {
+              return;
             }
-            secureTextEntry={!showPassword ? true : false}
-            keyboardType={"default"}
-          />
-        </View>
-        {register.email !== "" && register.password !== "" ? (
-          <Button
-            disabled={isLoading}
-            style={{
-              marginTop: PixelRatio.get() * 5,
-              width: 220,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            buttonColor="black"
-            textColor="white"
-            mode={"outlined"}
-            onPress={() => {
-              if (isLoading) {
-                return;
-              }
-              handleRegister();
-            }}
-          >
-            {isLoading ? <ActivityIndicator color="gray" /> : "Submit"}
-          </Button>
-        ) : null}
-        {!isLoading ? (
-          <Button
-            style={{
-              marginTop: PixelRatio.get() * 5,
-              width: 220,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            buttonColor="black"
-            textColor="white"
-            mode="elevated"
-            onPress={() => navigation.navigate("SignUpNamesScreens")}
-          >
-            Back to Login
-          </Button>
-        ) : null}
-      </ScrollView>
-      <Snackbar
-        visible={visible}
-        duration={3000}
-        elevation={3}
-        style={{ backgroundColor: "red" }}
-        onDismiss={() => setvisible(!visible)}
-      >
-        Testing
-      </Snackbar>
-      {isSuccess ? (
-        <Snackbar
-          visible={successvisible}
-          duration={3000}
-          elevation={3}
-          style={{ backgroundColor: "green" }}
-          onDismiss={() => setSuccessVisible(!successvisible)}
+            handleRegister();
+          }}
         >
-          {message}
-        </Snackbar>
+          {isLoading ? <ActivityIndicator color="gray" /> : "Submit"}
+        </Button>
       ) : null}
-    </View>
+      <Button
+        buttonColor="white"
+        textColor="black"
+        style={{
+          width: 220,
+          marginBottom: 20,
+          borderRadius: 15,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 40,
+          justifyContent: "center",
+        }}
+        mode="elevated"
+        onPress={() => {
+          navigation.goBack();
+        }}
+      >
+        Back
+      </Button>
+    </SafeAreaView>
   );
 };
 

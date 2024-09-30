@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import CFIcon from "../../assets/images/CF-Icon-Black.svg";
 import ChadIcon from "../../assets/images/Chad.svg";
 import MuscleIcon from "../../assets/images/Muscle-Icon.svg";
-import PlatIcon from "../../assets/images/Plate.svg";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useSelector } from "react-redux";
 import ProfileScreen from "./tabs/Profile";
@@ -58,7 +57,7 @@ export default function Home({ navigation }) {
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Nutritions"
           component={NutritionScreen}
           options={{
@@ -78,7 +77,7 @@ export default function Home({ navigation }) {
               </View>
             ),
           }}
-        />
+        /> */}
         <Tab.Screen
           name="My Regiments"
           component={RegimentScreen}

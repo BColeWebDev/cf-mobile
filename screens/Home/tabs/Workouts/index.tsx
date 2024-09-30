@@ -97,17 +97,16 @@ const WorkoutsScreen = ({ route, navigation }) => {
     <SafeAreaView style={style.container}>
       <Text
         style={{
-          fontSize: 28,
+          fontSize: 19,
+          width: "100%",
+          marginLeft: 50,
           color:
             currentUser.existingUser?.settings?.theme === "dark"
               ? "#f9fafa"
-              : "#1d2025",
-          marginTop: 30,
+              : "#33373d",
+          fontWeight: "500",
           textAlign: "left",
           marginVertical: 20,
-          marginLeft: 40,
-
-          width: "100%",
         }}
       >
         Workouts
@@ -125,7 +124,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
           style={{
             margin: 15,
             backgroundColor: "white",
-            width: "90%",
+            width: "95%",
             marginRight: "auto",
           }}
           value={input}
