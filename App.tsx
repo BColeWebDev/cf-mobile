@@ -6,6 +6,7 @@ import { Animated, StatusBar } from "react-native";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 import { useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   let animatedValue = new Animated.Value(0);
@@ -26,7 +27,7 @@ export default function App() {
 }
 const Wrapper = () => {
   const { currentUser } = useSelector((state: RootState) => state.auth);
-  return (
+  return currentUser.isLoggedIn ? (
     <StatusBar
       translucent={true}
       backgroundColor={
@@ -39,6 +40,12 @@ const Wrapper = () => {
           ? "light-content"
           : "default"
       }
+    />
+  ) : (
+    <StatusBar
+      translucent={true}
+      backgroundColor={"#171a1d"}
+      barStyle={"light-content"}
     />
   );
 };

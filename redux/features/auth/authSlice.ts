@@ -3,27 +3,16 @@ import authService from "./authServices";
 import { IAuth, IRegister } from "../interfaces/IAuth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
+import { getData, setData } from "../helpers/loginHandler";
 
 let currentUser;
 let isLoggedIn;
 
-const getData = async () => {
-  if (Platform.OS === "ios" || Platform.OS === "android") {
-    let res1 = await AsyncStorage.getItem("currentUser");
-
-    currentUser = JSON.parse(res1);
-
-    let res2 = await AsyncStorage.getItem("isLoggedIn");
-    isLoggedIn = JSON.parse(res2);
-  }
-};
-const setData = async (str, value) => {
-  const jsonValue = JSON.stringify(value);
-  await AsyncStorage.setItem(str, jsonValue);
-};
-
 if (Platform.OS === "ios" || Platform.OS === "android") {
-  getData();
+  getData().then((value) => {
+    currentUser = value.currentUser;
+    isLoggedIn = value.isLoggedIn;
+  });
 }
 
 if (Platform.OS === "web") {
@@ -32,7 +21,6 @@ if (Platform.OS === "web") {
 }
 
 const initialState = {
-  // token: token ? token : null,
   register: {
     first_name: "",
     last_name: "",

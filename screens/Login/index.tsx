@@ -19,11 +19,12 @@ import {
   getAllMuscleTargets,
   getAllWorkouts,
 } from "../../redux/features/workouts/workoutSlice";
-import dumbellImg from "../../assets/images/dumbell-rack.jpg";
+import AntDesign from "@expo/vector-icons/AntDesign";
 export default function Login({ navigation }) {
   const dispatch = useDispatch<AppDispatch>();
   const [login, setlogin] = useState({ email: "", password: "" });
   const [showPassword, setshowPassword] = useState(false);
+  const [errors, setErrors] = useState({ email: "", password: "" });
 
   const style = StyleSheet.create({
     inputStyles: {
@@ -38,14 +39,15 @@ export default function Login({ navigation }) {
     },
   });
 
+  // Handle User Login
   const handleLoginUser = () => {
+    navigation.navigate("Loading");
     dispatch(
       LoginUser({
         email: login.email.trim().toLowerCase(),
         password: login.password,
       })
     ).then((val) => {
-      console.log(val);
       if (val.meta.requestStatus === "fulfilled") {
         navigation.navigate("Home");
         setlogin({ email: "", password: "" });
@@ -71,6 +73,32 @@ export default function Login({ navigation }) {
         alert("Invalid Credentials email or password is incorrect");
       }
     });
+  };
+
+  const validateForm = () => {
+    let errors = {
+      email: "",
+      password: "",
+    };
+
+    // Validate email field
+    if (!login.email) {
+      errors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(login.email)) {
+      errors.email = "Email is invalid.";
+    }
+
+    // Validate password field
+    if (!login.password) {
+      errors.password = "Password is required.";
+    } else if (login.password.length < 8) {
+      errors.password = "Password must be at least 8 characters.";
+    }
+
+    // Set the errors and update form validity
+    setErrors(errors);
+
+    return errors.email === "" && errors.password === "";
   };
 
   return (
@@ -108,39 +136,49 @@ export default function Login({ navigation }) {
             <View style={{ width: "100%", marginBottom: 30 }}>
               <TextInput
                 placeholder="Email"
-                textColor="black"
-                mode={"outlined"}
+                placeholderTextColor={"white"}
+                textColor="white"
+                mode={"flat"}
                 style={{
-                  marginBottom: 25,
+                  marginBottom: 10,
                   marginHorizontal: 20,
-                  backgroundColor: "white",
-                  color: "black",
+                  backgroundColor: "#1d2025",
+                  color: "white",
                 }}
-                placeholderTextColor={"black"}
-                activeOutlineColor="black"
-                selectionColor={"black"}
-                cursorColor={"black"}
+                selectionColor={"white"}
+                cursorColor={"white"}
+                activeUnderlineColor="white"
                 onChangeText={(text) =>
                   setlogin((prevState) => ({ ...prevState, email: text }))
                 }
                 keyboardType={"email-address"}
                 defaultValue={login.email}
+                error={errors.email !== ""}
               />
-
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 12,
+                  marginHorizontal: 20,
+                  marginBottom: 10,
+                }}
+              >
+                {errors.email}
+              </Text>
               <TextInput
                 placeholder="Password"
-                placeholderTextColor={"black"}
-                textColor="black"
-                mode={"outlined"}
+                placeholderTextColor={"white"}
+                textColor="white"
+                mode={"flat"}
                 style={{
-                  marginBottom: 25,
+                  marginBottom: 10,
                   marginHorizontal: 20,
-                  backgroundColor: "white",
-                  color: "black",
+                  backgroundColor: "#1d2025",
+                  color: "white",
                 }}
-                activeOutlineColor="black"
-                selectionColor={"black"}
-                cursorColor={"black"}
+                selectionColor={"white"}
+                cursorColor={"white"}
+                activeUnderlineColor="white"
                 defaultValue={login.password}
                 onChangeText={(text) =>
                   setlogin((prevState) => ({ ...prevState, password: text }))
@@ -148,13 +186,23 @@ export default function Login({ navigation }) {
                 right={
                   <TextInput.Icon
                     icon={"eye"}
-                    color={"black"}
+                    color={showPassword ? "white" : "#d3d4d5"}
                     onPress={() => setshowPassword(!showPassword)}
                   />
                 }
                 secureTextEntry={!showPassword ? true : false}
                 keyboardType={"default"}
+                error={errors.password !== ""}
               />
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 12,
+                  marginHorizontal: 20,
+                }}
+              >
+                {errors.password}
+              </Text>
             </View>
             <View
               style={{
@@ -167,11 +215,10 @@ export default function Login({ navigation }) {
                 buttonColor="#d2a01e"
                 textColor="#1d2025"
                 onPress={() => {
-                  handleLoginUser();
-                  navigation.navigate("Loading");
+                  validateForm() ? handleLoginUser() : null;
                 }}
                 style={{
-                  width: 220,
+                  width: "90%",
                   marginBottom: 20,
                   borderRadius: 15,
                   height: 40,
@@ -193,7 +240,7 @@ export default function Login({ navigation }) {
                 buttonColor="white"
                 textColor="black"
                 style={{
-                  width: 220,
+                  width: "90%",
                   marginBottom: 20,
                   borderRadius: 15,
                   height: 40,
@@ -205,6 +252,33 @@ export default function Login({ navigation }) {
                 }}
               >
                 Sign Up
+              </Button>
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "white",
+                  marginBottom: 20,
+                }}
+              >
+                OR
+              </Text>
+              <Button
+                buttonColor="white"
+                textColor="black"
+                style={{
+                  width: "90%",
+                  marginBottom: 20,
+                  borderRadius: 15,
+                  height: 40,
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+                mode="elevated"
+              >
+                <AntDesign name="google" size={20} color="black" />
+                <Text style={{ marginLeft: 10, marginBottom: 10 }}>
+                  Sign In with Google
+                </Text>
               </Button>
             </View>
           </View>

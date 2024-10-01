@@ -1,5 +1,5 @@
 import { View, StyleSheet, ScrollView, SafeAreaView } from "react-native";
-import { Button, RadioButton, TextInput, Text } from "react-native-paper";
+import { Button, TextInput, Text } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { AppDispatch, RootState } from "../../../../redux/app/store";
@@ -57,19 +57,19 @@ const SignUpNamesScreens = ({ navigation }) => {
       >
         <TextInput
           placeholder="First Name"
-          textColor="black"
-          mode={"outlined"}
+          placeholderTextColor={"white"}
+          textColor="white"
+          mode={"flat"}
           style={{
-            marginBottom: 25,
+            marginBottom: 10,
             width: "100%",
             marginHorizontal: 20,
-            backgroundColor: "white",
-            color: "black",
+            backgroundColor: "#1d2025",
+            color: "white",
           }}
-          placeholderTextColor={"black"}
-          activeOutlineColor="black"
-          selectionColor={"black"}
-          cursorColor={"black"}
+          selectionColor={"white"}
+          cursorColor={"white"}
+          activeUnderlineColor="white"
           defaultValue={register.first_name}
           onChangeText={(text) => {
             dispatch(setRegister({ value: text, name: "first_name" }));
@@ -77,88 +77,42 @@ const SignUpNamesScreens = ({ navigation }) => {
         />
         <TextInput
           placeholder="Last Name"
-          textColor="black"
-          mode={"outlined"}
+          placeholderTextColor={"white"}
+          textColor="white"
+          mode={"flat"}
           style={{
-            marginBottom: 25,
+            marginBottom: 10,
             width: "100%",
             marginHorizontal: 20,
-            backgroundColor: "white",
-            color: "black",
+            backgroundColor: "#1d2025",
+            color: "white",
           }}
-          placeholderTextColor={"black"}
-          activeOutlineColor="black"
-          selectionColor={"black"}
-          cursorColor={"black"}
+          selectionColor={"white"}
+          cursorColor={"white"}
+          activeUnderlineColor="white"
           onChangeText={(text) => {
             dispatch(setRegister({ value: text, name: "last_name" }));
           }}
         />
-
-        <TextInput
-          placeholder="Age"
-          textColor="black"
-          mode={"outlined"}
-          style={{
-            marginBottom: 25,
-            width: "100%",
-            marginHorizontal: 20,
-            backgroundColor: "white",
-            color: "black",
-          }}
-          placeholderTextColor={"black"}
-          activeOutlineColor="black"
-          selectionColor={"black"}
-          cursorColor={"black"}
-          keyboardType={"number-pad"}
-          onChangeText={(text) => {
-            dispatch(setRegister({ value: text, name: "age" }));
-          }}
-          maxLength={2}
-        />
-
-        <TextInput
-          placeholder="Bio"
-          textColor="black"
-          mode={"outlined"}
-          style={{
-            marginBottom: 25,
-            width: "100%",
-            marginHorizontal: 20,
-            backgroundColor: "white",
-            color: "black",
-          }}
-          placeholderTextColor={"black"}
-          activeOutlineColor="black"
-          selectionColor={"black"}
-          cursorColor={"black"}
-          onChangeText={(text) => {
-            dispatch(setRegister({ value: text, name: "bio" }));
-          }}
-        />
       </View>
-      {register.first_name !== "" &&
-      register.last_name !== "" &&
-      register.age !== "" &&
-      register.bio !== "" ? (
-        <Button
-          buttonColor="black"
-          textColor="white"
-          style={{
-            width: 220,
-            marginBottom: 20,
-            borderRadius: 15,
-            marginLeft: "auto",
-            marginRight: "auto",
-            height: 40,
-            justifyContent: "center",
-          }}
-          mode="elevated"
-          onPress={() => navigation.navigate("SignUpExperience")}
-        >
-          Next
-        </Button>
-      ) : null}
+
+      <Button
+        buttonColor="black"
+        textColor="white"
+        style={{
+          width: 220,
+          marginBottom: 20,
+          borderRadius: 15,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: 40,
+          justifyContent: "center",
+        }}
+        mode="elevated"
+        onPress={() => navigation.navigate("SignUpAge")}
+      >
+        Next
+      </Button>
 
       <Button
         buttonColor="white"

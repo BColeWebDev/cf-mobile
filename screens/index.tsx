@@ -15,23 +15,23 @@ import SignUpNamesScreens from "./SignUp/screens/SignUpNames";
 import SignUpEmailScreens from "./SignUp/screens/SignUpEmail";
 import CreateWorkout from "./Home/tabs/Regiments/screens/Create Workout";
 import WorkoutDetails from "./Home/tabs/Regiments/screens/RegimentDetails/screens/WorkoutsDetails";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AppDispatch, RootState } from "../redux/app/store";
-import { setCurrentUser } from "../redux/features/auth/authSlice";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import SharableDetails from "./Home/tabs/Sharable/screens/SharableDetails";
 import NutritionDetails from "./Home/tabs/Nutritions/screens/NutritionDetails";
 import SignUpExperience from "./SignUp/screens/SignUpExperience";
+import SignUpAge from "./SignUp/screens/SignUpAge";
+import SignUpWeight from "./SignUp/screens/SignUpWeight";
+import SignUpTargetWeight from "./SignUp/screens/SignUpTargetWeight";
+import SignUpHeight from "./SignUp/screens/SignUpHeight";
+import SignUpGender from "./SignUp/screens/SignUpGender";
 const Stack = createNativeStackNavigator();
 
 export default function AllScreens() {
-  const { currentUser, isLoggedIn } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { currentUser } = useSelector((state: RootState) => state.auth);
   const { detailInfo } = useSelector((state: any) => state.regiments);
-  const dispatch = useDispatch<AppDispatch>();
   const [initRoute, setinitRoute] = useState<string>("Login");
 
   if (initRoute !== "") {
@@ -43,10 +43,20 @@ export default function AllScreens() {
             component={Loading}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
+          />
 
           <Stack.Screen
             name="SignUpNamesScreens"
             component={SignUpNamesScreens}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUpGender"
+            component={SignUpGender}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -60,8 +70,23 @@ export default function AllScreens() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Login"
-            component={Login}
+            name="SignUpAge"
+            component={SignUpAge}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUpWeight"
+            component={SignUpWeight}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUpTargetWeight"
+            component={SignUpTargetWeight}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUpHeight"
+            component={SignUpHeight}
             options={{ headerShown: false }}
           />
           <Stack.Screen
