@@ -27,6 +27,8 @@ import SignUpWeight from "./SignUp/screens/SignUpWeight";
 import SignUpTargetWeight from "./SignUp/screens/SignUpTargetWeight";
 import SignUpHeight from "./SignUp/screens/SignUpHeight";
 import SignUpGender from "./SignUp/screens/SignUpGender";
+import SignUpEquipment from "./SignUp/screens/SignUpEquipment";
+import SignUpPrimaryGoal from "./SignUp/screens/SignUpPrimaryGoal";
 const Stack = createNativeStackNavigator();
 
 export default function AllScreens() {
@@ -48,7 +50,11 @@ export default function AllScreens() {
             component={Login}
             options={{ headerShown: false }}
           />
-
+          <Stack.Screen
+            name="SignUpEquipment"
+            component={SignUpEquipment}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="SignUpNamesScreens"
             component={SignUpNamesScreens}
@@ -82,6 +88,11 @@ export default function AllScreens() {
           <Stack.Screen
             name="SignUpTargetWeight"
             component={SignUpTargetWeight}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUpPrimaryGoal"
+            component={SignUpPrimaryGoal}
             options={{ headerShown: false }}
           />
           <Stack.Screen

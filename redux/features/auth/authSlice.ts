@@ -65,12 +65,29 @@ export const RegisterUser = createAsyncThunk(
     }
   }
 );
+
 export const UserSettings = createAsyncThunk(
   `auth/UserSettings`,
   async (obj: Object, thunkAPI) => {
     try {
       const { auth }: any = thunkAPI.getState();
       const response = await authService.Settings(
+        obj,
+        auth.currentUser.userToken
+      );
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const UploadAvatar = createAsyncThunk(
+  `auth/Upload Avatar`,
+  async (obj: Object, thunkAPI) => {
+    try {
+      const { auth }: any = thunkAPI.getState();
+      const response = await authService.UploadAvatar(
         obj,
         auth.currentUser.userToken
       );

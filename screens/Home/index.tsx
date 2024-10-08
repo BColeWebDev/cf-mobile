@@ -1,5 +1,5 @@
-import { Platform, SafeAreaView, View } from "react-native";
-import React, { useEffect } from "react";
+import { Image, Platform, Pressable, View } from "react-native";
+import React, { useState } from "react";
 import CFIcon from "../../assets/images/CF-Icon-Black.svg";
 import ChadIcon from "../../assets/images/Chad.svg";
 import MuscleIcon from "../../assets/images/Muscle-Icon.svg";
@@ -8,21 +8,34 @@ import { useSelector } from "react-redux";
 import ProfileScreen from "./tabs/Profile";
 import RegimentScreen from "./tabs/Regiments";
 import WorkoutsScreen from "./tabs/Workouts";
-import NutritionScreen from "./tabs/Nutritions";
 import { Text } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SharableScreen from "./tabs/Sharable";
 import { AntDesign } from "@expo/vector-icons";
 import { AppDispatch, RootState } from "../../redux/app/store";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
-import { setCurrentUser } from "../../redux/features/auth/authSlice";
+import { Feather } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 export default function Home({ navigation }) {
-  const { isError, isLoading, isLoggedIn, currentUser } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { currentUser } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
   const Tab = createBottomTabNavigator();
+
+  const [image, setImage] = useState<string | null>(null);
+
+  const handleChoosePhoto = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   return (
     <>
@@ -42,7 +55,113 @@ export default function Home({ navigation }) {
           name="Profile"
           component={ProfileScreen}
           options={{
-            headerShown: false,
+            headerTitle: () => {
+              return (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  {currentUser?.existingUser?.crown_member ? (
+                    <FontAwesome5
+                      name="crown"
+                      size={24}
+                      color="orange"
+                      onPress={() => alert("Crown Member")}
+                    />
+                  ) : null}
+                  {/* Image Profile */}
+                  {currentUser?.existingUser?.avatarProfile === "" ? (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Pressable onLongPress={handleChoosePhoto}>
+                        <Ionicons
+                          name="person-circle-sharp"
+                          size={40}
+                          color={
+                            currentUser.existingUser?.settings?.theme === "dark"
+                              ? "#f9fafa"
+                              : "#33373d"
+                          }
+                        />
+                      </Pressable>
+                      <Text style={{ color: "white", marginLeft: 8 }}>
+                        {currentUser?.existingUser?.first_name}{" "}
+                        {currentUser?.existingUser?.last_name}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Pressable
+                        style={{
+                          display: "flex",
+                          flexDirection: "row-reverse",
+                          alignItems: "center",
+                        }}
+                        onLongPress={handleChoosePhoto}
+                      >
+                        <Image
+                          style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 150 / 2,
+                            overflow: "hidden",
+                            borderWidth: 1.5,
+                            backgroundColor: "black",
+                            borderColor: "orange",
+                            marginBottom: 10,
+                          }}
+                          source={{
+                            uri: currentUser?.existingUser?.avatarProfile,
+                          }}
+                        />
+                      </Pressable>
+
+                      <Text style={{ color: "white", marginLeft: 8 }}>
+                        {currentUser?.existingUser?.first_name}{" "}
+                        {currentUser?.existingUser?.last_name}
+                      </Text>
+                    </View>
+                  )}
+                  <Feather
+                    name="settings"
+                    size={24}
+                    color={
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d"
+                    }
+                    style={{ alignItems: "flex-end", marginRight: 10 }}
+                    onPress={() => navigation.navigate("Settings")}
+                  />
+                </View>
+              );
+            },
+            headerTintColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#33373d",
+            headerStyle: {
+              backgroundColor:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#171a1d"
+                  : "#f9fafa",
+            },
             tabBarIcon: ({ color, size, focused }) => (
               <CFIcon width={size} fill={focused ? "white" : color} />
             ),

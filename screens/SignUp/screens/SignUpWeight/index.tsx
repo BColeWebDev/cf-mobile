@@ -13,6 +13,9 @@ const SignUpWeight = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [value, setValue] = useState("imperial");
 
+  const min = 10;
+  const max = 1000;
+
   const style = StyleSheet.create({
     textInput: {
       width: "100%",
@@ -32,6 +35,19 @@ const SignUpWeight = ({ navigation }) => {
       color: "white",
     },
   });
+
+  const handleChange = (text) => {
+    let num = parseInt(text);
+    if (isNaN(num)) {
+      num = 10;
+    } else if (num < min) {
+      num = min;
+    } else if (num > max) {
+      num = max;
+    }
+
+    dispatch(setRegister({ value: text, name: "age" }));
+  };
   return (
     <SafeAreaView style={style.container}>
       <Text style={{ marginVertical: 10, fontSize: 25, color: "#f9fafa" }}>
@@ -87,9 +103,9 @@ const SignUpWeight = ({ navigation }) => {
           cursorColor={"white"}
           activeUnderlineColor="white"
           defaultValue={register.age}
-          onChangeText={(text) => {
-            dispatch(setRegister({ value: text, name: "age" }));
-          }}
+          keyboardType="number-pad"
+          maxLength={3}
+          onChangeText={handleChange}
         />
       </View>
       <Button

@@ -25,6 +25,15 @@ export const Logout = async () => {
   const response = await axios.get(`${EXPO_PUBLIC_APP_URL}api/auth/logout`);
   return response.data;
 };
+
+export const UploadAvatar = async (obj, token) => {
+  const response = await axios.get(
+    `${EXPO_PUBLIC_APP_URL}api/auth/${"a"}/upload-avatar`,
+    tokenBearer(token)
+  );
+  return response.data;
+};
+
 const Settings = async (obj, token) => {
   const response = await axios.post(
     `${EXPO_PUBLIC_APP_URL}api/auth/${obj.id}/settings`,
@@ -38,6 +47,7 @@ const authService = {
   Register,
   Logout,
   Settings,
+  UploadAvatar,
 };
 
 export default authService;
