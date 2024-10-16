@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import { Text, Button, Chip } from "react-native-paper";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/app/store";
-import { getAllTrainingDays } from "../../../redux/features/trainingDays/trainingDaysSlice";
 import { getAllWorkouts } from "../../../redux/features/workouts/workoutSlice";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
+/** Filter Workout Modal */
 const WorkoutsModal = ({ navigation }) => {
   const { equipments, bodyTargets, muscles } = useSelector(
     (state: RootState) => state.workouts
@@ -38,6 +39,7 @@ const WorkoutsModal = ({ navigation }) => {
       };
     });
   };
+
   const handleWorkoutFilter = () => {
     let filterArr: string[] = [];
 
@@ -74,14 +76,45 @@ const WorkoutsModal = ({ navigation }) => {
 
   return (
     <View
-      style={{ flex: 1, alignItems: "center", justifyContent: "space-between" }}
+      style={{
+        flex: 1,
+        alignItems: "center",
+        backgroundColor:
+          currentUser.existingUser?.settings?.theme === "dark"
+            ? "#171a1d"
+            : "#f9fafa",
+
+        padding: 10,
+        justifyContent: "space-between",
+      }}
     >
       <ScrollView style={{ width: "100%", maxHeight: "90%" }}>
         {<Text>{toggle}</Text>}
         {/* Equipments */}
-        <Text style={{ fontSize: 18, color: "black", padding: 10 }}>
-          Equipments {filters.equipment.length}
-        </Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <FontAwesome5
+            name="dumbbell"
+            size={16}
+            color={
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#33373d"
+            }
+          />
+          <Text
+            style={{
+              fontSize: 18,
+              color:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#33373d",
+              padding: 10,
+            }}
+          >
+            Equipments {filters.equipment.length}
+          </Text>
+        </View>
+
         <View
           style={{
             display: "flex",
@@ -98,16 +131,16 @@ const WorkoutsModal = ({ navigation }) => {
                 borderColor:
                   currentUser.existingUser?.settings?.theme === "dark"
                     ? "black"
-                    : "red",
+                    : "#f1f1f2",
                 backgroundColor:
                   currentUser.existingUser?.settings?.theme === "dark"
-                    ? "white"
-                    : "red",
+                    ? "#1d2025"
+                    : "#f1f1f2",
               }}
               selectedColor={
                 currentUser.existingUser?.settings?.theme === "dark"
-                  ? "black"
-                  : "red"
+                  ? "#f9fafa"
+                  : "#33373d"
               }
               selected={filters.equipment.includes(val) ? true : false}
               onPress={() => {
@@ -131,7 +164,16 @@ const WorkoutsModal = ({ navigation }) => {
           ))}
         </View>
         {/* Targets */}
-        <Text style={{ fontSize: 18, color: "black", padding: 10 }}>
+        <Text
+          style={{
+            fontSize: 18,
+            color:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#33373d",
+            padding: 10,
+          }}
+        >
           Muscle Targets {filters.bodyTarget.length}
         </Text>
         <View
@@ -150,16 +192,16 @@ const WorkoutsModal = ({ navigation }) => {
                 borderColor:
                   currentUser.existingUser?.settings?.theme === "dark"
                     ? "black"
-                    : "red",
+                    : "#f1f1f2",
                 backgroundColor:
                   currentUser.existingUser?.settings?.theme === "dark"
-                    ? "white"
-                    : "red",
+                    ? "#1d2025"
+                    : "#f1f1f2",
               }}
               selectedColor={
                 currentUser.existingUser?.settings?.theme === "dark"
-                  ? "black"
-                  : "red"
+                  ? "#f9fafa"
+                  : "#33373d"
               }
               selected={filters.bodyTarget.includes(val) ? true : false}
               onPress={() => {
@@ -183,8 +225,17 @@ const WorkoutsModal = ({ navigation }) => {
           ))}
         </View>
         {/* Muscle Targets */}
-        <Text style={{ fontSize: 18, color: "black", padding: 10 }}>
-          Muscle Targets {filters.muscle.length}
+        <Text
+          style={{
+            fontSize: 18,
+            color:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#33373d",
+            padding: 10,
+          }}
+        >
+          Muscle Group {filters.muscle.length}
         </Text>
         <View
           style={{
@@ -202,13 +253,17 @@ const WorkoutsModal = ({ navigation }) => {
                 borderColor:
                   currentUser.existingUser?.settings?.theme === "dark"
                     ? "black"
-                    : "red",
+                    : "#f1f1f2",
                 backgroundColor:
                   currentUser.existingUser?.settings?.theme === "dark"
-                    ? "white"
-                    : "red",
+                    ? "#1d2025"
+                    : "#f1f1f2",
               }}
-              selectedColor="black"
+              selectedColor={
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#33373d"
+              }
               selected={filters.muscle.includes(val) ? true : false}
               onPress={() => {
                 if (filters.muscle.includes(val)) {
@@ -237,7 +292,7 @@ const WorkoutsModal = ({ navigation }) => {
             mode="elevated"
             buttonColor={
               currentUser.existingUser?.settings?.theme === "dark"
-                ? "#171a1d"
+                ? "black"
                 : "#f9fafa"
             }
             textColor={

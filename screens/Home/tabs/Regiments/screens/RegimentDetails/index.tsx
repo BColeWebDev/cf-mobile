@@ -30,10 +30,13 @@ import {
   deleteWorkout,
   updateWorkout,
 } from "../../../../../../redux/features/workouts/workoutSlice";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigationState } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import Loading from "../../../../../Loading";
 import { createSharable } from "../../../../../../redux/features/sharables/sharableSlice";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { IRoutine } from "../../../../../../redux/features/interfaces/IRoutine";
+
 let names = {
   monday: "Mon",
   tuesday: "Tues",
@@ -49,16 +52,17 @@ const Tab = createMaterialTopTabNavigator();
 export default function RegimentDetails({ route, navigation }) {
   const isFocused = useIsFocused();
 
-  /* 2. Get the param */
   const dispatch = useDispatch<AppDispatch>();
 
   const { data, days } = useSelector((state: RootState) => state.trainingDays);
   const { detailInfo } = useSelector((state: any) => state.regiments);
   const { workouts } = useSelector((state: any) => state.workouts);
   const { currentUser } = useSelector((state: RootState) => state.auth);
+  const [currentTab, setcurrentTab] = useState<string>("");
   const { sharableIsLoading } = useSelector(
     (state: RootState) => state.sharables
   );
+
   const style = StyleSheet.create({
     container: {
       flex: 1,
@@ -130,7 +134,13 @@ export default function RegimentDetails({ route, navigation }) {
     });
   };
 
-  const WorkoutTab = ({ name }) => {
+  const WorkoutTab = (props) => {
+    const { name } = props;
+
+    const navigationState = useNavigationState((state) => state);
+    const currentRouteName = navigationState.routes[navigationState.index].name;
+    setcurrentTab(currentRouteName);
+
     return (
       <View style={style.container}>
         <ScrollView
@@ -168,7 +178,10 @@ export default function RegimentDetails({ route, navigation }) {
             </View>
           ) : (
             data.routines.map((val, idx) => {
+              // Display Workout for that day
               if (val.day === name) {
+                console.log("VALUE", val.workouts, name);
+
                 return (
                   <View
                     key={idx}
@@ -272,6 +285,7 @@ export default function RegimentDetails({ route, navigation }) {
                               alignItems: "center",
                             }}
                           >
+                            {/* Create New Workout */}
                             {days.length < 7 && (
                               <AntDesign
                                 style={{ marginRight: 30 }}
@@ -294,6 +308,7 @@ export default function RegimentDetails({ route, navigation }) {
                               />
                             )}
 
+                            {/* Delete Existing Workout */}
                             <AntDesign
                               name="delete"
                               size={20}
@@ -335,55 +350,6 @@ export default function RegimentDetails({ route, navigation }) {
                       Add Workout
                     </Button>
 
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "100%",
-                      }}
-                    >
-                      {val.primaryMuscleGroup.length > 0 &&
-                      val.secondaryMuscleGroup > 0 ? (
-                        <>
-                          <View
-                            style={{ marginHorizontal: 20, marginBottom: 10 }}
-                          >
-                            <Text
-                              style={{ marginBottom: 20, textAlign: "center" }}
-                            >
-                              Primary Muscle Group
-                            </Text>
-                            {val.primaryMuscleGroup.map((value, key) => (
-                              <Text
-                                style={{ textAlign: "center", marginBottom: 3 }}
-                                key={key}
-                              >
-                                {value}
-                              </Text>
-                            ))}
-                          </View>
-
-                          <View
-                            style={{ marginHorizontal: 20, marginBottom: 10 }}
-                          >
-                            <Text
-                              style={{ marginBottom: 20, textAlign: "center" }}
-                            >
-                              Secondary Muscle Group
-                            </Text>
-                            {val.secondaryMuscleGroup.map((value, key) => (
-                              <Text
-                                style={{ textAlign: "center", marginBottom: 3 }}
-                                key={key}
-                              >
-                                {value}
-                              </Text>
-                            ))}
-                          </View>
-                        </>
-                      ) : null}
-                    </View>
-
                     <View style={{ marginHorizontal: 20, marginBottom: 0 }}>
                       {val.workouts.map((value, idx) => (
                         <View
@@ -404,6 +370,7 @@ export default function RegimentDetails({ route, navigation }) {
                                 routineId: val._id,
                                 regimentId: detailInfo._id,
                                 wId: value.id,
+                                name: value.name,
                                 btnName: "Update Workout",
                                 action: (data) => {
                                   dispatch(
@@ -450,7 +417,11 @@ export default function RegimentDetails({ route, navigation }) {
                               <View
                                 style={{
                                   width: "100%",
-                                  backgroundColor: "#2e242c",
+                                  backgroundColor:
+                                    currentUser.existingUser?.settings
+                                      ?.theme === "dark"
+                                      ? "#2e242c"
+                                      : "#e7e7e8",
                                   borderRadius: 15,
                                   marginLeft: 10,
                                 }}
@@ -470,7 +441,11 @@ export default function RegimentDetails({ route, navigation }) {
                                         width: "100%",
                                         fontSize: 14,
                                         margin: 10,
-                                        color: "white",
+                                        color:
+                                          currentUser.existingUser?.settings
+                                            ?.theme === "dark"
+                                            ? "#f9fafa"
+                                            : "#33373d",
                                         fontWeight: "600",
                                       }}
                                     >
@@ -481,7 +456,11 @@ export default function RegimentDetails({ route, navigation }) {
                                       style={{
                                         fontSize: 14,
                                         margin: 10,
-                                        color: "white",
+                                        color:
+                                          currentUser.existingUser?.settings
+                                            ?.theme === "dark"
+                                            ? "#f9fafa"
+                                            : "#33373d",
                                       }}
                                     >
                                       {value.bodyPart}
@@ -748,6 +727,32 @@ export default function RegimentDetails({ route, navigation }) {
                     }
                   />
                 )}
+
+                {/* Start Workout */}
+                <FontAwesome
+                  name="play-circle"
+                  size={20}
+                  color={
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#33373d"
+                  }
+                  onPress={() => {
+                    let filteredData: IRoutine = data.routines.filter(
+                      (val: IRoutine) => {
+                        if (val.day.includes(currentTab.toLowerCase())) {
+                          return val;
+                        }
+                      }
+                    )[0];
+
+                    navigation.navigate("StartWorkout", {
+                      tabName: currentTab,
+                      workouts: filteredData.workouts,
+                    });
+                  }}
+                />
+
                 {/* Share Workout Plan */}
                 {days.length === 7 && (
                   <AntDesign
@@ -765,6 +770,9 @@ export default function RegimentDetails({ route, navigation }) {
           </View>
           {/* Tabs */}
           <Tab.Navigator
+            initialRouteName={
+              route.params.tabName !== "" ? route.params.tabName : ""
+            }
             screenOptions={{
               tabBarStyle: {
                 backgroundColor:
@@ -791,11 +799,14 @@ export default function RegimentDetails({ route, navigation }) {
                     },
                   }}
                 >
-                  {(prop) => <WorkoutTab name={val} />}
+                  {(prop) => {
+                    return <WorkoutTab name={val} {...prop} />;
+                  }}
                 </Tab.Screen>
               ))}
             </Tab.Group>
           </Tab.Navigator>
+
           {/* SnackBars */}
           <Snackbar
             visible={trainingDayDelete}
@@ -803,6 +814,7 @@ export default function RegimentDetails({ route, navigation }) {
           >
             Removed Training Day
           </Snackbar>
+
           <Snackbar visible={IsSharable} onDismiss={() => setIsSharable(false)}>
             Workout Shared!
           </Snackbar>
@@ -845,6 +857,7 @@ export default function RegimentDetails({ route, navigation }) {
               </Text>
             </Modal>
           </Portal>
+
           {/* Share Workout Portal*/}
           <Portal>
             <Modal

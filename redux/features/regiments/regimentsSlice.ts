@@ -5,6 +5,7 @@ import { IRegiments, RootRegiment } from "../interfaces/IRegiments";
 
 interface Root {
   data: RootRegiment[];
+  activeRegiments: RootRegiment;
   detailInfo: RootRegiment;
   isError: boolean;
   isSuccess: boolean;
@@ -21,6 +22,20 @@ const initialState: Root = {
     isCompleted: false,
     days: [],
     sharables: false,
+    isActive: false,
+    isShared: false,
+  },
+  activeRegiments: {
+    _id: "",
+    name: "",
+    description: "",
+    userid: "",
+    routines: [],
+    isCompleted: false,
+    days: [],
+    sharables: false,
+    isActive: false,
+    isShared: false,
   },
   isError: false,
   isSuccess: false,
@@ -109,6 +124,11 @@ export const regimentsSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.data = action.payload;
+        state.activeRegiments = action.payload.filter((value) => {
+          if (value.isActive) {
+            return value;
+          }
+        })[0];
       })
       .addCase(getRegiments.rejected, (state, action) => {
         state.isLoading = false;

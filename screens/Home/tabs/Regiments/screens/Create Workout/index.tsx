@@ -134,7 +134,10 @@ const CreateWorkout = ({ route, navigation }) => {
         style={{
           marginLeft: 20,
           marginVertical: 30,
-          color: "black",
+          color:
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#f9fafa"
+              : "#33373d",
         }}
       >
         Choose workout day
@@ -165,7 +168,10 @@ const CreateWorkout = ({ route, navigation }) => {
               <Text
                 style={{
                   fontSize: 20,
-                  color: "black",
+                  color:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#33373d",
                   fontWeight: "500",
                   textTransform: "capitalize",
                 }}
@@ -173,7 +179,11 @@ const CreateWorkout = ({ route, navigation }) => {
                 {val}
               </Text>
               <RadioButton
-                color="black"
+                color={
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d"
+                }
                 value={String(idx)}
                 status={formData.day === String(idx) ? "checked" : "unchecked"}
               />

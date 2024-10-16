@@ -16,7 +16,10 @@ import { useDispatch } from "react-redux";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import PlatIcon from "../../assets/images/Plate.svg";
 import * as ImagePicker from "expo-image-picker";
+import NutritionScreen from "./tabs/Nutritions";
+
 export default function Home({ navigation }) {
   const { currentUser } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
@@ -29,8 +32,6 @@ export default function Home({ navigation }) {
       allowsEditing: true,
       quality: 1,
     });
-
-    console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -94,7 +95,16 @@ export default function Home({ navigation }) {
                           }
                         />
                       </Pressable>
-                      <Text style={{ color: "white", marginLeft: 8 }}>
+                      <Text
+                        style={{
+                          color:
+                            currentUser.existingUser?.settings?.theme === "dark"
+                              ? "#f9fafa"
+                              : "#33373d",
+                          fontWeight: "700",
+                          marginLeft: 8,
+                        }}
+                      >
                         {currentUser?.existingUser?.first_name}{" "}
                         {currentUser?.existingUser?.last_name}
                       </Text>
@@ -132,7 +142,16 @@ export default function Home({ navigation }) {
                         />
                       </Pressable>
 
-                      <Text style={{ color: "white", marginLeft: 8 }}>
+                      <Text
+                        style={{
+                          color:
+                            currentUser.existingUser?.settings?.theme === "dark"
+                              ? "#f9fafa"
+                              : "#33373d",
+                          fontWeight: "700",
+                          marginLeft: 8,
+                        }}
+                      >
                         {currentUser?.existingUser?.first_name}{" "}
                         {currentUser?.existingUser?.last_name}
                       </Text>

@@ -9,24 +9,26 @@ import {
 } from "react-native";
 import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, Searchbar, TextInput } from "react-native-paper";
+import { Button, Searchbar } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { getAllWorkouts } from "../../../../redux/features/workouts/workoutSlice";
+import {
+  getAllWorkouts,
+  createNewWorkout,
+} from "../../../../redux/features/workouts/workoutSlice";
 import Loading from "../../../Loading";
 import { FontAwesome } from "@expo/vector-icons";
 import { IWorkouts } from "../../../../redux/features/interfaces/IWorkouts";
-import { AppDispatch } from "../../../../redux/app/store";
+import { AppDispatch, RootState } from "../../../../redux/app/store";
+import { ISets } from "../../../../redux/features/interfaces/ISets";
 
 // Rename workouts to exercises for less confusion
 const WorkoutsScreen = ({ route, navigation }) => {
   const [input, setinput] = useState("");
-  const [selectedWorkouts, setselectedWorkouts] = useState<IWorkouts>();
   const dispatch = useDispatch<AppDispatch>();
-  const { workouts, isLoading, equipments, bodyTargets, muscles } = useSelector(
-    (state: any) => state.workouts
-  );
-  const { currentUser } = useSelector((state: any) => state.auth);
+  const { workouts, isLoading } = useSelector((state: any) => state.workouts);
+  const { currentUser } = useSelector((state: RootState) => state.auth);
+
   const style = StyleSheet.create({
     container: {
       flex: 1,
@@ -93,24 +95,9 @@ const WorkoutsScreen = ({ route, navigation }) => {
       })
     );
   };
+
   return (
     <SafeAreaView style={style.container}>
-      <Text
-        style={{
-          fontSize: 19,
-          width: "100%",
-          marginLeft: 50,
-          color:
-            currentUser.existingUser?.settings?.theme === "dark"
-              ? "#f9fafa"
-              : "#33373d",
-          fontWeight: "500",
-          textAlign: "left",
-          marginVertical: 20,
-        }}
-      >
-        Workouts
-      </Text>
       <View
         style={{
           width: "100%",
@@ -121,15 +108,46 @@ const WorkoutsScreen = ({ route, navigation }) => {
       >
         {/* Search */}
         <Searchbar
-          style={{
-            margin: 15,
-            backgroundColor: "white",
-            width: "95%",
-            marginRight: "auto",
-          }}
           value={input}
-          selectionColor={"black"}
-          cursorColor={"black"}
+          iconColor={
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#f9fafa"
+              : "#33373d"
+          }
+          placeholderTextColor={
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#f9fafa"
+              : "#33373d"
+          }
+          inputStyle={{
+            color:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#f9fafa"
+                : "#33373d",
+          }}
+          style={{
+            marginBottom: 10,
+            marginHorizontal: 20,
+            backgroundColor:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "#1d2025"
+                : "#f1f1f2",
+            color:
+              currentUser.existingUser?.settings?.theme === "dark"
+                ? "white"
+                : "#33373d",
+            width: "90%",
+          }}
+          selectionColor={
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#f9fafa"
+              : "#33373d"
+          }
+          cursorColor={
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#f9fafa"
+              : "#33373d"
+          }
           placeholder="Search"
           onChangeText={(text) => setinput(text)}
         />
@@ -181,13 +199,13 @@ const WorkoutsScreen = ({ route, navigation }) => {
         {workouts?.items?.length < 1324 ? (
           <Button
             style={{
-              width: "100%",
               backgroundColor: "#211a23",
               borderRadius: 15,
               marginLeft: "auto",
               marginRight: "auto",
               height: 40,
               justifyContent: "center",
+              marginBottom: 15,
             }}
             mode="elevated"
             textColor="white"
@@ -202,7 +220,7 @@ const WorkoutsScreen = ({ route, navigation }) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        data={workouts?.items.filter((val) => {
+        data={workouts?.items.filter((val: IWorkouts) => {
           if (input === "") {
             return val;
           }
@@ -229,11 +247,35 @@ const WorkoutsScreen = ({ route, navigation }) => {
                 workoutId: "",
                 sets: [{ sets: 1, reps: 10, weight: 0 }],
                 restTime: "0",
-                routineId: "",
-                regimentId: "",
+                routineId: route.params?.routineId
+                  ? route.params.routineId
+                  : "",
+                regimentId: route.params?.regimentId
+                  ? route.params.routineId
+                  : "",
                 wId: item.id,
-                btnName: "",
-                action: (value) => {},
+                name: item.name,
+                btnName: "Add Workout",
+                action: (value: ISets) => {
+                  let obj: IWorkouts = {
+                    regimentId: route.params.regimentId,
+                    routineId: route.params.routineId,
+                    ...item,
+                    muscle_target: item.target,
+                    bodyPart: item.bodyPart,
+                    sets: value.sets,
+                    reps: value.reps,
+                    weight: value.weight,
+                  };
+                  dispatch(createNewWorkout(obj)).then((value) => {
+                    if (value.meta.requestStatus === "fulfilled") {
+                      navigation.navigate("Regiment Details", route);
+                    }
+                    if (value.meta.requestStatus === "rejected") {
+                      console.log("value", value.payload);
+                    }
+                  });
+                },
               });
             }}
           >
@@ -247,8 +289,8 @@ const WorkoutsScreen = ({ route, navigation }) => {
               <Image
                 source={{ uri: item.gifUrl }}
                 style={{
-                  width: 100,
-                  height: 100,
+                  width: 80,
+                  height: 80,
                   borderRadius: 150 / 2,
                   overflow: "hidden",
                   borderWidth: 3,

@@ -15,10 +15,10 @@ import SignUpNamesScreens from "./SignUp/screens/SignUpNames";
 import SignUpEmailScreens from "./SignUp/screens/SignUpEmail";
 import CreateWorkout from "./Home/tabs/Regiments/screens/Create Workout";
 import WorkoutDetails from "./Home/tabs/Regiments/screens/RegimentDetails/screens/WorkoutsDetails";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppDispatch, RootState } from "../redux/app/store";
 import { View } from "react-native";
-import { Text } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import SharableDetails from "./Home/tabs/Sharable/screens/SharableDetails";
 import NutritionDetails from "./Home/tabs/Nutritions/screens/NutritionDetails";
 import SignUpExperience from "./SignUp/screens/SignUpExperience";
@@ -29,12 +29,27 @@ import SignUpHeight from "./SignUp/screens/SignUpHeight";
 import SignUpGender from "./SignUp/screens/SignUpGender";
 import SignUpEquipment from "./SignUp/screens/SignUpEquipment";
 import SignUpPrimaryGoal from "./SignUp/screens/SignUpPrimaryGoal";
+import { setCurrentUser } from "../redux/features/auth/authSlice";
+import { getData } from "../redux/features/helpers/loginHandler";
+import Entypo from "@expo/vector-icons/Entypo";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import StartWorkout from "./StartWorkout";
+
 const Stack = createNativeStackNavigator();
 
-export default function AllScreens() {
+export default function AllScreens({ navigation }) {
   const { currentUser } = useSelector((state: RootState) => state.auth);
   const { detailInfo } = useSelector((state: any) => state.regiments);
   const [initRoute, setinitRoute] = useState<string>("Login");
+  const dispatch = useDispatch<AppDispatch>();
+  // useEffect(() => {
+  //   getData().then((value) => {
+  //     console.log("CALLED", value);
+  //     if (value.isLoggedIn) {
+  //       dispatch(setCurrentUser(value.currentUser));
+  //     }
+  //   });
+  // }, []);
 
   if (initRoute !== "") {
     return (
@@ -209,10 +224,109 @@ export default function AllScreens() {
             }}
           />
           <Stack.Screen
+            name="StartWorkout"
+            component={StartWorkout}
+            options={({ route }) => {
+              return {
+                headerTitle: () => {
+                  return (
+                    <>
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            fontWeight: "600",
+                            textTransform: "capitalize",
+                            color:
+                              currentUser.existingUser?.settings?.theme ===
+                              "dark"
+                                ? "#f9fafa"
+                                : "#33373d",
+                          }}
+                        >
+                          Timer
+                        </Text>
+                      </View>
+                    </>
+                  );
+                },
+                headerTintColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#f9fafa"
+                    : "#33373d",
+                headerStyle: {
+                  backgroundColor:
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#171a1d"
+                      : "#f9fafa",
+                },
+              };
+            }}
+          />
+          <Stack.Screen
             name="SharableDetails"
             component={SharableDetails}
-            options={{ headerTitle: "" }}
+            options={{
+              headerTitle: () => (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "90%",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: "600",
+                      color:
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? "#f9fafa"
+                          : "#33373d",
+                    }}
+                  >
+                    Sharable Details
+                  </Text>
+
+                  <View style={{ flexDirection: "row" }}>
+                    <AntDesign
+                      name="sharealt"
+                      size={20}
+                      color={
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? "#f9fafa"
+                          : "#33373d"
+                      }
+                      style={{ marginRight: 20 }}
+                      onPress={() => alert("share")}
+                    />
+                    <Entypo
+                      onPress={() => alert("download regiment")}
+                      name="download"
+                      size={20}
+                      color={
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? "#f9fafa"
+                          : "#33373d"
+                      }
+                    />
+                  </View>
+                </View>
+              ),
+              headerTintColor:
+                currentUser.existingUser?.settings?.theme === "dark"
+                  ? "#f9fafa"
+                  : "#33373d",
+              headerStyle: {
+                backgroundColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#171a1d"
+                    : "#f9fafa",
+              },
+            }}
           ></Stack.Screen>
+
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen
               name="WorkoutsFilters"
@@ -249,8 +363,24 @@ export default function AllScreens() {
             <Stack.Screen
               name="WorkoutsDetails"
               component={WorkoutDetails}
-              options={{
-                headerTitle: "Workouts Details",
+              options={({ route }) => ({
+                headerTitle: () => {
+                  return (
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          color:
+                            currentUser.existingUser?.settings?.theme === "dark"
+                              ? "#f9fafa"
+                              : "#33373d",
+                        }}
+                      >
+                        {route.params?.name}
+                      </Text>
+                    </View>
+                  );
+                },
                 headerTintColor:
                   currentUser.existingUser?.settings?.theme === "dark"
                     ? "#f9fafa"
@@ -261,7 +391,7 @@ export default function AllScreens() {
                       ? "#171a1d"
                       : "#f9fafa",
                 },
-              }}
+              })}
             />
 
             <Stack.Screen

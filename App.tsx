@@ -1,12 +1,9 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider } from "react-redux";
 import { RootState, store } from "./redux/app/store";
 import AllScreens from "./screens";
 import { Animated, StatusBar } from "react-native";
-import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 import { useSelector } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   let animatedValue = new Animated.Value(0);

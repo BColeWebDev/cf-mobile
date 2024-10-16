@@ -17,9 +17,12 @@ const Sharable = ({ navigation }) => {
   const { data } = useSelector((state: RootState) => state.sharables);
   const [query, setquery] = useState("");
   const [refreshing, setRefreshing] = useState(false);
+  const { currentUser } = useSelector((state: RootState) => state.auth);
+
   useEffect(() => {
     dispatch(getAllSharable());
   }, []);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -31,50 +34,66 @@ const Sharable = ({ navigation }) => {
     }, 2000);
   }, [refreshing]);
 
+  const style = StyleSheet.create({
+    container: {
+      height: "100%",
+      backgroundColor:
+        currentUser.existingUser?.settings?.theme === "dark"
+          ? "#171a1d"
+          : "#f9fafa",
+      alignItems: "center",
+      padding: 10,
+      justifyContent: "flex-start",
+    },
+  });
+
   return (
     <SafeAreaView style={style.container}>
-      <Text
-        style={{
-          fontSize: 28,
-          width: "100%",
-          marginLeft: 50,
-          color: "black",
-          marginTop: 30,
-          fontWeight: "500",
-          textAlign: "left",
-          marginVertical: 20,
-        }}
-      >
-        Sharable
-      </Text>
       <Searchbar
         value={query}
+        iconColor={
+          currentUser.existingUser?.settings?.theme === "dark"
+            ? "#f9fafa"
+            : "#33373d"
+        }
+        placeholderTextColor={
+          currentUser.existingUser?.settings?.theme === "dark"
+            ? "#f9fafa"
+            : "#33373d"
+        }
+        inputStyle={{
+          color:
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#f9fafa"
+              : "#33373d",
+        }}
+        style={{
+          marginBottom: 10,
+          marginHorizontal: 20,
+          backgroundColor:
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "#1d2025"
+              : "#f1f1f2",
+          color:
+            currentUser.existingUser?.settings?.theme === "dark"
+              ? "white"
+              : "#33373d",
+          width: "90%",
+        }}
+        selectionColor={
+          currentUser.existingUser?.settings?.theme === "dark"
+            ? "#f9fafa"
+            : "#33373d"
+        }
+        cursorColor={
+          currentUser.existingUser?.settings?.theme === "dark"
+            ? "#f9fafa"
+            : "#33373d"
+        }
         placeholder="Search Workout"
         onChangeText={setquery}
-        style={{
-          width: "90%",
-          color: "black",
-          backgroundColor: "#f1f1f2",
-          margin: 20,
-        }}
       />
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "flex-end",
-          width: "100%",
-          padding: 20,
-        }}
-      >
-        <FontAwesome
-          style={{ paddingHorizontal: 10 }}
-          name="sort-amount-asc"
-          size={24}
-          color="black"
-        />
-        <FontAwesome name="sort-amount-desc" size={24} color="black" />
-      </View>
+
       {data.length === 0 ? (
         <>
           <Text>Coming Soon!</Text>
@@ -94,16 +113,21 @@ const Sharable = ({ navigation }) => {
             width: "100%",
           }}
           data={data}
-          renderItem={({ item, index, separators }) => (
+          renderItem={({ item, index }) => (
             <TouchableHighlight
               style={{
-                backgroundColor: "#f1f1f1",
-                borderWidth: 1,
-                borderColor: "#d3d4d5",
-                borderRadius: 8,
+                backgroundColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "#33373d"
+                    : "#f1f1f2",
+                borderColor:
+                  currentUser.existingUser?.settings?.theme === "dark"
+                    ? "black"
+                    : "#f9fafa",
+                borderWidth:
+                  currentUser.existingUser?.settings?.theme === "dark" ? 0 : 2,
+                borderRadius: 10,
                 padding: 15,
-                width: "100%",
-                marginBottom: 15,
               }}
               underlayColor="white"
               key={index}
@@ -124,7 +148,10 @@ const Sharable = ({ navigation }) => {
               >
                 <Text
                   style={{
-                    color: "black",
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d",
                     fontWeight: "600",
                     fontSize: 14,
                     paddingHorizontal: 10,
@@ -136,7 +163,10 @@ const Sharable = ({ navigation }) => {
                 </Text>
                 <Text
                   style={{
-                    color: "black",
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d",
                     fontWeight: "300",
                     fontSize: 14,
                     paddingHorizontal: 10,
@@ -147,7 +177,7 @@ const Sharable = ({ navigation }) => {
                   By {item.created_by}
                 </Text>
 
-                <View
+                {/* <View
                   style={{
                     display: "flex",
                     flexDirection: "row",
@@ -155,6 +185,16 @@ const Sharable = ({ navigation }) => {
                     paddingHorizontal: 10,
                   }}
                 >
+                  <AntDesign
+                    name="heart"
+                    size={16}
+                    style={{ marginRight: 10 }}
+                    color={
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d"
+                    }
+                  />
                   <Text
                     style={{
                       margin: 5,
@@ -164,7 +204,6 @@ const Sharable = ({ navigation }) => {
                     }}
                     variant="labelLarge"
                   >
-                    <AntDesign name="heart" size={16} color="black" />
                     {item.likes}
                   </Text>
                   <Text
@@ -191,7 +230,7 @@ const Sharable = ({ navigation }) => {
                     <FontAwesome name="comments" size={16} color="black" />
                     {item.comments.length}
                   </Text>
-                </View>
+                </View> */}
               </View>
             </TouchableHighlight>
           )}
@@ -200,12 +239,5 @@ const Sharable = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-const style = StyleSheet.create({
-  container: {
-    height: "100%",
-    justifyContent: "flex-start",
-    backgroundColor: "white",
-    alignItems: "center",
-  },
-});
+
 export default Sharable;

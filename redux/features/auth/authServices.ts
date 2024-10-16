@@ -42,6 +42,7 @@ const Settings = async (obj, token) => {
   );
   return response.data;
 };
+
 const authService = {
   Login,
   Register,

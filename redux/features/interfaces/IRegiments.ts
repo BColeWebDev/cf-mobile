@@ -19,6 +19,8 @@ export interface IRegiments {
  * @prop {string} userid Current User ID
  * @prop {IRoutine[]} routines All regiment routines
  * @prop {boolean} isCompleted workout completed
+ * @prop {boolean} isActive active regiment
+ * @prop {boolean} isShared workout has been shared
  * @prop {string[]} days all workout days
  * @prop {boolean} sharable shared workout plan
  */
@@ -29,6 +31,8 @@ export interface RootRegiment {
   userid: string;
   routines: IRoutine[];
   isCompleted: boolean;
+  isActive: boolean;
+  isShared: boolean;
   days: string[];
   sharables: boolean;
 }

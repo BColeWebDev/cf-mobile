@@ -16,7 +16,6 @@ export default function NutritionDetails({ route }) {
     }
   }, [route.params.data]);
 
-  console.log("details", details);
   return (
     <ScrollView
       style={{

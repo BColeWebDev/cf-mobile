@@ -15,7 +15,6 @@ const SearchNutritionInstant = async (query: string, token: string) => {
     `${EXPO_PUBLIC_APP_URL}api/nutritions/instant-search?query=${query}`,
     tokenBearer(token)
   );
-  console.log("resoobse", response.data);
   return response.data;
 };
 

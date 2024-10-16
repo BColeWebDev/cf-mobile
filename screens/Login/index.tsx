@@ -1,15 +1,8 @@
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  Image,
-  ImageBackground,
-} from "react-native";
+import { View, StyleSheet, SafeAreaView, ImageBackground } from "react-native";
 import React, { useState } from "react";
-import { Button, Surface, Text } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import CfIcon from "../../assets/images/CF-Icon.svg";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { LoginUser, setCurrentUser } from "../../redux/features/auth/authSlice";
 import { TextInput } from "react-native-paper";
 import { AppDispatch } from "../../redux/app/store";
@@ -20,6 +13,7 @@ import {
   getAllWorkouts,
 } from "../../redux/features/workouts/workoutSlice";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { getRegiments } from "../../redux/features/regiments/regimentsSlice";
 export default function Login({ navigation }) {
   const dispatch = useDispatch<AppDispatch>();
   const [login, setlogin] = useState({ email: "", password: "" });
@@ -66,11 +60,14 @@ export default function Login({ navigation }) {
         dispatch(getAllEquipment({ token: val.payload.userToken }));
         dispatch(getAllBodyTargets({ token: val.payload.userToken }));
         dispatch(getAllMuscleTargets({ token: val.payload.userToken }));
+        dispatch(getRegiments(val.payload?.existingUser?._id));
+
         navigation.reset({ index: 0, routes: [{ name: "Home" }] });
       }
       if (val.meta.requestStatus === "rejected") {
         navigation.navigate("Login");
-        alert("Invalid Credentials email or password is incorrect");
+
+        alert(JSON.stringify(val));
       }
     });
   };

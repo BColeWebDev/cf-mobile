@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import workoutServices from "./workoutService";
 import { RootState } from "../../app/store";
 import { IUpdateTrainingDaysForm } from "../interfaces/ITrainingDays";
+import { IWorkouts } from "../interfaces/IWorkouts";
 
 const initialState = {
   workouts: {},
@@ -84,7 +85,7 @@ export const createNewWorkout = createAsyncThunk<
   any,
   any,
   { state: RootState }
->(`workouts/createNew`, async (obj: any, thunkAPI) => {
+>(`workouts/createNew`, async (obj: IWorkouts, thunkAPI) => {
   try {
     const { currentUser } = thunkAPI.getState().auth;
     const response = await workoutServices.createWorkout(

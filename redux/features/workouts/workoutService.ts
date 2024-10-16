@@ -1,7 +1,6 @@
 import axios from "axios";
 import { EXPO_PUBLIC_APP_URL } from "@env";
 import tokenBearer from "../helpers/tokenHeader";
-import { IFilters } from "../interfaces/IFilter";
 
 const getAlWorkouts = async (
   token,
@@ -39,6 +38,7 @@ const getAllEquipments = async (token) => {
   return response.data;
 };
 const createWorkout = async (obj, token) => {
+  console.log("data", obj);
   const response = await axios.post(
     `${EXPO_PUBLIC_APP_URL}api/workouts/routines/${obj.regimentId}`,
     obj,

@@ -4,10 +4,11 @@ import { useSelector } from "react-redux";
 import Loading from "../../../../../../../Loading";
 import { Button, TextInput } from "react-native-paper";
 import { ISets } from "../../../../../../../../redux/features/interfaces/ISets";
+import { RootState } from "../../../../../../../../redux/app/store";
 
 const WorkoutDetails = ({ route }) => {
   const { workouts, isLoading } = useSelector((state: any) => state.workouts);
-  const { currentUser } = useSelector((state: any) => state.auth);
+  const { currentUser } = useSelector((state: RootState) => state.auth);
   const [Data, setData] = useState<ISets>({});
 
   let workoutsDetails = workouts?.items?.filter(
@@ -20,14 +21,13 @@ const WorkoutDetails = ({ route }) => {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      marginBottom: 10,
-
-      marginHorizontal: 30,
+      marginRight: 10,
     },
   });
   useEffect(() => {
     if (route.params.sets !== undefined || route.params.sets.length > 0)
-      setData(route.params.sets[0]);
+      console.log("SETs", route.params.sets);
+    setData(route.params.sets[0]);
   }, [route.params.sets]);
 
   if (isLoading) {
@@ -87,19 +87,6 @@ const WorkoutDetails = ({ route }) => {
             borderRadius: 10,
           }}
         />
-
-        <Text
-          style={{
-            fontSize: 25,
-            color:
-              currentUser.existingUser?.settings?.theme === "dark"
-                ? "#f9fafa"
-                : "#1d2025",
-            marginTop: 30,
-          }}
-        >
-          {workoutsDetails?.name}
-        </Text>
 
         <Text
           style={{
@@ -179,7 +166,13 @@ const WorkoutDetails = ({ route }) => {
 
           {/* Sets, Reps & Weights/Kg */}
           {route.params.regimentId !== "" ? (
-            <View>
+            <View
+              style={{
+                flexDirection: "row",
+                width: "100%",
+                padding: 10,
+              }}
+            >
               <View style={style.setsContainer}>
                 <Text
                   style={{
@@ -189,14 +182,38 @@ const WorkoutDetails = ({ route }) => {
                         : "#1d2025",
                   }}
                 >
-                  Sets:{" "}
+                  Sets:
                 </Text>
                 <TextInput
-                  textColor="black"
-                  mode={"outlined"}
-                  style={{ marginHorizontal: 20, backgroundColor: "white" }}
-                  selectionColor={"black"}
-                  cursorColor={"#F9C000"}
+                  placeholderTextColor={
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#33373d"
+                  }
+                  style={{
+                    marginBottom: 10,
+                    marginHorizontal: 5,
+                    backgroundColor: "#1d2025",
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d",
+                  }}
+                  selectionColor={
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#33373d"
+                  }
+                  cursorColor={
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#33373d"
+                  }
+                  textColor={
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#1d2025"
+                  }
                   value={String(Data?.sets)}
                   onChangeText={(e) =>
                     setData((prevState) => ({
@@ -219,13 +236,37 @@ const WorkoutDetails = ({ route }) => {
                   Reps:{" "}
                 </Text>
                 <TextInput
-                  textColor="black"
-                  mode={"outlined"}
-                  style={{ marginHorizontal: 20, backgroundColor: "white" }}
-                  selectionColor={"black"}
-                  cursorColor={"#F9C000"}
-                  value={String(Data?.reps)}
+                  textColor={
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#1d2025"
+                  }
+                  placeholderTextColor={
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#33373d"
+                  }
+                  style={{
+                    marginBottom: 10,
+                    marginHorizontal: 5,
+                    backgroundColor: "#1d2025",
+                    color:
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d",
+                  }}
+                  selectionColor={
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#33373d"
+                  }
+                  cursorColor={
+                    currentUser.existingUser?.settings?.theme === "dark"
+                      ? "#f9fafa"
+                      : "#33373d"
+                  }
                   keyboardType={"number-pad"}
+                  value={String(Data.reps)}
                   onChangeText={(e) =>
                     setData((prevState) => ({
                       ...prevState,
@@ -254,12 +295,35 @@ const WorkoutDetails = ({ route }) => {
                 >
                   {/* KG or Ibs depending on user setting */}
                   <TextInput
-                    textColor="black"
-                    mode={"outlined"}
-                    style={{ marginHorizontal: 20, backgroundColor: "white" }}
-                    selectionColor={"black"}
-                    cursorColor={"#F9C000"}
-                    textAlign="center"
+                    placeholderTextColor={
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d"
+                    }
+                    style={{
+                      marginBottom: 10,
+                      marginHorizontal: 5,
+                      backgroundColor: "#1d2025",
+                      color:
+                        currentUser.existingUser?.settings?.theme === "dark"
+                          ? "#f9fafa"
+                          : "#33373d",
+                    }}
+                    selectionColor={
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d"
+                    }
+                    cursorColor={
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#33373d"
+                    }
+                    textColor={
+                      currentUser.existingUser?.settings?.theme === "dark"
+                        ? "#f9fafa"
+                        : "#1d2025"
+                    }
                     value={String(Data?.weight)}
                     onChangeText={(e) =>
                       setData((prevState) => ({

@@ -6,16 +6,8 @@ import {
   ScrollView,
   RefreshControl,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Badge,
-  Surface,
-  Portal,
-  Modal,
-  FAB,
-  Banner,
-} from "react-native-paper";
+import React, { useState } from "react";
+import { Button, Surface, Portal, Modal, FAB } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../../redux/app/store";
@@ -24,7 +16,6 @@ import {
   getRegiments,
 } from "../../../../redux/features/regiments/regimentsSlice";
 import { useSelector } from "react-redux";
-import { getAllWorkouts } from "../../../../redux/features/workouts/workoutSlice";
 
 const RegimentScreen = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -59,11 +50,11 @@ const RegimentScreen = ({ navigation }) => {
     },
   });
 
-  useEffect(() => {
-    if (currentUser !== undefined) {
-      dispatch(getRegiments(currentUser?.existingUser?._id));
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (currentUser !== undefined) {
+  //     dispatch(getRegiments(currentUser?.existingUser?._id));
+  //   }
+  // }, [currentUser]);
 
   return (
     <SafeAreaView style={style.container}>
@@ -166,13 +157,6 @@ const RegimentScreen = ({ navigation }) => {
                       >
                         {val.name}
                       </Text>
-                      {/* <Badge
-                          style={{
-                            marginRight: 5,
-                            marginBottom: 15,
-                            backgroundColor: val.isCompleted ? "white" : "red",
-                          }}
-                        ></Badge> */}
                     </View>
 
                     <View
